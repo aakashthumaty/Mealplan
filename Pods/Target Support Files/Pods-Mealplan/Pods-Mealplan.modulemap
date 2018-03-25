@@ -1,0 +1,6 @@
+framework module Pods_Mealplan {
+  umbrella header "Pods-Mealplan-umbrella.h"
+
+  export *
+  module * { export * }
+}
