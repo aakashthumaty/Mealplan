@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mealplan/Restaurant.swift"
-            timestampString = "543813537.489579"
+            timestampString = "543830940.354859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "21"
@@ -26,12 +26,12 @@
                   moduleName = "Mealplan"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/aakashthumaty/Desktop/Mealplan/Mealplan/Restaurant.swift"
-                  timestampString = "543813537.591422"
+                  timestampString = "543830940.455874"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "21"
                   endingLineNumber = "21"
-                  offsetFromSymbolStart = "235">
+                  offsetFromSymbolStart = "319">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -41,7 +41,7 @@
                   moduleName = "Mealplan"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/aakashthumaty/Desktop/Mealplan/Mealplan/Restaurant.swift"
-                  timestampString = "543813537.593174"
+                  timestampString = "543830940.457678"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "21"

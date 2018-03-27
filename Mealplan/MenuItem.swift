@@ -14,6 +14,7 @@ struct MenuItem {
     var description: String
     var price: Float
     var addons: Dictionary<String, Array<Any>>
+    var cat: String
     
     
     var dictionary: [String: Any] {
@@ -21,7 +22,8 @@ struct MenuItem {
         "name": name,
         "description": description,
         "price": price,
-        "addons": Dictionary<String, Array<Any>>()
+        "addons": Dictionary<String, Array<Any>>(),
+        "cat": cat
         
         
         ]
@@ -36,7 +38,8 @@ extension MenuItem: DocumentSerializable {
       guard  let name = dictionary["name"] as? String,
         let price = dictionary["price"] as? Float,
         let description = dictionary["description"] as? String,
-        let addons = dictionary["addons"] as? Dictionary<String, Array<Any>>
+        let addons = dictionary["addons"] as? Dictionary<String, Array<Any>>,
+        let cat = dictionary["cat"] as? String
         else{
             return nil
         }
@@ -46,7 +49,8 @@ extension MenuItem: DocumentSerializable {
                   name: name,
                   description: description,
                   price: price,
-                  addons: addons
+                  addons: addons,
+                  cat:cat
             
         )
     }

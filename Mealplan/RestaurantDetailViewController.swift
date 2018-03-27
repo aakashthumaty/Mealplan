@@ -14,14 +14,28 @@ import Firebase
 class RestaurantDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var itemTableView: UITableView!
-    @IBOutlet weak var restarauntLabel: UILabel!
+    @IBOutlet weak var discountsCollection: UICollectionView!
+    @IBOutlet weak var restaurantName: UILabel!
+    @IBOutlet weak var restaurantDescription: UITextView!
+    @IBOutlet weak var ratingImage: UIImageView!
+    
+    @IBOutlet weak var headerView: UIView!
     
     
     private var items: [MenuItem] = []
     var restaurant: Restaurant!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.restaurantName.text = ""
+        self.restaurantDescription.text = ""
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let header = self.headerView
+        itemTableView.tableHeaderView = header
+        
         itemTableView.estimatedRowHeight = 40
         itemTableView.rowHeight = UITableViewAutomaticDimension
         
@@ -42,7 +56,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 //                    self.restaurants.append(pls!)
                     var pls = MenuItem(dictionary: document.data())
                     self.items.append(pls!)
+                    self.restaurantName.text = self.restaurant.title
+                    self.restaurantDescription.text = self.restaurant.description
                     
+                    //// eventually get rid of everything below this
                     var emptyDictionary = [String: Any?]()
                     var emptyDictionary1 = [String: Any?]()
                     var emptyDictionary2 = [String: Any?]()
@@ -64,8 +81,17 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 
                     print("junk print")
                 }
+                
+                self.itemTableView.reloadData()
+
             }
         }
+        
+        
+        self.itemTableView.dataSource = self;
+        self.itemTableView.delegate = self;
+        self.itemTableView.tableFooterView = UIView(frame: CGRect.zero)
+
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,17 +102,41 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 120
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 250.0;//Choose your custom row height
+    }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
+        for it in self.items{
+            print(it.cat)
+        }
+        for catName in restaurant.categories{
+            
+            
+        }
+        //we have to return the number of items in each category here
+        return self.items.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell",
                                                  for: indexPath) as! ItemTableViewCell
 //        let rest = restaurants[indexPath.row]
+//        if(indexPath.row == 0){
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "firstCell", for: indexPath as IndexPath)
+//
+//            cell.viewWithTag(1)
+//
+//        }
         
         cell.populate(item: self.items[indexPath.row])
-        print("populating cell")
+        print("populating cell for item")
 
         return cell
     }

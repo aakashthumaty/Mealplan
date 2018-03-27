@@ -31,6 +31,7 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     func populate(item: MenuItem) {
+        print("where my cells at \(item)")
         titleLabel.text = item.name
         cellView.layer.cornerRadius = 15
     }

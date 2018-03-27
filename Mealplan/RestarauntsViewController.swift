@@ -145,16 +145,18 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
   
                     print(self.restaurants)
                     
-                    self.restTable.reloadData()
                     //#warning - make sure the listener is being removed correctly here
                     print("got here")
                 }
+                self.restTable.reloadData()
+
             }
         }
 
 //        stackViewHeightConstraint.constant = 0
 //        activeFiltersStackView.isHidden = true
         
+
         self.restTable.dataSource = self;
         self.restTable.delegate = self;
         self.restTable.tableFooterView = UIView(frame: CGRect.zero)
