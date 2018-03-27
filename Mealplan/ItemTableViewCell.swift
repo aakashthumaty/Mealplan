@@ -34,6 +34,9 @@ class ItemTableViewCell: UITableViewCell {
         print("where my cells at \(item)")
         titleLabel.text = item.name
         cellView.layer.cornerRadius = 15
+        descriptionLabel.text = item.description
+        descriptionLabel.isScrollEnabled = false
+        
     }
 
 }

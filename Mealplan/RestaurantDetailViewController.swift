@@ -22,8 +22,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     @IBOutlet weak var headerView: UIView!
     
     
-    private var items: [MenuItem] = []
+    var items: [MenuItem] = []
     var restaurant: Restaurant!
+    var catDict: Dictionary<String, [MenuItem]> = [:]
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -40,10 +42,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         itemTableView.rowHeight = UITableViewAutomaticDimension
         
         //label.text = restaurant.title
-        print(restaurant.dictionary)
+        print("hi rest dict\(restaurant.dictionary)")
         
         ///restaurants/tmt0000002/menu
         let db = Firestore.firestore()
+        
+        
         
         db.collection("/restaurants/\(restaurant.id)/menu").getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -51,11 +55,24 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             } else {
                 for document in querySnapshot!.documents {
                     print("hi hi hi \(document.documentID) => \(document.data())")
-//                    var pls = Restaurant(dictionary: ugh.data())
-//                    
-//                    self.restaurants.append(pls!)
+
                     var pls = MenuItem(dictionary: document.data())
                     self.items.append(pls!)
+                    
+                    //adding item to dictionary into array for its category
+                    let key = pls!.cat
+                    if(self.catDict.keys.contains(key)){
+                        var tempArr = self.catDict[key]
+                        tempArr?.append(pls!)
+                        self.catDict.updateValue(tempArr!, forKey: key)
+                    }else{
+                        self.catDict[key] = [pls!]
+                    }
+                    //self.catDict[key]?.append(pls!)
+                    print("this my key\(key)")
+                    
+                    // end of adding into category array
+
                     self.restaurantName.text = self.restaurant.title
                     self.restaurantDescription.text = self.restaurant.description
                     
@@ -81,16 +98,19 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 
                     print("junk print")
                 }
-                
+
                 self.itemTableView.reloadData()
 
             }
         }
-        
+ 
+ 
         
         self.itemTableView.dataSource = self;
         self.itemTableView.delegate = self;
         self.itemTableView.tableFooterView = UIView(frame: CGRect.zero)
+
+        //self.itemTableView.reloadData()
 
     }
     
@@ -103,8 +123,32 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 120
+        return 60
     }
+    
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: SectionHeaderHeight))
+//        view.backgroundColor = UIColor(red: 253.0/255.0, green: 240.0/255.0, blue: 196.0/255.0, alpha: 1)
+//        let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: SectionHeaderHeight))
+//        label.font = UIFont.boldSystemFont(ofSize: 15)
+//        label.textColor = UIColor.black
+//        if let tableSection = TableSection(rawValue: section) {
+//            switch tableSection {
+//            case .action:
+//                label.text = "Action"
+//            case .comedy:
+//                label.text = "Comedy"
+//            case .drama:
+//                label.text = "Drama"
+//            case .indie:
+//                label.text = "Indie"
+//            default:
+//                label.text = ""
+//            }
+//        }
+//        view.addSubview(label)
+//        return view
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
@@ -113,18 +157,21 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        for it in self.items{
-            print(it.cat)
-        }
-        for catName in restaurant.categories{
-            
-            
-        }
+
+
         //we have to return the number of items in each category here
-        return self.items.count;
+        let key = self.restaurant.categories[section]
+        var arrayOfItems = self.catDict[key]
+        print(arrayOfItems)
+        if(arrayOfItems == nil){
+            return 1
+        }else{
+            return (arrayOfItems?.count)!;
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell",
                                                  for: indexPath) as! ItemTableViewCell
 //        let rest = restaurants[indexPath.row]
@@ -134,8 +181,14 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 //            cell.viewWithTag(1)
 //
 //        }
-        
-        cell.populate(item: self.items[indexPath.row])
+        if(self.items.count > 0){
+            
+            print("index path is \(indexPath.row)")
+            var keyForItemCat = self.restaurant.categories[indexPath.section]
+            
+            cell.populate(item: self.catDict[keyForItemCat]![indexPath.row])
+            //cell.populate(item: self.items[indexPath.row])
+        }
         print("populating cell for item")
 
         return cell

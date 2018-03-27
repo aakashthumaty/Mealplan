@@ -97,14 +97,71 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
         
     }
+    
+    
+   
+     
+     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("shit a bird out")
+    }
+        
+    /*
+     
+     ///restaurants/tmt0000002/menu
+     let db = Firestore.firestore()
+     
+     let selectedRest = restaurants[indexPath.row]
+     var items: [MenuItem] = []
+     var catDict: Dictionary<String, [MenuItem]> = [:]
+     
+     
+     db.collection("/restaurants/\(selectedRest.id)/menu").getDocuments() { (querySnapshot, err) in
+     if let err = err {
+     print("Error getting documents: \(err)")
+     } else {
+     for document in querySnapshot!.documents {
+     print("hi hi hi \(document.documentID) => \(document.data())")
+     //                    var pls = Restaurant(dictionary: ugh.data())
+     //
+     //                    self.restaurants.append(pls!)
+     var pls = MenuItem(dictionary: document.data())
+     items.append(pls!)
+     
+     let key = pls!.cat
+     catDict[key]!.append(pls!)
+     print("this my key\(key)")
+     
+     }
+     
+     print("got here segue stuff")
+     
+     }
+     }
+     
+     self
+     .performSegue(withIdentifier: "showRestDetail", sender: self)
+     func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+     if segue.identifier == "showRestDetail" {
+     guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
+     fatalError("Unexpected destination: \(segue.destination)")
+     }
+     
+     
+     restaurantDetailViewController.restaurant = selectedRest
+     restaurantDetailViewController.catDict = catDict
+     restaurantDetailViewController.items = items
+     
+     }
+     }
+     }
+ 
+ */
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        
-        guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
-        }
+
         
         guard let selectdRestCell = sender as? RestaurantTableViewCell else {
             fatalError("Unexpected sender: \(sender)")
@@ -113,10 +170,16 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         guard let indexPath = restTable.indexPath(for: selectdRestCell) else {
             fatalError("The selected cell is not being displayed by the table")
         }
-        
+
         let selectedRest = restaurants[indexPath.row]
+
+        guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
+        
         restaurantDetailViewController.restaurant = selectedRest
-        print("got here segue stuff")
+//        restaurantDetailViewController.catDict = catDict
+//        restaurantDetailViewController.items = items
 
 //        switch(segue.identifier ?? "") {
 //

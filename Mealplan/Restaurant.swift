@@ -19,7 +19,7 @@ struct Restaurant {
     var icon: String
     var images: Array<Any>
     var id: String
-    var categories: Array<Any>
+    var categories: Array<String>
     var description: String
     
     
@@ -59,7 +59,7 @@ extension Restaurant: DocumentSerializable {
             let icon = dictionary["icon"] as? String,
             let images = dictionary["images"] as? Array<Any>,
             let id = dictionary["id"] as? String,
-            let categories = dictionary["categories"] as? Array<Any>,
+            let categories = dictionary["categories"] as? Array<String>,
             let description = dictionary["description"] as? String
             else{
                 return nil
