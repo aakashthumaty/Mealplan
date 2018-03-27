@@ -18,6 +18,8 @@ struct Restaurant {
     //replace with average rating or API rating
     var icon: String
     var images: Array<Any>
+    var id: String
+    var categories: Array<Any>
     
     
     var dictionary: [String: Any] {
@@ -28,7 +30,9 @@ struct Restaurant {
             "title": title,
             "rating": rating,
             "images": images,
-            "price": price
+            "price": price,
+            "id": id,
+            "categories": categories
 
         ]
     }
@@ -51,7 +55,9 @@ extension Restaurant: DocumentSerializable {
             let price = dictionary["price"] as? Int,
             let rating = dictionary["rating"] as? Float,
             let icon = dictionary["icon"] as? String,
-            let images = dictionary["images"] as? Array<Any>
+            let images = dictionary["images"] as? Array<Any>,
+            let id = dictionary["id"] as? String,
+            let categories = dictionary["categories"] as? Array<Any>
             else{
                 return nil
             }
@@ -63,7 +69,10 @@ extension Restaurant: DocumentSerializable {
                   price: price,
                   rating: rating,
                   icon: icon,
-                  images: images)
+                  images: images,
+                  id: id,
+                  categories: categories
+                    )
     }
 
 

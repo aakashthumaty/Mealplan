@@ -12,9 +12,12 @@ import UIKit
 class RestaurantTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var cellView: UIView!
     
     func populate(restaurant: Restaurant) {
+        
         titleLabel.text = restaurant.title
+        cellView.layer.cornerRadius = 15
     }
     
     override func prepareForReuse() {
