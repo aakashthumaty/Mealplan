@@ -30,13 +30,11 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
 
     @IBOutlet weak var restTable: UITableView!
     
-    private var listener: ListenerRegistration?
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide the navigation bar on the this view controller
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -161,7 +159,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-
+        
         
         guard let selectdRestCell = sender as? RestaurantTableViewCell else {
             fatalError("Unexpected sender: \(sender)")
@@ -176,7 +174,6 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
             fatalError("Unexpected destination: \(segue.destination)")
         }
-        
         restaurantDetailViewController.restaurant = selectedRest
 //        restaurantDetailViewController.catDict = catDict
 //        restaurantDetailViewController.items = items

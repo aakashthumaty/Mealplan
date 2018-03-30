@@ -8,6 +8,8 @@
 
 import Foundation
 
+////////#WARNING Eventually whereever Restaurant or MenuItem is used add a "if(Restaurant != nil)" check because right now one tiny mistake in the database can fuck up the entire app - DONT BE FUCKING STUPID
+
 struct Restaurant {
     
     var title: String

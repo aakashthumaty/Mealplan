@@ -29,14 +29,21 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let header = self.headerView
+        itemTableView.tableHeaderView = header
+        
         self.restaurantName.text = ""
         self.restaurantDescription.text = ""
+        
+        
+        self.restaurantName.text = self.restaurant.title
+        self.restaurantDescription.text = self.restaurant.description
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let header = self.headerView
-        itemTableView.tableHeaderView = header
+
         
         itemTableView.estimatedRowHeight = 40
         itemTableView.rowHeight = UITableViewAutomaticDimension
@@ -72,9 +79,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                     print("this my key\(key)")
                     
                     // end of adding into category array
-
-                    self.restaurantName.text = self.restaurant.title
-                    self.restaurantDescription.text = self.restaurant.description
                     
                     //// eventually get rid of everything below this
                     var emptyDictionary = [String: Any?]()
@@ -219,6 +223,40 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        
+        guard let selectdRestCell = sender as? ItemTableViewCell else {
+            fatalError("Unexpected sender: \(sender)")
+        }
+
+        guard let indexPath = itemTableView.indexPath(for: selectdRestCell) else {
+            fatalError("The selected cell is not being displayed by the table")
+        }
+        
+        var keyForItemCat = self.restaurant.categories[indexPath.section]
+        
+        // item need to pass: self.catDict[keyForItemCat]![indexPath.row]
+        
+        let selectedRest = self.catDict[keyForItemCat]![indexPath.row]
+        
+        guard let itemDetailViewController = segue.destination as? ItemDetailViewController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
+        itemDetailViewController.item = selectedRest
+        
+        //        restaurantDetailViewController.catDict = catDict
+        //        restaurantDetailViewController.items = items
+        
+        //        switch(segue.identifier ?? "") {
+        //
+        //        }
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+
     
     func updateTableView() {
         itemTableView.beginUpdates()
@@ -226,6 +264,16 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     }
     
     
+    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? ItemDetailViewController{ //, let meal = sourceViewController.meal {
+            
+            // Add a new meal.
+            //let newIndexPath = IndexPath(row: meals.count, section: 0)
+            
+            //meals.append(meal)
+            //tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
     
 //    - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    // Deselect cell
