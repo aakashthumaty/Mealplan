@@ -35,6 +35,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //self.tabBarController?.tabBar.isHidden = false
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,8 +52,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
         let sectionIcon = UIImageView(image: UIImage(named: "restIcon")!)
         sectionIcon.frame = CGRect(x: 25, y: 20, width: 60, height: 60)
-        sectionIcon.clipsToBounds = true
-        sectionIcon.layer.cornerRadius = 30
+//        sectionIcon.clipsToBounds = true
+//        sectionIcon.layer.cornerRadius = 30
         view.addSubview(sectionIcon)
         
         let label = UILabel()
@@ -73,7 +75,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("got here pleae")
-        print(restaurants.count)
+        //print(restaurants.count)
         return restaurants.count 
     }
     
@@ -197,13 +199,13 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
+                    //print("\(document.documentID) => \(document.data())")
                     
                     var pls = Restaurant(dictionary: document.data())
                     self.restaurants.append(pls!)
-                    print("Current data: \(document.data())")
+                    //print("Current data: \(document.data())")
   
-                    print(self.restaurants)
+                    //print(self.restaurants)
                     
                     //#warning - make sure the listener is being removed correctly here
                     print("got here")

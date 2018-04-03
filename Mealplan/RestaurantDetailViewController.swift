@@ -21,18 +21,20 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var proceedToCheckout: UIButton!
     
     var items: [MenuItem] = []
     var restaurant: Restaurant!
     var catDict: Dictionary<String, [MenuItem]> = [:]
 
-    
+    var order: Array<OrderItem> = []
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         let header = self.headerView
         itemTableView.tableHeaderView = header
-        
+
         self.restaurantName.text = ""
         self.restaurantDescription.text = ""
         
@@ -44,12 +46,14 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.proceedToCheckout.isHidden = true;
+        self.order = [];
         
-        itemTableView.estimatedRowHeight = 40
-        itemTableView.rowHeight = UITableViewAutomaticDimension
+//        itemTableView.estimatedRowHeight = 40
+//        itemTableView.rowHeight = UITableViewAutomaticDimension
         
         //label.text = restaurant.title
-        print("hi rest dict\(restaurant.dictionary)")
+        //print("hi rest dict\(restaurant.dictionary)")
         
         ///restaurants/tmt0000002/menu
         let db = Firestore.firestore()
@@ -61,7 +65,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    print("hi hi hi \(document.documentID) => \(document.data())")
+                    //print("hi hi hi \(document.documentID) => \(document.data())")
 
                     var pls = MenuItem(dictionary: document.data())
                     self.items.append(pls!)
@@ -76,31 +80,31 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                         self.catDict[key] = [pls!]
                     }
                     //self.catDict[key]?.append(pls!)
-                    print("this my key\(key)")
+                    //print("this my key\(key)")
                     
                     // end of adding into category array
                     
                     //// eventually get rid of everything below this
-                    var emptyDictionary = [String: Any?]()
-                    var emptyDictionary1 = [String: Any?]()
-                    var emptyDictionary2 = [String: Any?]()
-                    
-                    emptyDictionary = document.data()
-                    var emptyArray = [String?]()
-                    
-                    for (key, value) in emptyDictionary{
-                        print(key)
-                        print(emptyDictionary[key])
-                        emptyArray.append(key)
-                    }
-                    emptyDictionary1 = emptyDictionary["addons"] as! [String : Any?]
-                    
-                    for(key,value) in emptyDictionary1{
-                        print(key)
-                    }
-                    var ao = (emptyDictionary["addons"])
-
-                    print("junk print")
+//                    var emptyDictionary = [String: Any?]()
+//                    var emptyDictionary1 = [String: Any?]()
+//                    var emptyDictionary2 = [String: Any?]()
+//
+//                    emptyDictionary = document.data()
+//                    var emptyArray = [String?]()
+//
+//                    for (key, value) in emptyDictionary{
+//                        //print(key)
+//                        //print(emptyDictionary[key])
+//                        emptyArray.append(key)
+//                    }
+//                    emptyDictionary1 = emptyDictionary["addons"] as! [String : Any?]
+//
+//                    for(key,value) in emptyDictionary1{
+//                        //print(key)
+//                    }
+//                    var ao = (emptyDictionary["addons"])
+//
+//                    //print("junk print")
                 }
 
                 self.itemTableView.reloadData()
@@ -109,11 +113,13 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         }
  
  
+
         
         self.itemTableView.dataSource = self;
         self.itemTableView.delegate = self;
         self.itemTableView.tableFooterView = UIView(frame: CGRect.zero)
-
+        self.itemTableView.rowHeight = UITableViewAutomaticDimension
+        self.itemTableView.estimatedRowHeight = 140
         //self.itemTableView.reloadData()
 
     }
@@ -154,10 +160,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 //        return view
 //    }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        return 250.0;//Choose your custom row height
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+//    {
+//        return 250.0;//Choose your custom row height
+//    }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -166,7 +172,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         //we have to return the number of items in each category here
         let key = self.restaurant.categories[section]
         var arrayOfItems = self.catDict[key]
-        print(arrayOfItems)
+        //print(arrayOfItems)
         if(arrayOfItems == nil){
             return 1
         }else{
@@ -187,13 +193,13 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 //        }
         if(self.items.count > 0){
             
-            print("index path is \(indexPath.row)")
+            //print("index path is \(indexPath.row)")
             var keyForItemCat = self.restaurant.categories[indexPath.section]
             
             cell.populate(item: self.catDict[keyForItemCat]![indexPath.row])
             //cell.populate(item: self.items[indexPath.row])
         }
-        print("populating cell for item")
+        //print("populating cell for item")
 
         return cell
     }
@@ -220,7 +226,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         tableView.endUpdates()
         
         // 5
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        //tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -265,7 +271,25 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? ItemDetailViewController{ //, let meal = sourceViewController.meal {
+        if let sourceViewController = sender.source as? ItemDetailViewController{
+            
+            if(sourceViewController.isFullItem){
+                let stringRep = sourceViewController.selections.joined(separator: ", ")
+                var temp = OrderItem(price: Float(sourceViewController.selectionPrice), name: sourceViewController.selectionName, addons: stringRep)
+                
+                self.order.append(temp)
+                print("this is the order right now \(self.order)")
+                
+            }
+            
+            if(self.order.count > 0){
+                self.tabBarController?.tabBar.isHidden = true;
+                self.proceedToCheckout.isHidden = false;
+            }
+            
+            
+            
+            //, let meal = sourceViewController.meal {
             
             // Add a new meal.
             //let newIndexPath = IndexPath(row: meals.count, section: 0)

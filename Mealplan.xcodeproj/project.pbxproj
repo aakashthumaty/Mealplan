@@ -46,6 +46,12 @@
 		66AAD61E2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
 		66AAD61F2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
 		66AAD6202068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
+		66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
+		66BF2AF02070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
+		66BF2AF12070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
+		66BF2AF320733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
+		66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
+		66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
 		89D630CC00A1A330272B1BDB /* Pods_Mealplan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED238D09294602B622A7093C /* Pods_Mealplan.framework */; };
 		D8CB2488C0704253BB0B9BD1 /* Pods_MealplanUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B47E9FEFEA7815CD50926AE6 /* Pods_MealplanUITests.framework */; };
 /* End PBXBuildFile section */
@@ -95,6 +101,8 @@
 		66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		66AAD61920686239004CBC9F /* restIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restIcon.png; sourceTree = "<group>"; };
 		66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
+		66BF2AEE2070485200D16722 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
+		66BF2AF220733A1B00D16722 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		72B04AE7E16D82357DB5B999 /* Pods-Mealplan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.debug.xcconfig"; sourceTree = "<group>"; };
 		AD679AC62D4E2F62D8E33FA1 /* Pods-Mealplan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.release.xcconfig"; sourceTree = "<group>"; };
 		B47E9FEFEA7815CD50926AE6 /* Pods_MealplanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,11 +183,13 @@
 				66164D002066F174004EB92D /* RestarauntsViewController.swift */,
 				66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */,
 				66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */,
+				66BF2AF220733A1B00D16722 /* OptionsView.swift */,
 				66164D022066F174004EB92D /* SecondViewController.swift */,
 				66164D36206708CC004EB92D /* LocalCollection.swift */,
 				66164D4A20676D32004EB92D /* Restaurant.swift */,
 				661019F32069BA0B00EAE917 /* MenuItem.swift */,
 				663D48D3206CDEAB00974259 /* Addon.swift */,
+				66BF2AEE2070485200D16722 /* OrderItem.swift */,
 				66164D042066F174004EB92D /* Main.storyboard */,
 				66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */,
 				661019EF2069B45900EAE917 /* ItemTableViewCell.swift */,
@@ -546,8 +556,10 @@
 				66164D032066F174004EB92D /* SecondViewController.swift in Sources */,
 				66164CFF2066F174004EB92D /* AppDelegate.swift in Sources */,
 				66164D012066F174004EB92D /* RestarauntsViewController.swift in Sources */,
+				66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */,
 				661019F02069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
 				66164D4F20677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */,
+				66BF2AF320733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D4206CDEAB00974259 /* Addon.swift in Sources */,
 				661019F42069BA0B00EAE917 /* MenuItem.swift in Sources */,
 				66AAD61E2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
@@ -566,6 +578,8 @@
 				66AAD61F2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
 				66164D38206708CC004EB92D /* LocalCollection.swift in Sources */,
 				661019F12069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
+				66BF2AF02070485200D16722 /* OrderItem.swift in Sources */,
+				66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D5206CDEAB00974259 /* Addon.swift in Sources */,
 				66164D4C20676D32004EB92D /* Restaurant.swift in Sources */,
 			);
@@ -582,6 +596,8 @@
 				66AAD6202068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
 				66164D39206708CC004EB92D /* LocalCollection.swift in Sources */,
 				661019F22069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
+				66BF2AF12070485200D16722 /* OrderItem.swift in Sources */,
+				66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D6206CDEAB00974259 /* Addon.swift in Sources */,
 				66164D4D20676D32004EB92D /* Restaurant.swift in Sources */,
 			);
