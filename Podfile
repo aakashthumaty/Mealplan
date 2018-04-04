@@ -9,6 +9,23 @@ target 'Mealplan' do
 
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
+pod 'Firebase/Auth'
+pod 'FirebaseUI/Auth'
+pod 'FirebaseUI/Twitter'
+pod 'FirebaseUI/Phone'
+pod 'FirebaseUI/Google'
+pod 'FacebookLogin'
+pod 'FBSDKLoginKit'
+pod 'FBSDKCoreKit'
+
+
+pod 'Kingfisher', '~> 4.0'
+pod 'OneSignal', '>= 2.5.2', '< 3.0'
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 2.6.2', '< 3.0'
+end
+
 
   target 'MealplanTests' do
     inherit! :search_paths
@@ -21,3 +38,5 @@ pod 'Firebase/Firestore'
   end
 
 end
+
+

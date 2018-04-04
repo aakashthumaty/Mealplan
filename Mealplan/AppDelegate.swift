@@ -8,18 +8,66 @@
 
 import UIKit
 import Firebase
+import FirebaseAuthUI
+import FacebookCore
+import FacebookLogin
+import FBSDKLoginKit
+
+import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String?
+        if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
+            return true
+        }
+        // other URL handling goes here.
+        return false
+        
+        // First, handle Facebook URL open request
+//        if let fbSDKAppId = FBSDKSettings.appID(), url.scheme!.hasPrefix("fb1886430911387893"), url.host == "authorize" {
+//            let shouldOpen: Bool = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+//
+//            return shouldOpen
+//        }
+        
+        // After it, handle any other response (e.g. deep links)
+//        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+////////Firebase Database
         FirebaseApp.configure();
         let db = Firestore.firestore()
+        
+        
+        
+        AppEventsLogger.activate(application)
+
+        
+////////OneSignal
+        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
+        
+        // Replace 'YOUR_APP_ID' with your OneSignal App ID.
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: "35805a71-5aae-43b3-ae04-ec928cadaf0b",
+                                        handleNotificationAction: nil,
+                                        settings: onesignalInitSettings)
+        
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification;
+        
+        // Recommend moving the below line to prompt for push after informing the user about
+        //   how your app will use them.
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+        })
 
         return true
     }

@@ -7,7 +7,12 @@
 		<key>Mealplan.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>26</integer>
+		</dict>
+		<key>OneSignalNotificationServiceExtension.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>27</integer>
 		</dict>
 	</dict>
 </dict>

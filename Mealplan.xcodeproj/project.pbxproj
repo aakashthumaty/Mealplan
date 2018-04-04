@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		507B304E241A62B491A06B9C /* Pods_MealplanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC3C8CE91F22785DC3ED7D5 /* Pods_MealplanTests.framework */; };
 		661019F02069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
 		661019F12069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
 		661019F22069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
@@ -34,6 +33,11 @@
 		66164D4F20677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */; };
 		66164D5020677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */; };
 		66164D5120677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */; };
+		663701122074A34300972346 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663701112074A34300972346 /* NotificationService.swift */; };
+		663701162074A34300972346 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 6637010F2074A34200972346 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6637011D2074CA3800972346 /* FacebookLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6637011C2074CA3800972346 /* FacebookLoginManager.swift */; };
+		6637011E2074CA3800972346 /* FacebookLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6637011C2074CA3800972346 /* FacebookLoginManager.swift */; };
+		6637011F2074CA3800972346 /* FacebookLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6637011C2074CA3800972346 /* FacebookLoginManager.swift */; };
 		663D48D4206CDEAB00974259 /* Addon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663D48D3206CDEAB00974259 /* Addon.swift */; };
 		663D48D5206CDEAB00974259 /* Addon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663D48D3206CDEAB00974259 /* Addon.swift */; };
 		663D48D6206CDEAB00974259 /* Addon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663D48D3206CDEAB00974259 /* Addon.swift */; };
@@ -52,8 +56,10 @@
 		66BF2AF320733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
 		66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
 		66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
-		89D630CC00A1A330272B1BDB /* Pods_Mealplan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED238D09294602B622A7093C /* Pods_Mealplan.framework */; };
-		D8CB2488C0704253BB0B9BD1 /* Pods_MealplanUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B47E9FEFEA7815CD50926AE6 /* Pods_MealplanUITests.framework */; };
+		8D996E4EFBFA6C096FCDE82F /* Pods_Mealplan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279FB578450A3F0FECF35D4F /* Pods_Mealplan.framework */; };
+		94D9FE678FC5BD3508A1C7D1 /* Pods_Mealplan_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6B68FF4240C17ADE40A721 /* Pods_Mealplan_OneSignalNotificationServiceExtension.framework */; };
+		BE9980C1CE79A6C57495243D /* Pods_MealplanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51334858A3417C628E68A95C /* Pods_MealplanTests.framework */; };
+		CCC3662304EE29767BBE988B /* Pods_MealplanUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70CA0346601B9B01A100AF1 /* Pods_MealplanUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,12 +77,38 @@
 			remoteGlobalIDString = 66164CFA2066F174004EB92D;
 			remoteInfo = Mealplan;
 		};
+		663701142074A34300972346 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66164CF32066F174004EB92D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6637010E2074A34200972346;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6637011A2074A34300972346 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				663701162074A34300972346 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		03513ADC334CCA95DA4485F5 /* Pods-MealplanUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests.release.xcconfig"; sourceTree = "<group>"; };
-		1EFDA1936E665B60A84FFFFA /* Pods-MealplanTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3F3A12129D6582CA2ACBEC49 /* Pods-MealplanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests.release.xcconfig"; sourceTree = "<group>"; };
+		02BB660015E99B744712E2BC /* Pods-MealplanUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests.release.xcconfig"; sourceTree = "<group>"; };
+		15CB8C26D30261E8BEBA7B55 /* Pods-Mealplan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.release.xcconfig"; sourceTree = "<group>"; };
+		1CCD04ED90569465AB59DCAE /* Pods-Mealplan-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan-OneSignalNotificationServiceExtension/Pods-Mealplan-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		279FB578450A3F0FECF35D4F /* Pods_Mealplan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mealplan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		47ECD5C29603667A0BFCF8C3 /* Pods-Mealplan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.debug.xcconfig"; sourceTree = "<group>"; };
+		50364B6A09D46B10B3FBE7B1 /* Pods-MealplanUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		51334858A3417C628E68A95C /* Pods_MealplanTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D168170CD9230DA09636BB5 /* Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan-OneSignalNotificationServiceExtension/Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		661019EF2069B45900EAE917 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		661019F32069BA0B00EAE917 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		66164CFB2066F174004EB92D /* Mealplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mealplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,18 +129,21 @@
 		66164D3A20673E30004EB92D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		66164D4A20676D32004EB92D /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
+		6637010F2074A34200972346 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		663701112074A34300972346 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		663701132074A34300972346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6637011B2074A5ED00972346 /* Mealplan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mealplan.entitlements; sourceTree = "<group>"; };
+		6637011C2074CA3800972346 /* FacebookLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookLoginManager.swift; sourceTree = "<group>"; };
 		663D48D3206CDEAB00974259 /* Addon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Addon.swift; sourceTree = "<group>"; };
 		66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		66AAD61920686239004CBC9F /* restIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restIcon.png; sourceTree = "<group>"; };
 		66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
 		66BF2AEE2070485200D16722 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
 		66BF2AF220733A1B00D16722 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
-		72B04AE7E16D82357DB5B999 /* Pods-Mealplan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.debug.xcconfig"; sourceTree = "<group>"; };
-		AD679AC62D4E2F62D8E33FA1 /* Pods-Mealplan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan.release.xcconfig"; sourceTree = "<group>"; };
-		B47E9FEFEA7815CD50926AE6 /* Pods_MealplanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C3C457FB51046F3C697AF8D5 /* Pods-MealplanUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		DBC3C8CE91F22785DC3ED7D5 /* Pods_MealplanTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ED238D09294602B622A7093C /* Pods_Mealplan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mealplan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ADEECE67ACF73C49AE7847A /* Pods-MealplanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests.release.xcconfig"; sourceTree = "<group>"; };
+		A70CA0346601B9B01A100AF1 /* Pods_MealplanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCCD460680379A5C469E8BEE /* Pods-MealplanTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CE6B68FF4240C17ADE40A721 /* Pods_Mealplan_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mealplan_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89D630CC00A1A330272B1BDB /* Pods_Mealplan.framework in Frameworks */,
+				8D996E4EFBFA6C096FCDE82F /* Pods_Mealplan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				507B304E241A62B491A06B9C /* Pods_MealplanTests.framework in Frameworks */,
+				BE9980C1CE79A6C57495243D /* Pods_MealplanTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,22 +167,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8CB2488C0704253BB0B9BD1 /* Pods_MealplanUITests.framework in Frameworks */,
+				CCC3662304EE29767BBE988B /* Pods_MealplanUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6637010C2074A34200972346 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94D9FE678FC5BD3508A1C7D1 /* Pods_Mealplan_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3AAD1E1B51C4CEBF80596004 /* Pods */ = {
+		59BBDC270371661F22914D5D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				72B04AE7E16D82357DB5B999 /* Pods-Mealplan.debug.xcconfig */,
-				AD679AC62D4E2F62D8E33FA1 /* Pods-Mealplan.release.xcconfig */,
-				1EFDA1936E665B60A84FFFFA /* Pods-MealplanTests.debug.xcconfig */,
-				3F3A12129D6582CA2ACBEC49 /* Pods-MealplanTests.release.xcconfig */,
-				C3C457FB51046F3C697AF8D5 /* Pods-MealplanUITests.debug.xcconfig */,
-				03513ADC334CCA95DA4485F5 /* Pods-MealplanUITests.release.xcconfig */,
+				47ECD5C29603667A0BFCF8C3 /* Pods-Mealplan.debug.xcconfig */,
+				15CB8C26D30261E8BEBA7B55 /* Pods-Mealplan.release.xcconfig */,
+				BCCD460680379A5C469E8BEE /* Pods-MealplanTests.debug.xcconfig */,
+				7ADEECE67ACF73C49AE7847A /* Pods-MealplanTests.release.xcconfig */,
+				50364B6A09D46B10B3FBE7B1 /* Pods-MealplanUITests.debug.xcconfig */,
+				02BB660015E99B744712E2BC /* Pods-MealplanUITests.release.xcconfig */,
+				5D168170CD9230DA09636BB5 /* Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				1CCD04ED90569465AB59DCAE /* Pods-Mealplan-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -159,9 +204,10 @@
 				66AAD61820686222004CBC9F /* Images */,
 				66164D142066F175004EB92D /* MealplanTests */,
 				66164D1F2066F175004EB92D /* MealplanUITests */,
+				663701102074A34300972346 /* OneSignalNotificationServiceExtension */,
 				66164CFC2066F174004EB92D /* Products */,
-				3AAD1E1B51C4CEBF80596004 /* Pods */,
-				74A9DAFC3D0FA7F3574B5413 /* Frameworks */,
+				59BBDC270371661F22914D5D /* Pods */,
+				FB109342985412290EDD47F6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -171,6 +217,7 @@
 				66164CFB2066F174004EB92D /* Mealplan.app */,
 				66164D112066F175004EB92D /* MealplanTests.xctest */,
 				66164D1C2066F175004EB92D /* MealplanUITests.xctest */,
+				6637010F2074A34200972346 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,8 +225,10 @@
 		66164CFD2066F174004EB92D /* Mealplan */ = {
 			isa = PBXGroup;
 			children = (
+				6637011B2074A5ED00972346 /* Mealplan.entitlements */,
 				66164D3A20673E30004EB92D /* GoogleService-Info.plist */,
 				66164CFE2066F174004EB92D /* AppDelegate.swift */,
+				6637011C2074CA3800972346 /* FacebookLoginManager.swift */,
 				66164D002066F174004EB92D /* RestarauntsViewController.swift */,
 				66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */,
 				66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */,
@@ -218,6 +267,15 @@
 			path = MealplanUITests;
 			sourceTree = "<group>";
 		};
+		663701102074A34300972346 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				663701112074A34300972346 /* NotificationService.swift */,
+				663701132074A34300972346 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
 		66AAD61820686222004CBC9F /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,12 +284,13 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
-		74A9DAFC3D0FA7F3574B5413 /* Frameworks */ = {
+		FB109342985412290EDD47F6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ED238D09294602B622A7093C /* Pods_Mealplan.framework */,
-				DBC3C8CE91F22785DC3ED7D5 /* Pods_MealplanTests.framework */,
-				B47E9FEFEA7815CD50926AE6 /* Pods_MealplanUITests.framework */,
+				279FB578450A3F0FECF35D4F /* Pods_Mealplan.framework */,
+				CE6B68FF4240C17ADE40A721 /* Pods_Mealplan_OneSignalNotificationServiceExtension.framework */,
+				51334858A3417C628E68A95C /* Pods_MealplanTests.framework */,
+				A70CA0346601B9B01A100AF1 /* Pods_MealplanUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -243,16 +302,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66164D252066F175004EB92D /* Build configuration list for PBXNativeTarget "Mealplan" */;
 			buildPhases = (
-				BE0A24BB46171CA03A418619 /* [CP] Check Pods Manifest.lock */,
+				2495924A8707CF2AAE741547 /* [CP] Check Pods Manifest.lock */,
 				66164CF72066F174004EB92D /* Sources */,
 				66164CF82066F174004EB92D /* Frameworks */,
 				66164CF92066F174004EB92D /* Resources */,
-				C54BC9859C85A8BA1F826153 /* [CP] Embed Pods Frameworks */,
-				C48662F095D567821C1F1853 /* [CP] Copy Pods Resources */,
+				6637011A2074A34300972346 /* Embed App Extensions */,
+				4D72F39BACD2080764AFB667 /* [CP] Embed Pods Frameworks */,
+				26CDD5A90811EFA0A7882AB6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				663701152074A34300972346 /* PBXTargetDependency */,
 			);
 			name = Mealplan;
 			productName = Mealplan;
@@ -263,12 +324,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66164D282066F175004EB92D /* Build configuration list for PBXNativeTarget "MealplanTests" */;
 			buildPhases = (
-				B5ABB08D57506E56BF8B7D52 /* [CP] Check Pods Manifest.lock */,
+				AF08260D4DDB83E03D6CF8C8 /* [CP] Check Pods Manifest.lock */,
 				66164D0D2066F175004EB92D /* Sources */,
 				66164D0E2066F175004EB92D /* Frameworks */,
 				66164D0F2066F175004EB92D /* Resources */,
-				693DE02BC8027F72CDD5E821 /* [CP] Embed Pods Frameworks */,
-				534156F3EED88BFDF0F1FA0E /* [CP] Copy Pods Resources */,
+				EF9CD0BD589210D8F861B482 /* [CP] Embed Pods Frameworks */,
+				2D3483F361DBED93543E0AC8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -284,12 +345,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66164D2B2066F175004EB92D /* Build configuration list for PBXNativeTarget "MealplanUITests" */;
 			buildPhases = (
-				6629E32A7C6879B730BE1DF7 /* [CP] Check Pods Manifest.lock */,
+				DD9550F25EEDC0EB42BEB493 /* [CP] Check Pods Manifest.lock */,
 				66164D182066F175004EB92D /* Sources */,
 				66164D192066F175004EB92D /* Frameworks */,
 				66164D1A2066F175004EB92D /* Resources */,
-				0CEADB9D637A6DA0441DB676 /* [CP] Embed Pods Frameworks */,
-				78E49E2EA709B078E8A86B9F /* [CP] Copy Pods Resources */,
+				F65541CC3561D6CE975F843F /* [CP] Embed Pods Frameworks */,
+				FE09D789D84066749D3BC26C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -300,6 +361,25 @@
 			productName = MealplanUITests;
 			productReference = 66164D1C2066F175004EB92D /* MealplanUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		6637010E2074A34200972346 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 663701192074A34300972346 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				E949D7D6AF4A01AB3459C378 /* [CP] Check Pods Manifest.lock */,
+				6637010B2074A34200972346 /* Sources */,
+				6637010C2074A34200972346 /* Frameworks */,
+				6637010D2074A34200972346 /* Resources */,
+				9774B4B3E2F9A6E8CBF66A2A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 6637010F2074A34200972346 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -314,6 +394,17 @@
 					66164CFA2066F174004EB92D = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					66164D102066F175004EB92D = {
 						CreatedOnToolsVersion = 9.2;
@@ -324,6 +415,10 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 66164CFA2066F174004EB92D;
+					};
+					6637010E2074A34200972346 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -343,6 +438,7 @@
 				66164CFA2066F174004EB92D /* Mealplan */,
 				66164D102066F175004EB92D /* MealplanTests */,
 				66164D1B2066F175004EB92D /* MealplanUITests */,
+				6637010E2074A34200972346 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -378,106 +474,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6637010D2074A34200972346 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0CEADB9D637A6DA0441DB676 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		534156F3EED88BFDF0F1FA0E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6629E32A7C6879B730BE1DF7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MealplanUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		693DE02BC8027F72CDD5E821 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		78E49E2EA709B078E8A86B9F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B5ABB08D57506E56BF8B7D52 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MealplanTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BE0A24BB46171CA03A418619 /* [CP] Check Pods Manifest.lock */ = {
+		2495924A8707CF2AAE741547 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -495,7 +502,37 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C48662F095D567821C1F1853 /* [CP] Copy Pods Resources */ = {
+		26CDD5A90811EFA0A7882AB6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseTwitterAuthUI.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebasePhoneAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseTwitterAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D3483F361DBED93543E0AC8 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -507,19 +544,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C54BC9859C85A8BA1F826153 /* [CP] Embed Pods Frameworks */ = {
+		4D72F39BACD2080764AFB667 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -529,9 +576,19 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -544,6 +601,135 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9774B4B3E2F9A6E8CBF66A2A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan-OneSignalNotificationServiceExtension/Pods-Mealplan-OneSignalNotificationServiceExtension-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseTwitterAuthUI.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebasePhoneAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseTwitterAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan-OneSignalNotificationServiceExtension/Pods-Mealplan-OneSignalNotificationServiceExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF08260D4DDB83E03D6CF8C8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MealplanTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DD9550F25EEDC0EB42BEB493 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MealplanUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E949D7D6AF4A01AB3459C378 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mealplan-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF9CD0BD589210D8F861B482 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F65541CC3561D6CE975F843F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE09D789D84066749D3BC26C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -554,6 +740,7 @@
 				66851052206B745E00ABE5C9 /* ItemDetailViewController.swift in Sources */,
 				66164D4B20676D32004EB92D /* Restaurant.swift in Sources */,
 				66164D032066F174004EB92D /* SecondViewController.swift in Sources */,
+				6637011D2074CA3800972346 /* FacebookLoginManager.swift in Sources */,
 				66164CFF2066F174004EB92D /* AppDelegate.swift in Sources */,
 				66164D012066F174004EB92D /* RestarauntsViewController.swift in Sources */,
 				66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */,
@@ -578,6 +765,7 @@
 				66AAD61F2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
 				66164D38206708CC004EB92D /* LocalCollection.swift in Sources */,
 				661019F12069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
+				6637011E2074CA3800972346 /* FacebookLoginManager.swift in Sources */,
 				66BF2AF02070485200D16722 /* OrderItem.swift in Sources */,
 				66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D5206CDEAB00974259 /* Addon.swift in Sources */,
@@ -596,10 +784,19 @@
 				66AAD6202068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
 				66164D39206708CC004EB92D /* LocalCollection.swift in Sources */,
 				661019F22069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
+				6637011F2074CA3800972346 /* FacebookLoginManager.swift in Sources */,
 				66BF2AF12070485200D16722 /* OrderItem.swift in Sources */,
 				66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D6206CDEAB00974259 /* Addon.swift in Sources */,
 				66164D4D20676D32004EB92D /* Restaurant.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6637010B2074A34200972346 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				663701122074A34300972346 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +812,11 @@
 			isa = PBXTargetDependency;
 			target = 66164CFA2066F174004EB92D /* Mealplan */;
 			targetProxy = 66164D1D2066F175004EB92D /* PBXContainerItemProxy */;
+		};
+		663701152074A34300972346 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6637010E2074A34200972346 /* OneSignalNotificationServiceExtension */;
+			targetProxy = 663701142074A34300972346 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -747,39 +949,45 @@
 		};
 		66164D262066F175004EB92D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72B04AE7E16D82357DB5B999 /* Pods-Mealplan.debug.xcconfig */;
+			baseConfigurationReference = 47ECD5C29603667A0BFCF8C3 /* Pods-Mealplan.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mealplan/Mealplan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6K2U3WGB8U;
 				INFOPLIST_FILE = Mealplan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aakashthumaty.Mealplan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		66164D272066F175004EB92D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD679AC62D4E2F62D8E33FA1 /* Pods-Mealplan.release.xcconfig */;
+			baseConfigurationReference = 15CB8C26D30261E8BEBA7B55 /* Pods-Mealplan.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mealplan/Mealplan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6K2U3WGB8U;
 				INFOPLIST_FILE = Mealplan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aakashthumaty.Mealplan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		66164D292066F175004EB92D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EFDA1936E665B60A84FFFFA /* Pods-MealplanTests.debug.xcconfig */;
+			baseConfigurationReference = BCCD460680379A5C469E8BEE /* Pods-MealplanTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -797,7 +1005,7 @@
 		};
 		66164D2A2066F175004EB92D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F3A12129D6582CA2ACBEC49 /* Pods-MealplanTests.release.xcconfig */;
+			baseConfigurationReference = 7ADEECE67ACF73C49AE7847A /* Pods-MealplanTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -815,7 +1023,7 @@
 		};
 		66164D2C2066F175004EB92D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C3C457FB51046F3C697AF8D5 /* Pods-MealplanUITests.debug.xcconfig */;
+			baseConfigurationReference = 50364B6A09D46B10B3FBE7B1 /* Pods-MealplanUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -832,7 +1040,7 @@
 		};
 		66164D2D2066F175004EB92D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 03513ADC334CCA95DA4485F5 /* Pods-MealplanUITests.release.xcconfig */;
+			baseConfigurationReference = 02BB660015E99B744712E2BC /* Pods-MealplanUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -844,6 +1052,38 @@
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Mealplan;
+			};
+			name = Release;
+		};
+		663701172074A34300972346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D168170CD9230DA09636BB5 /* Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6K2U3WGB8U;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aakashthumaty.Mealplan.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		663701182074A34300972346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CCD04ED90569465AB59DCAE /* Pods-Mealplan-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6K2U3WGB8U;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aakashthumaty.Mealplan.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -882,6 +1122,15 @@
 			buildConfigurations = (
 				66164D2C2066F175004EB92D /* Debug */,
 				66164D2D2066F175004EB92D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		663701192074A34300972346 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				663701172074A34300972346 /* Debug */,
+				663701182074A34300972346 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

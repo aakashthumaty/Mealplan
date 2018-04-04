@@ -8,19 +8,61 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
-class RestaurantTableViewCell: UITableViewCell {
+class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    var rest: Restaurant!
+
+    
+    @IBOutlet weak var restCollectionView: UICollectionView!
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
+    @IBOutlet weak var iconView: UIImageView!
     
     func populate(restaurant: Restaurant) {
-        
+        self.rest = restaurant
+//        let flowLayout = UICollectionViewFlowLayout()
+//        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
+//        self.restCollectionView.collectionViewLayout = flowLayout
         titleLabel.text = restaurant.title
-        cellView.layer.cornerRadius = 15
+        cellView.layer.cornerRadius = 5
+        let url = URL(string: restaurant.icon)
+        //iconView.image = kf.setImage(with: url)
+        iconView.kf.indicatorType = .activity
+        iconView.kf.setImage(with: url)
+        self.restCollectionView.reloadData()
+
+       
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return rest.images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "restCollectionCell", for: indexPath) as! restCollectionViewCell
+        
+        cell.displayContent(img: rest.images[indexPath.row] as! String)
+        
+        return cell
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
     }
+}
+
+class restCollectionViewCell: UICollectionViewCell{
+    @IBOutlet weak var cellImage: UIImageView!
+    
+    func displayContent(img: String){
+        cellImage.kf.indicatorType = .activity
+        let imgurl = URL(string: img)
+        cellImage.kf.setImage(with: imgurl)
+        
+    }
+    
 }
