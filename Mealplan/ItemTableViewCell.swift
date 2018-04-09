@@ -14,7 +14,9 @@ class ItemTableViewCell: UITableViewCell {
     
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
     
     
@@ -33,9 +35,9 @@ class ItemTableViewCell: UITableViewCell {
     func populate(item: MenuItem) {
         print("where my cells at \(item)")
         titleLabel.text = item.name
-        cellView.layer.cornerRadius = 15
+        cellView.layer.cornerRadius = 6
         descriptionLabel.text = item.description
-        descriptionLabel.isScrollEnabled = false
+        priceLabel.text = "$\(item.price)"
         
     }
 

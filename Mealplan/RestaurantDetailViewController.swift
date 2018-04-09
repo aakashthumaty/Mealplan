@@ -25,6 +25,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var footerView: UIView!
+    
     @IBOutlet weak var proceedToCheckout: UIButton!
     
     var items: [MenuItem] = []
@@ -38,7 +40,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         
         let header = self.headerView
         itemTableView.tableHeaderView = header
-
+        itemTableView.tableFooterView = footerView
+        
         self.restaurantName.text = ""
         self.restaurantDescription.text = ""
         
@@ -154,7 +157,18 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if(restaurant.categories.count == 0){
+            return "Section"
+        }else{
+            return restaurant.categories[section];
+        }    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).backgroundView?.backgroundColor = self.itemTableView.backgroundColor//UIColor.red.withAlphaComponent(0.4)
     }
     
 //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -317,8 +331,11 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             if(sourceViewController.isFullItem){
                 let stringRep = sourceViewController.selections.joined(separator: ", ")
                 var totPrice = sourceViewController.selectionPrice.reduce(0, +)
-
-                var temp = OrderItem(price: sourceViewController.selectionPrice, name: sourceViewController.selectionName, addons: sourceViewController.selections)
+                print(totPrice)
+                //base price is last item in the array
+                var fullListPrices = sourceViewController.selectionPrice
+                fullListPrices.append(sourceViewController.basePrice)
+                var temp = OrderItem(price: fullListPrices, name: sourceViewController.selectionName, addons: sourceViewController.selections)
                 
                 self.order.append(temp)
                 print("this is the order right now \(self.order)")

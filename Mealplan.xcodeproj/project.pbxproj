@@ -68,6 +68,12 @@
 		66BF2AF320733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
 		66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
 		66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AF220733A1B00D16722 /* OptionsView.swift */; };
+		66F41BDC207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
+		66F41BDD207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
+		66F41BDE207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
+		66F41BE0207B604100E476B9 /* buttons in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDF207B604100E476B9 /* buttons */; };
+		66F41BE1207B604100E476B9 /* buttons in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDF207B604100E476B9 /* buttons */; };
+		66F41BE2207B604100E476B9 /* buttons in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDF207B604100E476B9 /* buttons */; };
 		66FBD7052078C7900045B34C /* SendFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FBD7042078C7900045B34C /* SendFriendViewController.swift */; };
 		66FBD7062078C7900045B34C /* SendFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FBD7042078C7900045B34C /* SendFriendViewController.swift */; };
 		66FBD7072078C7900045B34C /* SendFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FBD7042078C7900045B34C /* SendFriendViewController.swift */; };
@@ -159,6 +165,8 @@
 		66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
 		66BF2AEE2070485200D16722 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
 		66BF2AF220733A1B00D16722 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
+		66F41BDB207B603400E476B9 /* selection and stars */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "selection and stars"; sourceTree = "<group>"; };
+		66F41BDF207B604100E476B9 /* buttons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = buttons; sourceTree = "<group>"; };
 		66FBD7042078C7900045B34C /* SendFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFriendViewController.swift; sourceTree = "<group>"; };
 		7ADEECE67ACF73C49AE7847A /* Pods-MealplanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanTests/Pods-MealplanTests.release.xcconfig"; sourceTree = "<group>"; };
 		A70CA0346601B9B01A100AF1 /* Pods_MealplanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,11 +258,11 @@
 				66164CFE2066F174004EB92D /* AppDelegate.swift */,
 				66164D002066F174004EB92D /* RestarauntsViewController.swift */,
 				66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */,
-				6620EAF620761E4A00528350 /* CheckoutViewController.swift */,
 				66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */,
 				66BF2AF220733A1B00D16722 /* OptionsView.swift */,
-				66164D022066F174004EB92D /* FriendViewController.swift */,
+				6620EAF620761E4A00528350 /* CheckoutViewController.swift */,
 				66FBD7042078C7900045B34C /* SendFriendViewController.swift */,
+				66164D022066F174004EB92D /* FriendViewController.swift */,
 				66164D36206708CC004EB92D /* LocalCollection.swift */,
 				66164D4A20676D32004EB92D /* Restaurant.swift */,
 				661019F32069BA0B00EAE917 /* MenuItem.swift */,
@@ -267,6 +275,8 @@
 				6622593E20797A5F00256E12 /* 00blueHand.png */,
 				6622594220797A8F00256E12 /* 0giftYellowRed.png */,
 				667AF86120771C98002B6800 /* platter-256.png */,
+				66F41BDF207B604100E476B9 /* buttons */,
+				66F41BDB207B603400E476B9 /* selection and stars */,
 				66164D072066F174004EB92D /* Assets.xcassets */,
 				66164D092066F174004EB92D /* LaunchScreen.storyboard */,
 				66164D0C2066F174004EB92D /* Info.plist */,
@@ -479,6 +489,8 @@
 				6622593F20797A6000256E12 /* 00blueHand.png in Resources */,
 				66164D3B20673E30004EB92D /* GoogleService-Info.plist in Resources */,
 				66164D082066F174004EB92D /* Assets.xcassets in Resources */,
+				66F41BE0207B604100E476B9 /* buttons in Resources */,
+				66F41BDC207B603400E476B9 /* selection and stars in Resources */,
 				6622594320797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 				66164D062066F174004EB92D /* Main.storyboard in Resources */,
 			);
@@ -491,6 +503,8 @@
 				6622594020797A6000256E12 /* 00blueHand.png in Resources */,
 				66AAD61B20686239004CBC9F /* restIcon.png in Resources */,
 				66164D3C20673E30004EB92D /* GoogleService-Info.plist in Resources */,
+				66F41BE1207B604100E476B9 /* buttons in Resources */,
+				66F41BDD207B603400E476B9 /* selection and stars in Resources */,
 				667AF86320771C98002B6800 /* platter-256.png in Resources */,
 				6622594420797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 			);
@@ -503,6 +517,8 @@
 				6622594120797A6000256E12 /* 00blueHand.png in Resources */,
 				66AAD61C20686239004CBC9F /* restIcon.png in Resources */,
 				66164D3D20673E30004EB92D /* GoogleService-Info.plist in Resources */,
+				66F41BE2207B604100E476B9 /* buttons in Resources */,
+				66F41BDE207B603400E476B9 /* selection and stars in Resources */,
 				667AF86420771C98002B6800 /* platter-256.png in Resources */,
 				6622594520797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 			);

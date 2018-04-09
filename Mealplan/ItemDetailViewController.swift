@@ -20,6 +20,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     
     var selectionPrice: Array<Float> = []
     var selectionName: String = ""
+    var basePrice: Float = 0.0
     var isFullItem: Bool = false
     
     @IBOutlet weak var commentsBox: UITextField!
@@ -49,7 +50,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         self.doneWOptions.isHidden = true;
         
         self.doneWOptions.clipsToBounds = true
-        self.doneWOptions.layer.cornerRadius = 15
+        self.doneWOptions.layer.cornerRadius = 6
         
         //self.optionsView.isFocused false;
         //print("please be the item: \(item)")
@@ -58,6 +59,8 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func addToCart(_ sender: Any) {
         //print("please tell me you got here")
         self.selectionName = self.item.name
+        self.basePrice = self.item.price
+        //self.selectionPrice = self.item
         self.isFullItem = true
         // add the "any extra notes text to the end of the selections array"
     }
@@ -203,7 +206,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         self.optionsView.optionsTable.estimatedRowHeight = 60
         
         self.optionsView.clipsToBounds = true
-        self.optionsView.layer.cornerRadius = 30
+        self.optionsView.layer.cornerRadius = 15
         self.optionsView.isHidden = false;
         self.opacityView.isHidden = false;
         self.doneWOptions.isHidden = false;
@@ -401,9 +404,11 @@ class addonTableViewCell: UITableViewCell {
         }
         
         if(selected){
-            self.selectionIndicator.backgroundColor = UIColor.green
+            //self.selectionIndicator.backgroundColor = UIColor.green
+            self.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
+
         }else{
-            self.selectionIndicator.backgroundColor = UIColor.red
+            self.selectionIndicator.setImage(UIImage(named:"unselectedBox.png"), for: .normal)
         }
         
 //        titleLabel.text = item.name

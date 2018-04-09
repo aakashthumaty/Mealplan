@@ -50,8 +50,9 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.cellForRow(at: indexPath) as? optionTableViewCell else { return }
         
-        cell.selectionIndicator.backgroundColor = UIColor.green
         
+        cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
+
         self.selection = cell.optionLabel.text!
         self.price = priceArray[indexPath.row]
         
@@ -86,7 +87,7 @@ class optionTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        self.selectionIndicator.backgroundColor = UIColor.red
+        //self.selectionIndicator.backgroundColor = UIColor.red
 
     }
     
