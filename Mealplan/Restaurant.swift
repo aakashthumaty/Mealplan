@@ -23,6 +23,7 @@ struct Restaurant {
     var id: String
     var categories: Array<String>
     var description: String
+    var discounts: Array<String>
     
     
     var dictionary: [String: Any] {
@@ -36,7 +37,8 @@ struct Restaurant {
             "price": price,
             "id": id,
             "categories": categories,
-            "description": description
+            "description": description,
+            "discounts": discounts
 
         ]
     }
@@ -62,7 +64,8 @@ extension Restaurant: DocumentSerializable {
             let images = dictionary["images"] as? Array<Any>,
             let id = dictionary["id"] as? String,
             let categories = dictionary["categories"] as? Array<String>,
-            let description = dictionary["description"] as? String
+            let description = dictionary["description"] as? String,
+            let discounts = dictionary["discounts"] as? Array<String>
             else{
                 return nil
             }
@@ -77,7 +80,8 @@ extension Restaurant: DocumentSerializable {
                   images: images,
                   id: id,
                   categories: categories,
-                  description: description
+                  description: description,
+                  discounts: discounts
                     )
     }
 

@@ -22,29 +22,42 @@
 import UIKit
 import Firebase
 import FirebaseAuthUI
-import FacebookLogin
-import FacebookCore
 
 import FirebaseGoogleAuthUI
-import FirebaseTwitterAuthUI
 import FirebasePhoneAuthUI
+
 
 class RestarauntsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FUIAuthDelegate {
     
     private var restaurants: [Restaurant] = []
     private var documents: [DocumentSnapshot] = []
-
-    @IBOutlet weak var restTable: UITableView!
+    var userEmail: String!
+    var username: String = ""
     
+    @IBOutlet weak var restTable: UITableView!
     @IBOutlet weak var restHeaderView: UIView!
+    @IBOutlet weak var oView: UIView!
+    @IBOutlet weak var signupView: UIView!
+    @IBOutlet weak var doneSignup: UIButton!
+    @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var usernameField: UITextField!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.title = "Restaurants"
+        
         restTable.tableHeaderView = restHeaderView
         // Hide the navigation bar on the this view controller
         //self.view.sendSubview(toBack: self.restHeaderView)
         
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.signupView.isHidden = true;
+        self.oView.isHidden = true;
+        self.doneSignup.isHidden = true;
+        
+//        self.doneSignup.clipsToBounds = true
+//        self.doneSignup.layer.cornerRadius = 15
+        //self.navigationController?.setNavigationBarHidden(true, animated: false)
         //self.tabBarController?.tabBar.isHidden = false
 
     }
@@ -55,29 +68,6 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         // Show the navigation bar on other view controllers
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let view = UIView()
-//        view.backgroundColor = UIColor.white
-//
-//        let sectionIcon = UIImageView(image: UIImage(named: "restIcon")!)
-//        sectionIcon.frame = CGRect(x: 25, y: 20, width: 60, height: 60)
-////        sectionIcon.clipsToBounds = true
-////        sectionIcon.layer.cornerRadius = 30
-//        view.addSubview(sectionIcon)
-//
-//        let label = UILabel()
-//        label.text = "Restaurants"
-//        label.frame = CGRect(x: 0, y: 15, width: 375, height: 60)
-//        label.font = UIFont(name: "AvenirNextUltraLight", size: 48)
-//        view.addSubview(label)
-//
-//        return self.restHeaderView
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 60
-//    }
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -116,7 +106,27 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("shit a bird out")
     }
-        
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        super.prepare(for: segue, sender: sender)
+//
+//        switch segue.identifier {
+//            case "showRestDetail"?:
+//            print("showing rest detail")
+//            guard let restDetailVC = segue.destination as? RestaurantDetailViewController else {
+//                fatalError("Unexpected destination: \(segue.destination)")
+//            }
+//            restDetailVC.username = self.username
+//            restDetailVC.userEmail = self.userEmail
+//
+//        default:
+//            print("error with segue")
+//
+//        }
+//
+//    }
+    
     /*
      
      ///restaurants/tmt0000002/menu
@@ -188,6 +198,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             fatalError("Unexpected destination: \(segue.destination)")
         }
         restaurantDetailViewController.restaurant = selectedRest
+        restaurantDetailViewController.username = self.username
+        restaurantDetailViewController.userEmail = self.userEmail
 //        restaurantDetailViewController.catDict = catDict
 //        restaurantDetailViewController.items = items
 
@@ -197,62 +209,178 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
+
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-        // handle user and error as necessary
-        print("this just happened")
-        let db = Firestore.firestore()
-
+        
         if let user = user {
             // The user's ID, unique to the Firebase project.
             // Do NOT use this value to authenticate with your backend server,
             // if you have one. Use getTokenWithCompletion:completion: instead.
-            let uid = user.uid
-            let email = user.email
-            
-            // Add a new document with a generated id.
-            db.collection("users").document(email!).setData([
-                "name": "Tokyo",
-                "country": "Japan"
-                ])
-            
-            db.collection("users").document(email!).collection("orders").document().setData([
-                "order": "test",
-                "country": "Japan"
-                ])
-
-//            var ref: DocumentReference? = nil
-//            ref = db.collection("users").addDocument(data: [
-//                "name": "Tokyo",
-//                "country": "Japan"
-//            ]) { err in
-//                if let err = err {
-//                    print("Error adding document: \(err)")
-//                } else {
-//                    print("Document added with ID: \(ref!.documentID)")
-//                }
-//            }
+            self.userEmail = user.email!
         }
+            usernameField.setBottomBorder()
+            nameField.setBottomBorder()
+        
+            self.signupView.clipsToBounds = true
+            self.signupView.layer.cornerRadius = 30
+            self.signupView.isHidden = false;
+            self.oView.isHidden = false;
+            self.doneSignup.isHidden = false;
+            
+            self.signupView.alpha = 0
+            self.oView.alpha = 0
+            self.doneSignup.alpha = 0
+            
+            self.view.bringSubview(toFront: self.oView)
+            self.view.bringSubview(toFront: self.signupView)
+            self.view.bringSubview(toFront: self.doneSignup)
+            
+            UIView.animate(withDuration: 0.5, delay: 0,
+                           options: [.curveEaseInOut],
+                           animations: {
+                            self.signupView.alpha = 1
+                            self.oView.alpha = 0.75
+                            self.doneSignup.alpha = 1
+                  
+            },
+                           completion: nil
+            )
+    }
+    
+    @IBAction func signUP(_ sender: Any) {
+        
+        if(usernameField.text == "" || nameField.text == ""){
+            return;
+        }
+        
+        let db = Firestore.firestore()
+
+        // Create a reference to the cities collection
+        let citiesRef = db.collection("users")
+        
+        // Create a query against the collection.
+        let query = citiesRef.whereField("username", isEqualTo: self.usernameField.text).getDocuments(){ (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            //add user
+            if(querySnapshot?.count == 0){
+                // handle user and error as necessary
+                print("this just happened")
+                
+                let email = self.userEmail
+                let name = self.nameField.text
+                let username = self.usernameField.text
+                
+                // Add a new document with a generated id.
+                db.collection("users").document(username!).setData([
+                    "name": name,
+                    "touched": ["Japan"],
+                    "username": username,
+                    "email": email
+                    ])
+                
+                let defaults = UserDefaults.standard
+                defaults.set(username, forKey: "username")
+//                defaults.set(true, forKey: "UseTouchID")
+//                defaults.set(CGFloat.pi, forKey: "Pi")
+                
+                UIView.animate(withDuration: 0.5, delay: 0,
+                               options: [.curveEaseInOut],
+                               animations: {
+                                self.oView.alpha = 0
+                                self.signupView.alpha = 0
+                                self.doneSignup.alpha = 0
+                                
+                },
+                               completion: {finished in self.disappear()}
+                )
+
+            }else{
+                // username taken
+                print("username taken")
+                let alertController = UIAlertController(title: "Username Taken", message: "Great minds think alike. Sorry, that username is already taken 😔.", preferredStyle: UIAlertControllerStyle.alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+                {
+                    (result : UIAlertAction) -> Void in
+                    print("You pressed OK")
+                }
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+        }
+        }
+        
+        
+    }
+    
+    func disappear(){
+        self.signupView.isHidden = true;
+        self.oView.isHidden = true;
+        self.doneSignup.isHidden = true;
+        
+        self.view.sendSubview(toBack: self.oView)
+        self.view.sendSubview(toBack: self.signupView)
+        self.view.sendSubview(toBack: self.doneSignup)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //FirebaseApp.configure()
+        let db = Firestore.firestore()
+        //try! Auth.auth().signOut()
 
-        let authUI = FUIAuth.defaultAuthUI()
-        // You need to adopt a FUIAuthDelegate protocol to receive callback
-        authUI?.delegate = self as? FUIAuthDelegate
-        let providers: [FUIAuthProvider] = [
-            FUIGoogleAuth(),
-            FUITwitterAuth(),
-            FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
-            ]
-        authUI?.providers = providers
+//        do {
+//            try Auth.auth().signOut()
+//        } catch let error {
+//            // handle error here
+//            print("Error trying to sign out of Firebase: \(error.localizedDescription)")
+//        }
         
-        let authViewController = authUI!.authViewController()
+        if Auth.auth().currentUser != nil {
+            //user is signed in
 
-        self.present(authViewController, animated: true, completion: nil)
+            self.userEmail = (Auth.auth().currentUser?.email)!
+            let defaults = UserDefaults.standard
+            let uName = defaults.string(forKey: "username")
+
+            self.username = uName!
+            let docRef = db.collection("users").document(uName!)
+            
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                    print("Document data: \(dataDescription)")
+                    //self.username = document["username"] as! String
+                    print("user signed in \(self.username)")
+
+                } else {
+                    print("Document does not exist")
+                }
+            }
+
+        } else {
+            // No user is signed in.
+            // ...
+            let authUI = FUIAuth.defaultAuthUI()
+            // You need to adopt a FUIAuthDelegate protocol to receive callback
+            authUI?.delegate = self as? FUIAuthDelegate
+            let providers: [FUIAuthProvider] = [
+                FUIGoogleAuth(),            FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
+                ]
+            authUI?.providers = providers
+            
+            //let authViewController = BizzyAuthViewController(authUI: authUI!)
+
+            let authViewController = authUI!.authViewController()
+            
+            self.present(authViewController, animated: true, completion: nil)
+        }
+
+
 //        FacebookSignInManager.basicInfoWithCompletionHandler(self) { (dataDictionary:Dictionary<String, AnyObject>?, error:NSError?) -> Void in
 //
 //        }
@@ -266,8 +394,6 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
 
         // Do any additional setup after loading the view, typically from a nib.
         
-        let db = Firestore.firestore()
-
         db.collection("restaurants").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
@@ -276,7 +402,12 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                     //print("\(document.documentID) => \(document.data())")
                     
                     var pls = Restaurant(dictionary: document.data())
-                    self.restaurants.append(pls!)
+                    if(pls != nil){
+                        self.restaurants.append(pls!)
+                    }else{
+                        print("aiyah Database")
+                    }
+                    //print(pls!)
                     //print("Current data: \(document.data())")
   
                     //print(self.restaurants)
@@ -297,7 +428,6 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         self.restTable.delegate = self;
         self.restTable.tableFooterView = UIView(frame: CGRect.zero)
 
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -307,4 +437,38 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
 
 
 }
+
+extension UITextField {
+    func setBottomBorder() {
+        self.borderStyle = .none
+        self.layer.backgroundColor = UIColor.white.cgColor
+        
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.gray.cgColor
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        self.layer.shadowOpacity = 1.0
+        self.layer.shadowRadius = 0.0
+    }
+}
+
+//this is to customize login picker
+
+class BizzyAuthViewController: FUIAuthPickerViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        
+        let width = UIScreen.main.bounds.size.width
+        let height = UIScreen.main.bounds.size.height
+//
+        let imageViewBackground = UIImageView(frame: CGRect(x: width/2, y: height/2, width: width/2, height: height/2))
+        imageViewBackground.image = UIImage(named: "platter-256")
+        
+        // you can change the content mode:
+        //imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
+        
+        view.insertSubview(imageViewBackground, at: 0)
+    }}
 

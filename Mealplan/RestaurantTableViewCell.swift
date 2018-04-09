@@ -20,6 +20,7 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
     @IBOutlet weak var iconView: UIImageView!
+    @IBOutlet weak var discountLabel: UILabel!
     
     func populate(restaurant: Restaurant) {
         self.rest = restaurant
@@ -33,6 +34,11 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
         iconView.kf.indicatorType = .activity
         iconView.kf.setImage(with: url)
         self.restCollectionView.reloadData()
+        discountLabel.text = restaurant.discounts[0]
+        discountLabel.textColor = UIColor(red: 0.18, green: 0.8, blue: 0.443, alpha:1.0)
+
+        //rgb(46, 204, 113) green
+     
 
        
     }

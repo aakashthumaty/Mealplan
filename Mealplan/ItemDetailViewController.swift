@@ -16,7 +16,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     var addonDict: Dictionary<String, [Addon]> = [:]
     
     var selections: Array<String> = []
-    var selectionPrice: Float = 0
+    var nonOrderSelections: Array<String> = []
+    
+    var selectionPrice: Array<Float> = []
     var selectionName: String = ""
     var isFullItem: Bool = false
     
@@ -61,6 +63,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if(!item.hasaddons){
+            return 0
+        }
         if(self.addonList.count != 0){
             return self.addonListCategories.count
         }else{
@@ -84,6 +89,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(!item.hasaddons){
+            return 0
+        }
         
         if(self.addonListCategories.count != 0){
             //print("addonlistcategories count \(addonListCategories) this is section value \(section)")
@@ -111,7 +119,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
             let key = self.addonListCategories[indexPath.section].name
             
             var addonOfChoice = addonDict[key]![indexPath.row]
-            if(selections.contains(addonOfChoice.name)){
+            if(nonOrderSelections.contains(addonOfChoice.name)){
                 cell.populate(item: addonOfChoice, selected:true)
 
             }else{
@@ -124,18 +132,18 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
     
-    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? ItemDetailViewController{
-            
-            //, let meal = sourceViewController.meal {
-            
-            // Add a new meal.
-            //let newIndexPath = IndexPath(row: meals.count, section: 0)
-            
-            //meals.append(meal)
-            //tableView.insertRows(at: [newIndexPath], with: .automatic)
-        }
-    }
+//    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+//        if let sourceViewController = sender.source as? ItemDetailViewController{
+//            
+//            //, let meal = sourceViewController.meal {
+//            
+//            // Add a new meal.
+//            //let newIndexPath = IndexPath(row: meals.count, section: 0)
+//            
+//            //meals.append(meal)
+//            //tableView.insertRows(at: [newIndexPath], with: .automatic)
+//        }
+//    }
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 1
@@ -146,14 +154,21 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         var addonChosen = addonDict[key]![indexPath.row]
 
         //tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        if(self.selections.contains(addonChosen.name)){
-            var place = selections.index(of: addonChosen.name)
+        if(self.nonOrderSelections.contains(addonChosen.name)){
+            
+            var place = nonOrderSelections.index(of: addonChosen.name)
             if(addonChosen.multOptions){
                 self.selections.remove(at: place!)
-                self.selections.remove(at: place!)
-
+                
+                self.nonOrderSelections.remove(at: place!)
+                //self.selections.remove(at: place!)
+                self.selectionPrice.remove(at: place!)
             }else{
                 self.selections.remove(at: place!)
+                self.selectionPrice.remove(at: place!)
+                self.nonOrderSelections.remove(at: place!)
+
+
             }
             self.addonTableView.reloadData()
             return;
@@ -166,6 +181,8 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
             
         }else{
             selections.append(addonChosen.name)
+            nonOrderSelections.append(addonChosen.name)
+            selectionPrice.append(addonChosen.price[addonChosen.options]!)
             
             if let visibleIndexPaths = tableView.indexPathsForVisibleRows?.index(of: indexPath as IndexPath) {
                 if visibleIndexPaths != NSNotFound {
@@ -215,7 +232,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
 
         // here you have to append addon name plus their options and add the total to the price
         selections.append(addonChosen.name)
-        
+        nonOrderSelections.append(addonChosen.name)
         //this reloads the addons cell
         if let visibleIndexPaths = self.addonTableView.indexPathsForVisibleRows?.index(of: iPath as IndexPath) {
             if visibleIndexPaths != NSNotFound {
@@ -231,12 +248,15 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         //get the option selected here
 
         if(self.optionsView.selection == ""){
+            //if they dont choose anything remove the addon because the addon was added to the selections array
             selections.removeLast()
+            nonOrderSelections.removeLast()
             print(selections)
             print("poopin0")
             self.addonTableView.reloadData()
         }else{
-            selections.append(self.optionsView.selection)
+            selections[selections.count-1].append(":\(self.optionsView.selection)")
+            selectionPrice.append(self.optionsView.price)
             print(selections)
             print("poopin1")
         }
@@ -283,38 +303,41 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         self.addonTableView.delegate = self;
         self.addonTableView.tableFooterView = self.footerView
         
-        self.addonTableView.estimatedRowHeight = 40
+        self.addonTableView.estimatedRowHeight = 60
         self.addonTableView.rowHeight = UITableViewAutomaticDimension
         //var sect = self.addonList[section]
-        for cat in self.item.addons["list"]!{
-           
-             self.addonListCategories.append(AddonListCategory(dictionary: cat as! [String : Any])!)
-            
-            //print(self.addonListCategories)
-        }
         
-        for item in self.addonListCategories{
-            // number of times to loop: self.item.addons[item.name]?.count
-            //var numOfTimesToLoop = self.item.addons[item.name]?.count
-            //print("got to this place\(item.name)")
-            var i = 0
-            while i < (self.item.addons[item.name]?.count)!{
-                self.addonList.append(Addon(dictionary: self.item.addons[item.name]![i] as! [String : Any])!)
+        if(self.item.hasaddons){
+            for cat in self.item.addons["list"]!{
+               
+                 self.addonListCategories.append(AddonListCategory(dictionary: cat as! [String : Any])!)
                 
-                var pls = Addon(dictionary: self.item.addons[item.name]![i] as! [String : Any])!
-                if(self.addonDict.keys.contains(item.name)){
-                    var tempArr = self.addonDict[item.name]
-                    tempArr?.append(pls)
-                    self.addonDict.updateValue(tempArr!, forKey: item.name)
-                }else{
-                    self.addonDict[item.name] = [pls]
+                //print(self.addonListCategories)
+            }
+            
+            for item in self.addonListCategories{
+                // number of times to loop: self.item.addons[item.name]?.count
+                //var numOfTimesToLoop = self.item.addons[item.name]?.count
+                //print("got to this place\(item.name)")
+                var i = 0
+                while i < (self.item.addons[item.name]?.count)!{
+                    self.addonList.append(Addon(dictionary: self.item.addons[item.name]![i] as! [String : Any])!)
+                    
+                    var pls = Addon(dictionary: self.item.addons[item.name]![i] as! [String : Any])!
+                    if(self.addonDict.keys.contains(item.name)){
+                        var tempArr = self.addonDict[item.name]
+                        tempArr?.append(pls)
+                        self.addonDict.updateValue(tempArr!, forKey: item.name)
+                    }else{
+                        self.addonDict[item.name] = [pls]
+                    }
+                    i += 1
+
+                    //print(i)
+                    //print(self.addonList)
+                    //print("got here \(i)")
+
                 }
-                i += 1
-
-                //print(i)
-                //print(self.addonList)
-                //print("got here \(i)")
-
             }
         }
 //        self.addonList = item.addons["list"]! as! Array<Addon>
@@ -350,6 +373,7 @@ class addonTableViewCell: UITableViewCell {
     
     @IBOutlet weak var addonLabel: UILabel!
     @IBOutlet weak var selectionIndicator: UIButton!
+    @IBOutlet weak var addonPrice: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -366,6 +390,16 @@ class addonTableViewCell: UITableViewCell {
     func populate(item: Addon, selected: Bool) {
         //print("where my cells at \(item)")
         self.addonLabel.text = item.name
+        //item.options[]
+        var p = item.options.components(separatedBy: ", ")[0]
+        //print("we are on  \(p) the edge \(item.price[p])")
+        var pr = item.price[p]
+        if let pri = pr {
+            // a is an Int
+            self.addonPrice.text = "$ \(pri)"
+
+        }
+        
         if(selected){
             self.selectionIndicator.backgroundColor = UIColor.green
         }else{

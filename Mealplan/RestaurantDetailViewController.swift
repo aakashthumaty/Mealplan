@@ -13,6 +13,10 @@ import Firebase
 
 class RestaurantDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    var userEmail: String!
+    var username: String!
+    var presFriend: Bool = false
+    
     @IBOutlet weak var itemTableView: UITableView!
     @IBOutlet weak var discountsCollection: UICollectionView!
     @IBOutlet weak var restaurantName: UILabel!
@@ -41,6 +45,23 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         
         self.restaurantName.text = self.restaurant.title
         self.restaurantDescription.text = self.restaurant.description
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if presFriend {
+
+            let sendFriend : SendFriendViewController = self.storyboard?.instantiateViewController(withIdentifier: "sfvc") as! SendFriendViewController
+                sendFriend.navigationController?.setNavigationBarHidden(true, animated: false)
+            sendFriend.rest = self.restaurant
+            sendFriend.userEmail = self.userEmail
+            sendFriend.username = self.username
+            
+    
+            self.present(sendFriend, animated: true, completion: nil)
+            presFriend = false;
+        }
     }
     
     override func viewDidLoad() {
@@ -211,7 +232,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         
         
         var item = items[indexPath.row]
-        cell
         
         // 2
 //        work.isExpanded = !work.isExpanded
@@ -233,41 +253,62 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         
         super.prepare(for: segue, sender: sender)
         
+        switch segue.identifier {
         
-        guard let selectdRestCell = sender as? ItemTableViewCell else {
-            fatalError("Unexpected sender: \(sender)")
-        }
+        case "addonSegue"?:
+            guard let selectdRestCell = sender as? ItemTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+            
+            guard let indexPath = itemTableView.indexPath(for: selectdRestCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            var keyForItemCat = self.restaurant.categories[indexPath.section]
+            
+            // item need to pass: self.catDict[keyForItemCat]![indexPath.row]
+            
+            let selectedRest = self.catDict[keyForItemCat]![indexPath.row]
+            
+            guard let itemDetailViewController = segue.destination as? ItemDetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            itemDetailViewController.item = selectedRest
+            
+            //itemDetailViewController.
+            
+                //        restaurantDetailViewController.catDict = catDict
+                //        restaurantDetailViewController.items = items
+            
+                //        switch(segue.identifier ?? "") {
+                //
+                //        }
+                // Get the new view controller using segue.destinationViewController.
+                // Pass the selected object to the new view controller.
 
-        guard let indexPath = itemTableView.indexPath(for: selectdRestCell) else {
-            fatalError("The selected cell is not being displayed by the table")
-        }
         
-        var keyForItemCat = self.restaurant.categories[indexPath.section]
-        
-        // item need to pass: self.catDict[keyForItemCat]![indexPath.row]
-        
-        let selectedRest = self.catDict[keyForItemCat]![indexPath.row]
-        
-        guard let itemDetailViewController = segue.destination as? ItemDetailViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
-        }
-        itemDetailViewController.item = selectedRest
-        
-        //        restaurantDetailViewController.catDict = catDict
-        //        restaurantDetailViewController.items = items
-        
-        //        switch(segue.identifier ?? "") {
-        //
-        //        }
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
+            func updateTableView() {
+                itemTableView.beginUpdates()
+                itemTableView.endUpdates()
+            }
+            
+        case"orderSegue"?:
+            
+            guard let checkoutVC = segue.destination as? CheckoutViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            checkoutVC.order = self.order
+            checkoutVC.rest = self.restaurant
+            checkoutVC.userEmail = self.userEmail
+            checkoutVC.username = self.username
 
-    
-    func updateTableView() {
-        itemTableView.beginUpdates()
-        itemTableView.endUpdates()
+            print("pls print")
+        default:
+            print("darn")
+        }
+        
     }
+        
     
     
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
@@ -275,7 +316,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             
             if(sourceViewController.isFullItem){
                 let stringRep = sourceViewController.selections.joined(separator: ", ")
-                var temp = OrderItem(price: Float(sourceViewController.selectionPrice), name: sourceViewController.selectionName, addons: stringRep)
+                var totPrice = sourceViewController.selectionPrice.reduce(0, +)
+
+                var temp = OrderItem(price: sourceViewController.selectionPrice, name: sourceViewController.selectionName, addons: sourceViewController.selections)
                 
                 self.order.append(temp)
                 print("this is the order right now \(self.order)")
@@ -287,7 +330,19 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                 self.proceedToCheckout.isHidden = false;
             }
             
+        }else{
+            //this means it came from place order
+            print("teehee hahahaha looool")
+            presFriend = true
             
+//            let sendFriend : SendFriendViewController = self.storyboard?.instantiateViewController(withIdentifier: "sfvc") as! SendFriendViewController
+//
+//            sendFriend.rest = self.restaurant
+//            sendFriend.userEmail = self.userEmail
+//            
+//            self.present(sendFriend, animated: true, completion: nil)
+  
+        }
             
             //, let meal = sourceViewController.meal {
             
@@ -296,7 +351,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             
             //meals.append(meal)
             //tableView.insertRows(at: [newIndexPath], with: .automatic)
-        }
+        
     }
     
 //    - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

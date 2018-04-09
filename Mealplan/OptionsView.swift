@@ -12,8 +12,10 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     var addon: Addon!
     var optionsArray: Array<String> = []
-    
+    var priceArray: Array<Float> = []
+
     var selection: String = ""
+    var price: Float = 0
     
     @IBOutlet weak var optionsTable: UITableView!
     
@@ -21,8 +23,13 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         let oA = self.addon.options.components(separatedBy: ", ")
+        var pA: Array<Float> = []
+        for option in oA{
+            pA.append(self.addon.price[option]!)
+        }
 
         self.optionsArray = oA
+        self.priceArray = pA
         print("this is mprinting shit")
         return optionsArray.count
     }
@@ -33,6 +40,8 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                                                  for: indexPath) as! optionTableViewCell
 
         cell.optionLabel.text = optionsArray[indexPath.row]
+        cell.optionPrice.text = "$\(priceArray[indexPath.row])"
+        print("we are here \(cell.optionPrice.text)")
         return cell
     }
     
@@ -44,6 +53,7 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         cell.selectionIndicator.backgroundColor = UIColor.green
         
         self.selection = cell.optionLabel.text!
+        self.price = priceArray[indexPath.row]
         
         
     }
@@ -64,6 +74,7 @@ class optionTableViewCell: UITableViewCell {
     
     @IBOutlet weak var optionLabel: UILabel!
     @IBOutlet weak var selectionIndicator: UIButton!
+    @IBOutlet weak var optionPrice: UILabel!
     
     
     
