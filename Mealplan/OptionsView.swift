@@ -42,6 +42,9 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         cell.optionLabel.text = optionsArray[indexPath.row]
         cell.optionPrice.text = "$\(priceArray[indexPath.row])"
         print("we are here \(cell.optionPrice.text)")
+        if(self.selection == cell.optionLabel.text){
+            cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
+        }
         return cell
     }
     
@@ -50,11 +53,27 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.cellForRow(at: indexPath) as? optionTableViewCell else { return }
         
+        if(self.selection == cell.optionLabel.text){
+            cell.selectionIndicator.setImage(UIImage(named:"unselectedBox.png"), for: .normal)
+            
+            self.selection = ""
+            self.price = 0.0
+            return
+        }else if(self.selection == ""){
         
-        cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
+            cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
 
-        self.selection = cell.optionLabel.text!
-        self.price = priceArray[indexPath.row]
+            self.selection = cell.optionLabel.text!
+            self.price = priceArray[indexPath.row]
+        }else{
+            self.selection = cell.optionLabel.text!
+            self.price = priceArray[indexPath.row]
+            if let visibleIndexPaths = tableView.indexPathsForVisibleRows?.index(of: indexPath as IndexPath) {
+                if visibleIndexPaths != NSNotFound {
+                    tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            }
+        }
         
         
     }

@@ -9,14 +9,19 @@ target 'Mealplan' do
 
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
+pod 'Firebase/Storage'
 pod 'Firebase/Auth'
 pod 'FirebaseUI/Auth'
 #pod 'FirebaseUI/Twitter'
+pod 'FirebaseUI/Facebook'
 pod 'FirebaseUI/Phone'
 pod 'FirebaseUI/Google'
 pod 'FacebookLogin'
 pod 'FBSDKLoginKit'
 pod 'FBSDKCoreKit'
+pod 'Fusuma'
+pod 'Sharaku'
+pod 'RSSelectionMenu'
 
 
 pod 'Kingfisher', '~> 4.0'

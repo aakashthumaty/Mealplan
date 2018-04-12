@@ -204,7 +204,8 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         
         self.optionsView.optionsTable.rowHeight = UITableViewAutomaticDimension
         self.optionsView.optionsTable.estimatedRowHeight = 60
-        
+        self.optionsView.optionsTable.tableFooterView = UIView(frame: .zero)
+
         self.optionsView.clipsToBounds = true
         self.optionsView.layer.cornerRadius = 15
         self.optionsView.isHidden = false;
@@ -264,6 +265,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
             print("poopin1")
         }
         self.optionsView.selection = ""
+        self.optionsView.optionsTable.reloadData()
         UIView.animate(withDuration: 0.5, delay: 0,
                        options: [.curveEaseInOut],
                        animations: {
@@ -308,6 +310,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         
         self.addonTableView.estimatedRowHeight = 60
         self.addonTableView.rowHeight = UITableViewAutomaticDimension
+
         //var sect = self.addonList[section]
         
         if(self.item.hasaddons){

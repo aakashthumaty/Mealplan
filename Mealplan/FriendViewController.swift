@@ -9,20 +9,51 @@
 import UIKit
 import Firebase
 
-class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
+class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource  {
+    
+    @IBOutlet weak var collView: UICollectionView!
     
     var username: String!
-    var friendArr: Array<Dictionary<String,Any>> = [[:]]
+    var friendArr: [Friend] = []
+    
+    var giftIDS: [String] = []
+    var gifts: [Gift] = []
+    
+    func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
+        if(self.friendArr != nil){
+            return self.friendArr.count
+        }else{
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendCollectionCell", for: indexPath) as! friendCollectionCell
+        
+        cell.imageView.image = UIImage(named: "heartBig")
+        //cell.imageView.backgroundColor = .lightGray
+        cell.populate(f: friendArr[indexPath.row])
+        return cell
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friendArr.count
+        return self.gifts.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 60.0;//Choose your custom row height
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "fCell",
                                                  for: indexPath) as! FriendCell
         
-        cell.populate(friend: friendArr[indexPath.row])
+        cell.populate(g: self.gifts[indexPath.row])
         return cell
     }
     
@@ -37,23 +68,88 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         let defaults = UserDefaults.standard
         self.username = defaults.string(forKey: "username")
+        self.title = "User: \(self.username!)"
 
-        super.viewDidLoad()
+        self.collView.delegate = self;
+        self.collView.dataSource = self;
+        
+        self.friendTable.delegate = self;
+        self.friendTable.dataSource = self;
+        
+        
+        self.friendTable.tableFooterView = UIView(frame: CGRect.zero)
         
         let db = Firestore.firestore()
-        print("this the email though \(self.username)")
+        
+        db.collection("gifts").order(by: "time").addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            //                let cities = documents.map { $0["name"]! }
+            //                print("Current cities in CA: \(cities)")
+            for document in querySnapshot!.documents {
+                //print("\(document.documentID) => \(document.data())")
+                
+                var pls = Gift(dictionary: document.data())
+                if(!self.giftIDS.contains(document.documentID)){
+                    if(pls != nil ){
+                        self.gifts.insert(pls!, at: 0)
+                        self.giftIDS.append(document.documentID)
+                    }else{
+                        print("aiyah Database")
+                    }
+                }
+                
+                print("got here")
+            }
+            self.friendTable.reloadData()
+        }
+        
+        super.viewDidLoad()
+        
+        
         db.collection("users/\(self.username!)/friends").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
                     print("\(document.documentID) => \(document.data())")
-                    self.friendArr.append(document.data())
+                    print(" 1 \(document["name"])")
+                    //if(document.data()){
                     
-                    
+                    var pls = Friend(dictionary: document.data())
+                    if(pls != nil){
+                        self.friendArr.append(pls!)
+                    }else{
+                        print("aiyah Database")
+                    }
+
                 }
+                print(self.friendArr.count)
+                self.collView.reloadData()
+                
             }
         }
+        
+//        let db = Firestore.firestore()
+//        print("this the email though \(self.username)")
+//        db.collection("users/\(self.username!)/friends").getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Error getting documents: \(err)")
+//            } else {
+//                for document in querySnapshot!.documents {
+//                    print("\(document.documentID) => \(document.data())")
+//                    var pls = Friend(dictionary: document.data())
+//                    if(pls! != nil){
+//                        self.friendArr.append(pls!)
+//                    }else{
+//                        print("aiyah Database")
+//                    }
+//                }
+//                self.collView.reloadData()
+//            }
+//        }
         // Do any additional setup after loading the view.
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -68,6 +164,11 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
         
         let userReference = db.collection("users")
         let sfReference = db.collection("users").document(self.username).collection("friends")
+        
+        let friendReference = db.collection("users").document(self.addFriendField.text!)
+
+        let meReference = db.collection("users").document(self.username)
+
         // Create a query against the collection.
         let query = userReference.whereField("username", isEqualTo: self.addFriendField.text).getDocuments(){ (querySnapshot, err) in
             if let err = err {
@@ -79,16 +180,49 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
                     // handle user and error as necessary
                     print("You have friends.")
                 
+                    var tempFriend: OurUser!
                     
-                        sfReference.document(self.addFriendField.text!).setData([
-                        "username": self.addFriendField.text,//the text in the field,""
-                        "giftcount": 0
-                        ])
+                    friendReference.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                            print("Document data: \(dataDescription)")
+                            tempFriend = OurUser(dictionary: document.data()!)
+                            
+                            
+                            sfReference.document(self.addFriendField.text!).setData([
+                                "username": self.addFriendField.text,//the text in the field,""
+                                "giftcount": 0,
+                                "name": tempFriend.name
+                                ])
+                            
+                        } else {
+                            print("Document does not exist")
+                        }
+                    }
                     
+ 
+                    
+                    var tempMe: OurUser!
+                    
+                    meReference.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                            print("Document data: \(dataDescription)")
+                            tempMe = OurUser(dictionary: document.data()!)
+                            
                         userReference.document(self.addFriendField.text!).collection("friends").document(self.username).setData([
-                        "username": self.username,//the text in the field,""
-                        "giftcount": 0
-                        ])
+                                "username": self.username,//the text in the field,""
+                                "giftcount": 0,
+                                "name": tempMe.name
+                                ])
+                            
+                        } else {
+                            print("Document does not exist")
+                        }
+                    }
+   
+                    
+    
 
 //
 //                    UIView.animate(withDuration: 0.5, delay: 0,
@@ -185,16 +319,63 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
 
 class FriendCell: UITableViewCell {
 
-    @IBOutlet weak var friendUsername: UILabel!
+    @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var friendName: UILabel!
-    func populate(friend: Dictionary<String,Any>) {
-        //print("where my cells at \(item)")
-        self.friendName.text = friend["name"] as! String
-        self.friendUsername.text = friend["username"] as! String
-        //item.options[]
     
+    @IBOutlet weak var locName: UILabel!
+    
+    @IBOutlet weak var white: UIView!
+
+    
+    func populate(g: Gift) {
+
+        self.friendName.text = g.receiver
+        self.userName.text = g.sender
+        self.locName.text = "@ \(g.restaurant)"
+        
+        white.clipsToBounds = true
+        white.layer.cornerRadius = 6
     
     }
 
 
+}
+
+
+
+class friendCollectionCell: UICollectionViewCell {
+    
+    @IBOutlet weak var giftCount: UILabel!
+    @IBOutlet weak var friendName: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    
+
+//
+//    override var bounds: CGRect {
+//        didSet {
+//            self.layoutIfNeeded()
+//        }
+//    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+     //   self.imageView.layer.masksToBounds = true
+    }
+    
+    func populate(f: Friend) {
+        self.friendName.text = f.name
+        self.giftCount.text = "\(f.giftcount)"
+        
+    }
+    
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        self.setCircularImageView()
+//    }
+//
+//    func setCircularImageView() {
+//        self.imageView.layer.cornerRadius = CGFloat(roundf(Float(self.imageView.frame.size.width / 2.0)))
+//    }
 }

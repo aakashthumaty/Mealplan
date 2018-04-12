@@ -9,6 +9,53 @@
 import Foundation
 
 
+struct OurUser {
+    
+    var name: String
+    var username: String
+    //var email: String
+    //var required: Bool
+    
+    
+    var dictionary: [String: Any] {
+        return [
+            "name": name,
+            "username": username            //"email": email
+            //"required": required,
+            
+            
+        ]
+    }
+    
+}
+
+
+extension OurUser: DocumentSerializable {
+    
+    
+    init?(dictionary: [String : Any]) {
+        guard  let name = dictionary["name"] as? String,
+            let username = dictionary["username"] as? String
+            //let email = dictionary["email"] as? String
+            //let required = dictionary["required"] as? Bool
+            else{
+                return nil
+        }
+        
+        
+        self.init(
+            name: name,
+            username: username
+            //email: email
+            //required: required
+            
+        )
+    }
+    
+    
+}
+
+
 struct Friend {
     
     var name: String

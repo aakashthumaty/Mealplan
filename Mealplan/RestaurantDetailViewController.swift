@@ -11,7 +11,37 @@ import UIKit
 import Firebase
 
 
-class RestaurantDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class RestaurantDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    @IBOutlet weak var discountsCollectionView: UICollectionView!
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        var cell: discountCollectionViewCell
+
+        
+        if(indexPath.row == 0){
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: "rewardsCollectionCell", for: indexPath) as! discountCollectionViewCell
+            cell.displayContent()
+
+            
+            return cell
+
+        }else {
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: "discCollectionCell", for: indexPath) as! discountCollectionViewCell
+            
+            cell.displayContent()
+            return cell
+
+        }
+        //cell.displayContent(img: rest.images[indexPath.row] as! String)
+        
+    }
+    
     
     var userEmail: String!
     var username: String!
@@ -52,6 +82,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        discountsCollectionView.delegate = self
+        discountsCollectionView.dataSource = self
         
         if presFriend {
 
@@ -390,5 +423,32 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 
 
 }
+
+class discountCollectionViewCell: UICollectionViewCell{
+    @IBOutlet weak var reward0label: UILabel!
+    
+    
+    
+    func displayContent(){
+//        cellImage.kf.indicatorType = .activity
+//        let imgurl = URL(string: img)
+//        cellImage.kf.setImage(with: imgurl)
+        
+        self.contentView.layer.cornerRadius = 10.0
+        self.contentView.layer.borderWidth = 0.5
+        self.contentView.layer.borderColor = UIColor.gray.cgColor
+        self.contentView.layer.masksToBounds = true
+        
+//        self.layer.shadowColor = UIColor.black.cgColor
+//        self.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+//        self.layer.shadowRadius = 2.0
+//        self.layer.shadowOpacity = 0.5
+//        self.layer.masksToBounds = false
+//        self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.contentView.layer.cornerRadius).cgPath
+//
+    }
+    
+}
+
 
 

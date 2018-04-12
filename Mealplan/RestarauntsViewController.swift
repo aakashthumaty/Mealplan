@@ -22,7 +22,7 @@
 import UIKit
 import Firebase
 import FirebaseAuthUI
-
+import FirebaseFacebookAuthUI
 import FirebaseGoogleAuthUI
 import FirebasePhoneAuthUI
 
@@ -369,7 +369,10 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             // You need to adopt a FUIAuthDelegate protocol to receive callback
             authUI?.delegate = self as? FUIAuthDelegate
             let providers: [FUIAuthProvider] = [
-                FUIGoogleAuth(),            FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
+                FUIGoogleAuth(),
+                FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
+                FUIFacebookAuth(),
+                
                 ]
             authUI?.providers = providers
             

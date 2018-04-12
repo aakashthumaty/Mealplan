@@ -153,6 +153,20 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                 print("Transaction failed: \(error)")
             } else {
                 print("Transaction successfully committed!")
+                
+                let db = Firestore.firestore()
+                
+                // Create a reference to the cities collection
+                let giftsRef = db.collection("gifts")
+                let postsRef = db.collection("posts")
+
+                // Add a new document with a generated id.
+                giftsRef.document().setData([
+                    "sender": self.username,
+                    "receiver": self.friendArr[indexPath.row].username,
+                    "restaurant": self.rest.title,
+                    "time": FieldValue.serverTimestamp()
+                    ])
             }
         }
         

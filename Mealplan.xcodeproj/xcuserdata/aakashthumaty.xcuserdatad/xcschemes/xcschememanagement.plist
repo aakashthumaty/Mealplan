@@ -7,12 +7,12 @@
 		<key>Mealplan.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>25</integer>
+			<integer>31</integer>
 		</dict>
 		<key>OneSignalNotificationServiceExtension.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>26</integer>
+			<integer>32</integer>
 		</dict>
 	</dict>
 </dict>

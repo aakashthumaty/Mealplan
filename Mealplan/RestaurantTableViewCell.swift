@@ -14,6 +14,7 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
     
     var rest: Restaurant!
 
+    @IBOutlet weak var giftCount: UILabel!
     
     @IBOutlet weak var restCollectionView: UICollectionView!
     
