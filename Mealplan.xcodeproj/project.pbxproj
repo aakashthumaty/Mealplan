@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660FEC72208D403500823401 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660FEC71208D403500823401 /* CheckoutTableViewCell.swift */; };
+		660FEC73208D403500823401 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660FEC71208D403500823401 /* CheckoutTableViewCell.swift */; };
+		660FEC74208D403600823401 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660FEC71208D403500823401 /* CheckoutTableViewCell.swift */; };
 		661019F02069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
 		661019F12069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
 		661019F22069B45900EAE917 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661019EF2069B45900EAE917 /* ItemTableViewCell.swift */; };
@@ -92,6 +95,7 @@
 		66AAD61E2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
 		66AAD61F2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
 		66AAD6202068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */; };
+		66B2312320887D7900B89671 /* DiscountSectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B2312220887D7900B89671 /* DiscountSectionTableViewController.swift */; };
 		66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
 		66BF2AF02070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
 		66BF2AF12070485200D16722 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF2AEE2070485200D16722 /* OrderItem.swift */; };
@@ -101,6 +105,39 @@
 		66C34284207F7B3B007CF069 /* giftWithArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 66C34283207F7B38007CF069 /* giftWithArrow.png */; };
 		66C34285207F7B3B007CF069 /* giftWithArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 66C34283207F7B38007CF069 /* giftWithArrow.png */; };
 		66C34286207F7B3B007CF069 /* giftWithArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 66C34283207F7B38007CF069 /* giftWithArrow.png */; };
+		66D867F0208F836600CCF90C /* OnBoardingPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867EF208F836600CCF90C /* OnBoardingPager.swift */; };
+		66D867F1208F836600CCF90C /* OnBoardingPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867EF208F836600CCF90C /* OnBoardingPager.swift */; };
+		66D867F2208F836600CCF90C /* OnBoardingPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867EF208F836600CCF90C /* OnBoardingPager.swift */; };
+		66D867F4208F84AD00CCF90C /* StepZero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F3208F84AD00CCF90C /* StepZero.swift */; };
+		66D867F5208F84AD00CCF90C /* StepZero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F3208F84AD00CCF90C /* StepZero.swift */; };
+		66D867F6208F84AD00CCF90C /* StepZero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F3208F84AD00CCF90C /* StepZero.swift */; };
+		66D867F8208F850A00CCF90C /* StepOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F7208F850A00CCF90C /* StepOne.swift */; };
+		66D867F9208F850A00CCF90C /* StepOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F7208F850A00CCF90C /* StepOne.swift */; };
+		66D867FA208F850A00CCF90C /* StepOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867F7208F850A00CCF90C /* StepOne.swift */; };
+		66D867FC208F851A00CCF90C /* StepTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FB208F851A00CCF90C /* StepTwo.swift */; };
+		66D867FD208F851A00CCF90C /* StepTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FB208F851A00CCF90C /* StepTwo.swift */; };
+		66D867FE208F851A00CCF90C /* StepTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FB208F851A00CCF90C /* StepTwo.swift */; };
+		66D86800208F852F00CCF90C /* StepThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FF208F852F00CCF90C /* StepThree.swift */; };
+		66D86801208F852F00CCF90C /* StepThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FF208F852F00CCF90C /* StepThree.swift */; };
+		66D86802208F852F00CCF90C /* StepThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D867FF208F852F00CCF90C /* StepThree.swift */; };
+		66D86804208F854400CCF90C /* StepFour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D86803208F854400CCF90C /* StepFour.swift */; };
+		66D86805208F854400CCF90C /* StepFour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D86803208F854400CCF90C /* StepFour.swift */; };
+		66D86806208F854400CCF90C /* StepFour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D86803208F854400CCF90C /* StepFour.swift */; };
+		66D86844208FED4500CCF90C /* screen0-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D8683F208FED3C00CCF90C /* screen0-2.png */; };
+		66D86845208FED4500CCF90C /* screen0-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D8683F208FED3C00CCF90C /* screen0-2.png */; };
+		66D86846208FED4500CCF90C /* screen0-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D8683F208FED3C00CCF90C /* screen0-2.png */; };
+		66D86847208FED4500CCF90C /* screen3-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86840208FED3E00CCF90C /* screen3-2.png */; };
+		66D86848208FED4500CCF90C /* screen3-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86840208FED3E00CCF90C /* screen3-2.png */; };
+		66D86849208FED4500CCF90C /* screen3-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86840208FED3E00CCF90C /* screen3-2.png */; };
+		66D8684A208FED4500CCF90C /* screen4-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86841208FED4000CCF90C /* screen4-2.png */; };
+		66D8684B208FED4500CCF90C /* screen4-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86841208FED4000CCF90C /* screen4-2.png */; };
+		66D8684C208FED4500CCF90C /* screen4-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86841208FED4000CCF90C /* screen4-2.png */; };
+		66D8684D208FED4500CCF90C /* screen1.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86842208FED4200CCF90C /* screen1.png */; };
+		66D8684E208FED4500CCF90C /* screen1.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86842208FED4200CCF90C /* screen1.png */; };
+		66D8684F208FED4500CCF90C /* screen1.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86842208FED4200CCF90C /* screen1.png */; };
+		66D86850208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
+		66D86851208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
+		66D86852208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
 		66F41BDC207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
 		66F41BDD207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
 		66F41BDE207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
@@ -187,6 +224,7 @@
 		50364B6A09D46B10B3FBE7B1 /* Pods-MealplanUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealplanUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MealplanUITests/Pods-MealplanUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		51334858A3417C628E68A95C /* Pods_MealplanTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealplanTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D168170CD9230DA09636BB5 /* Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mealplan-OneSignalNotificationServiceExtension/Pods-Mealplan-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		660FEC71208D403500823401 /* CheckoutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTableViewCell.swift; sourceTree = "<group>"; };
 		661019EF2069B45900EAE917 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		661019F32069BA0B00EAE917 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		66164CFB2066F174004EB92D /* Mealplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mealplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,9 +268,21 @@
 		66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		66AAD61920686239004CBC9F /* restIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restIcon.png; sourceTree = "<group>"; };
 		66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
+		66B2312220887D7900B89671 /* DiscountSectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountSectionTableViewController.swift; sourceTree = "<group>"; };
 		66BF2AEE2070485200D16722 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
 		66BF2AF220733A1B00D16722 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		66C34283207F7B38007CF069 /* giftWithArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giftWithArrow.png; sourceTree = "<group>"; };
+		66D867EF208F836600CCF90C /* OnBoardingPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingPager.swift; sourceTree = "<group>"; };
+		66D867F3208F84AD00CCF90C /* StepZero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepZero.swift; sourceTree = "<group>"; };
+		66D867F7208F850A00CCF90C /* StepOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepOne.swift; sourceTree = "<group>"; };
+		66D867FB208F851A00CCF90C /* StepTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTwo.swift; sourceTree = "<group>"; };
+		66D867FF208F852F00CCF90C /* StepThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepThree.swift; sourceTree = "<group>"; };
+		66D86803208F854400CCF90C /* StepFour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepFour.swift; sourceTree = "<group>"; };
+		66D8683F208FED3C00CCF90C /* screen0-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen0-2.png"; sourceTree = "<group>"; };
+		66D86840208FED3E00CCF90C /* screen3-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen3-2.png"; sourceTree = "<group>"; };
+		66D86841208FED4000CCF90C /* screen4-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen4-2.png"; sourceTree = "<group>"; };
+		66D86842208FED4200CCF90C /* screen1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen1.png; sourceTree = "<group>"; };
+		66D86843208FED4400CCF90C /* screen2-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen2-2.png"; sourceTree = "<group>"; };
 		66F41BDB207B603400E476B9 /* selection and stars */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "selection and stars"; sourceTree = "<group>"; };
 		66F41BDF207B604100E476B9 /* buttons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = buttons; sourceTree = "<group>"; };
 		66F87276207E042500C72CB8 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -332,6 +382,7 @@
 				6637011B2074A5ED00972346 /* Mealplan.entitlements */,
 				66164D3A20673E30004EB92D /* GoogleService-Info.plist */,
 				66164CFE2066F174004EB92D /* AppDelegate.swift */,
+				66B2312220887D7900B89671 /* DiscountSectionTableViewController.swift */,
 				66164D002066F174004EB92D /* RestarauntsViewController.swift */,
 				66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */,
 				66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */,
@@ -348,10 +399,22 @@
 				663D48D3206CDEAB00974259 /* Addon.swift */,
 				66BF2AEE2070485200D16722 /* OrderItem.swift */,
 				66225946207A08EE00256E12 /* User.swift */,
+				66D867EF208F836600CCF90C /* OnBoardingPager.swift */,
+				66D867F3208F84AD00CCF90C /* StepZero.swift */,
+				66D867F7208F850A00CCF90C /* StepOne.swift */,
+				66D867FB208F851A00CCF90C /* StepTwo.swift */,
+				66D867FF208F852F00CCF90C /* StepThree.swift */,
+				66D86803208F854400CCF90C /* StepFour.swift */,
 				66164D042066F174004EB92D /* Main.storyboard */,
 				66164D4E20677B3D004EB92D /* RestaurantTableViewCell.swift */,
 				661019EF2069B45900EAE917 /* ItemTableViewCell.swift */,
 				66F8727B207E08FB00C72CB8 /* FeedTableViewCell.swift */,
+				660FEC71208D403500823401 /* CheckoutTableViewCell.swift */,
+				66D8683F208FED3C00CCF90C /* screen0-2.png */,
+				66D86842208FED4200CCF90C /* screen1.png */,
+				66D86843208FED4400CCF90C /* screen2-2.png */,
+				66D86840208FED3E00CCF90C /* screen3-2.png */,
+				66D86841208FED4000CCF90C /* screen4-2.png */,
 				66F8727A207E087600C72CB8 /* Filter */,
 				6622593E20797A5F00256E12 /* 00blueHand.png */,
 				6622594220797A8F00256E12 /* 0giftYellowRed.png */,
@@ -589,19 +652,24 @@
 				66AAD61A20686239004CBC9F /* restIcon.png in Resources */,
 				667F7869207CCE47005A497D /* FilterVideoViewController.xib in Resources */,
 				667AF86220771C98002B6800 /* platter-256.png in Resources */,
+				66D8684D208FED4500CCF90C /* screen1.png in Resources */,
 				6622593F20797A6000256E12 /* 00blueHand.png in Resources */,
 				66F87298207EB67D00C72CB8 /* emojiswithrims in Resources */,
 				66F8728C207E2FBA00C72CB8 /* 300broccoliOutline.png in Resources */,
 				66164D3B20673E30004EB92D /* GoogleService-Info.plist in Resources */,
 				66164D082066F174004EB92D /* Assets.xcassets in Resources */,
 				66F87288207E2B7E00C72CB8 /* 100 outline broccoli.png in Resources */,
+				66D86850208FED4500CCF90C /* screen2-2.png in Resources */,
 				66F41BE0207B604100E476B9 /* buttons in Resources */,
+				66D86847208FED4500CCF90C /* screen3-2.png in Resources */,
 				667F7875207CCE47005A497D /* FilterCollectionViewCell.xib in Resources */,
 				66F41BDC207B603400E476B9 /* selection and stars in Resources */,
 				6622594320797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 				66C34284207F7B3B007CF069 /* giftWithArrow.png in Resources */,
 				66F87294207E3C1500C72CB8 /* 300lickgag in Resources */,
 				66164D062066F174004EB92D /* Main.storyboard in Resources */,
+				66D86844208FED4500CCF90C /* screen0-2.png in Resources */,
+				66D8684A208FED4500CCF90C /* screen4-2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,6 +678,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6622594020797A6000256E12 /* 00blueHand.png in Resources */,
+				66D8684E208FED4500CCF90C /* screen1.png in Resources */,
 				66AAD61B20686239004CBC9F /* restIcon.png in Resources */,
 				66164D3C20673E30004EB92D /* GoogleService-Info.plist in Resources */,
 				66F41BE1207B604100E476B9 /* buttons in Resources */,
@@ -623,9 +692,13 @@
 				667F786D207CCE47005A497D /* FilterImageViewController.xib in Resources */,
 				66F41BDD207B603400E476B9 /* selection and stars in Resources */,
 				66F87291207E2FC300C72CB8 /* 300broccoliColor.png in Resources */,
+				66D86851208FED4500CCF90C /* screen2-2.png in Resources */,
 				667AF86320771C98002B6800 /* platter-256.png in Resources */,
+				66D86848208FED4500CCF90C /* screen3-2.png in Resources */,
 				6622594420797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 				66F87295207E3C1500C72CB8 /* 300lickgag in Resources */,
+				66D86845208FED4500CCF90C /* screen0-2.png in Resources */,
+				66D8684B208FED4500CCF90C /* screen4-2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,6 +707,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6622594120797A6000256E12 /* 00blueHand.png in Resources */,
+				66D8684F208FED4500CCF90C /* screen1.png in Resources */,
 				66AAD61C20686239004CBC9F /* restIcon.png in Resources */,
 				66164D3D20673E30004EB92D /* GoogleService-Info.plist in Resources */,
 				66F41BE2207B604100E476B9 /* buttons in Resources */,
@@ -647,9 +721,13 @@
 				667F786E207CCE47005A497D /* FilterImageViewController.xib in Resources */,
 				66F41BDE207B603400E476B9 /* selection and stars in Resources */,
 				66F87292207E2FC300C72CB8 /* 300broccoliColor.png in Resources */,
+				66D86852208FED4500CCF90C /* screen2-2.png in Resources */,
 				667AF86420771C98002B6800 /* platter-256.png in Resources */,
+				66D86849208FED4500CCF90C /* screen3-2.png in Resources */,
 				6622594520797A8F00256E12 /* 0giftYellowRed.png in Resources */,
 				66F87296207E3C1500C72CB8 /* 300lickgag in Resources */,
+				66D86846208FED4500CCF90C /* screen0-2.png in Resources */,
+				66D8684C208FED4500CCF90C /* screen4-2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +794,9 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Mealplan/Pods-Mealplan-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/Braintree/Braintree.framework",
+				"${BUILT_PRODUCTS_DIR}/BraintreeDropIn/BraintreeDropIn.framework",
+				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
@@ -725,11 +806,10 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/Sharaku/Sharaku.framework",
-				"${BUILT_PRODUCTS_DIR}/SteviaLayout/Stevia.framework",
-				"${BUILT_PRODUCTS_DIR}/YPImagePicker/YPImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -741,6 +821,9 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Braintree.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BraintreeDropIn.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
@@ -750,11 +833,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSelectionMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sharaku.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stevia.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YPImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -863,9 +945,12 @@
 				667F7872207CCE47005A497D /* FilterCollectionViewCell.swift in Sources */,
 				66225947207A08EF00256E12 /* User.swift in Sources */,
 				66164CFF2066F174004EB92D /* AppDelegate.swift in Sources */,
+				660FEC72208D403500823401 /* CheckoutTableViewCell.swift in Sources */,
 				66164D012066F174004EB92D /* RestarauntsViewController.swift in Sources */,
+				66B2312320887D7900B89671 /* DiscountSectionTableViewController.swift in Sources */,
 				66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */,
 				667F7879207D9647005A497D /* NewPostViewController.swift in Sources */,
+				66D867F8208F850A00CCF90C /* StepOne.swift in Sources */,
 				667F7866207CCE47005A497D /* FiilterViewController.swift in Sources */,
 				667F786F207CCE47005A497D /* EditVideoUtility.swift in Sources */,
 				6620EAF720761E4A00528350 /* CheckoutViewController.swift in Sources */,
@@ -874,10 +959,15 @@
 				667F7863207CCE47005A497D /* FilterVideoViewController.swift in Sources */,
 				661019F02069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
 				66164D4F20677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */,
+				66D867F0208F836600CCF90C /* OnBoardingPager.swift in Sources */,
+				66D867F4208F84AD00CCF90C /* StepZero.swift in Sources */,
 				66BF2AF320733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D4206CDEAB00974259 /* Addon.swift in Sources */,
 				661019F42069BA0B00EAE917 /* MenuItem.swift in Sources */,
+				66D867FC208F851A00CCF90C /* StepTwo.swift in Sources */,
 				66AAD61E2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
+				66D86800208F852F00CCF90C /* StepThree.swift in Sources */,
+				66D86804208F854400CCF90C /* StepFour.swift in Sources */,
 				66164D37206708CC004EB92D /* LocalCollection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -886,10 +976,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66D867F1208F836600CCF90C /* OnBoardingPager.swift in Sources */,
+				66D86805208F854400CCF90C /* StepFour.swift in Sources */,
+				66D867F5208F84AD00CCF90C /* StepZero.swift in Sources */,
 				667F7867207CCE47005A497D /* FiilterViewController.swift in Sources */,
 				66F87278207E042500C72CB8 /* Post.swift in Sources */,
 				66F8727D207E08FB00C72CB8 /* FeedTableViewCell.swift in Sources */,
 				661019F52069BA0B00EAE917 /* MenuItem.swift in Sources */,
+				66D86801208F852F00CCF90C /* StepThree.swift in Sources */,
 				66FBD7062078C7900045B34C /* SendFriendViewController.swift in Sources */,
 				667F785A207CCE14005A497D /* FilterImageViewController.swift in Sources */,
 				66164D5020677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */,
@@ -901,11 +995,14 @@
 				667F7873207CCE47005A497D /* FilterCollectionViewCell.swift in Sources */,
 				667F7852207CA478005A497D /* FeedViewController.swift in Sources */,
 				66AAD61F2068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
+				660FEC73208D403500823401 /* CheckoutTableViewCell.swift in Sources */,
+				66D867FD208F851A00CCF90C /* StepTwo.swift in Sources */,
 				66164D38206708CC004EB92D /* LocalCollection.swift in Sources */,
 				667F7864207CCE47005A497D /* FilterVideoViewController.swift in Sources */,
 				661019F12069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
 				66BF2AF02070485200D16722 /* OrderItem.swift in Sources */,
 				667F787A207D9647005A497D /* NewPostViewController.swift in Sources */,
+				66D867F9208F850A00CCF90C /* StepOne.swift in Sources */,
 				66BF2AF420733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D5206CDEAB00974259 /* Addon.swift in Sources */,
 				66164D4C20676D32004EB92D /* Restaurant.swift in Sources */,
@@ -916,10 +1013,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66D867F2208F836600CCF90C /* OnBoardingPager.swift in Sources */,
+				66D86806208F854400CCF90C /* StepFour.swift in Sources */,
+				66D867F6208F84AD00CCF90C /* StepZero.swift in Sources */,
 				667F7868207CCE47005A497D /* FiilterViewController.swift in Sources */,
 				66F87279207E042500C72CB8 /* Post.swift in Sources */,
 				66F8727E207E08FB00C72CB8 /* FeedTableViewCell.swift in Sources */,
 				661019F62069BA0B00EAE917 /* MenuItem.swift in Sources */,
+				66D86802208F852F00CCF90C /* StepThree.swift in Sources */,
 				66FBD7072078C7900045B34C /* SendFriendViewController.swift in Sources */,
 				667F785B207CCE14005A497D /* FilterImageViewController.swift in Sources */,
 				66164D5120677B3D004EB92D /* RestaurantTableViewCell.swift in Sources */,
@@ -931,11 +1032,14 @@
 				667F7874207CCE47005A497D /* FilterCollectionViewCell.swift in Sources */,
 				667F7853207CA478005A497D /* FeedViewController.swift in Sources */,
 				66AAD6202068BB90004CBC9F /* RestaurantDetailViewController.swift in Sources */,
+				660FEC74208D403600823401 /* CheckoutTableViewCell.swift in Sources */,
+				66D867FE208F851A00CCF90C /* StepTwo.swift in Sources */,
 				66164D39206708CC004EB92D /* LocalCollection.swift in Sources */,
 				667F7865207CCE47005A497D /* FilterVideoViewController.swift in Sources */,
 				661019F22069B45900EAE917 /* ItemTableViewCell.swift in Sources */,
 				66BF2AF12070485200D16722 /* OrderItem.swift in Sources */,
 				667F787B207D9647005A497D /* NewPostViewController.swift in Sources */,
+				66D867FA208F850A00CCF90C /* StepOne.swift in Sources */,
 				66BF2AF520733A1B00D16722 /* OptionsView.swift in Sources */,
 				663D48D6206CDEAB00974259 /* Addon.swift in Sources */,
 				66164D4D20676D32004EB92D /* Restaurant.swift in Sources */,

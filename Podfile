@@ -22,7 +22,10 @@ pod 'FBSDKCoreKit'
 pod 'Fusuma'
 pod 'Sharaku'
 pod 'RSSelectionMenu'
-
+pod 'BraintreeDropIn'
+pod 'Braintree'
+pod 'Braintree/Venmo'
+pod 'PopupDialog', '~> 0.7'
 
 pod 'Kingfisher', '~> 4.0'
 pod 'OneSignal', '>= 2.5.2', '< 3.0'

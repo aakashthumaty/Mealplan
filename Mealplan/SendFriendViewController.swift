@@ -8,8 +8,10 @@
 
 import UIKit
 import Firebase
+import OneSignal
+import PopupDialog
 
-class SendFriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SendFriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     var rest: Restaurant!
     var userEmail: String!
@@ -24,7 +26,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var sendToRandom: UIButton!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(self.friendArr)
+        //print(self.friendArr)
         if(self.friendArr != nil){
             return self.friendArr.count
         }else{
@@ -47,6 +49,11 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
         sendToUserInput.setBottomBorder()
 
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true;
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,14 +61,14 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
         self.friendTable.dataSource = self;
         
         let db = Firestore.firestore()
-        print("this the email though \(self.userEmail)")
+        //print("this the email though \(self.userEmail)")
         db.collection("users/\(self.username!)/friends").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                //print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    print(" 1 \(document["name"])")
+                    //print("\(document.documentID) => \(document.data())")
+                    //print(" 1 \(document["name"])")
                     //if(document.data()){
                     
                     var pls = Friend(dictionary: document.data())
@@ -74,16 +81,40 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                     if(pls != nil){
                         self.friendArr.append(pls!)
                     }else{
-                        print("aiyah Database")
+                        //print("aiyah Database")
                     }
 
                     //}
                     
                     
                 }
-                print(self.friendArr.count)
+                //print(self.friendArr.count)
                 self.friendTable.reloadData()
 
+                let launchedBefore = UserDefaults.standard.bool(forKey: "firstsendfriend")
+                if launchedBefore  {
+                    // not first sendfriend
+                }else{
+                    //first sendfriend
+                    let title = "YOU GET TO GIFT A POINT"
+                    let message = "Everytime you order food you get one point to keep AND one point to send! Pick a friend from this list to send a gift to or send one to a rando at the bottom! P.S. If you want to add friends, add them from the friends tab."
+                    
+                    let popup = PopupDialog(title: title, message: message)//, image: image)
+                    
+                    let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        
+                        OneSignal.promptForPushNotifications(userResponse: { accepted in
+                            //print("User accepted notifications: \(accepted)")
+                            UserDefaults.standard.set(true, forKey: "firstsendfriend")
+
+                        })
+                    }
+                    
+                    popup.addButtons([buttonTwo])
+                    self.present(popup, animated: true, completion: nil)
+                    
+                }
             }
         }
         //self.friendTable.reloadData()
@@ -96,6 +127,15 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let pushToken = status.subscriptionStatus.pushToken
+        let userId = status.subscriptionStatus.userId
+        //print(pushToken)
+        
+        //if pushToken != nil {
+
+        //}
         // 1
         
         var db = Firestore.firestore()
@@ -105,6 +145,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
         let sfReference = db.collection("users").document(friendArr[indexPath.row].username)
         
         var restID = rest.id
+        
         
         //adds a point to the friends restaurant point count
         db.runTransaction({ (transaction, errorPointer) -> Any? in
@@ -116,7 +157,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                 return nil
             }
             
-            print("\(restID).points")
+            //print("\(restID).points")
             var oldRestPoints = sfDocument.data()?["\(restID)"] as? Dictionary<String,Int>
         
             guard var oldTouched = sfDocument.data()?["touched"] as? [String] else {
@@ -150,9 +191,9 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
             return nil
         }) { (object, error) in
             if let error = error {
-                print("Transaction failed: \(error)")
+                //print("Transaction failed: \(error)")
             } else {
-                print("Transaction successfully committed!")
+                //print("Transaction successfully committed!")
                 
                 let db = Firestore.firestore()
                 
@@ -183,7 +224,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                 return nil
             }
             
-            print("\(restID).points")
+            //print("\(restID).points")
             var oldFriendPoints = sfDocument.data()?["giftcount"] as? Int
 
             
@@ -200,15 +241,16 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
             return nil
         }) { (object, error) in
             if let error = error {
-                print("Transaction failed: \(error)")
+                //print("Transaction failed: \(error)")
             } else {
-                print("Transaction successfully committed!")
+                //print("Transaction successfully committed!")
             }
         }
         
         
         //adds a point to the the giftcount of you
         let userRef = db.collection("users").document(self.username).collection("friends").document(friendArr[indexPath.row].username)
+        
         
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let sfDocument: DocumentSnapshot
@@ -219,7 +261,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                 return nil
             }
             
-            print("\(restID).points")
+            //print("\(restID).points")
             var oldFriendPoints = sfDocument.data()?["giftcount"] as? Int
             
             
@@ -236,11 +278,43 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
             return nil
         }) { (object, error) in
             if let error = error {
-                print("Transaction failed: \(error)")
+                //print("Transaction failed: \(error)")
             } else {
-                print("Transaction successfully committed!")
+                //print("Transaction successfully committed!")
             }
         }
+        
+        var temp: OurUser!
+        sfReference.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //print("Document data: \(dataDescription)")
+                temp = OurUser(dictionary: document.data()!)
+                
+ 
+                let message = "\(self.username!) sent you a 🎁 from \(self.rest.title)"
+                let notificationContent = [
+                    "include_player_ids": [temp.pushToken],
+                    "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                    "headings": ["en": "You got a free point!"],
+                    //"subtitle": ["en": "An English Subtitle"],
+                    // If want to open a url with in-app browser
+                    //"url": "https://google.com",
+                    // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                    //"data": ["OpenURL": "https://imgur.com"],
+                    //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                    "ios_badgeType": "Increase",
+                    "ios_badgeCount": 1
+                    ] as [String : Any]
+                
+                OneSignal.postNotification(notificationContent)
+                
+            } else {
+                //print("Document does not exist")
+            }
+        }
+        
+ 
         
         
         

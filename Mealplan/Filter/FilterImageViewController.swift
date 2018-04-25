@@ -31,6 +31,15 @@ class FilterImageViewController: FiilterViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+    }
+    
+//    ViewController.navigationController?.setNavigationBarHidden(true, animated: false)
+    
+
     
     override open func loadView() {
         if let view = UINib(nibName: "FilterImageViewController", bundle: Bundle(for: self.classForCoder)).instantiate(withOwner: self, options: nil).first as? UIView {

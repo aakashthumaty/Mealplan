@@ -25,14 +25,18 @@ import FirebaseAuthUI
 import FirebaseFacebookAuthUI
 import FirebaseGoogleAuthUI
 import FirebasePhoneAuthUI
+import OneSignal
+import FBSDKLoginKit
+import PopupDialog
+import Kingfisher
 
-
-class RestarauntsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FUIAuthDelegate {
+class RestarauntsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, FUIAuthDelegate {
     
     private var restaurants: [Restaurant] = []
     private var documents: [DocumentSnapshot] = []
     var userEmail: String!
     var username: String = ""
+    var restIDs: [String] = []
     
     @IBOutlet weak var restTable: UITableView!
     @IBOutlet weak var restHeaderView: UIView!
@@ -42,8 +46,19 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     
+    @IBOutlet weak var tos: UIButton!
+    
+    var pointDict: Dictionary<String,Int> = [:]
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if(self.username != nil && self.username != " " && self.username != ""){
+            self.loadThemPoints()
+        }
+        //self.loadThemPoints()
+        //self.loadThemRests()
+        
         
         self.title = "Restaurants"
         
@@ -54,7 +69,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         self.signupView.isHidden = true;
         self.oView.isHidden = true;
         self.doneSignup.isHidden = true;
-        
+        self.tos.isHidden = true
 //        self.doneSignup.clipsToBounds = true
 //        self.doneSignup.layer.cornerRadius = 15
         //self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -69,32 +84,79 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true;
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("got here pleae")
+        //print("got here pleae")
         //print(restaurants.count)
         return restaurants.count 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        return 225.0;//Choose your custom row height
+        return 245.0;//Choose your custom row height
     }
+    
+    @objc func imgTap(tapGesture: UITapGestureRecognizer) {
+//        let imgView = tapGesture.view as! UIImageView
+//        let idToMove = imgView.tag
+        let tapLocation = tapGesture.location(in: self.restTable)
+        if let tapIndexPath = self.restTable.indexPathForRow(at: tapLocation) {
+            if let tappedCell = self.restTable.cellForRow(at: tapIndexPath) as? RestaurantTableViewCell {
+                //do what you want to cell here
+                self.restTable.selectRow(at: tapIndexPath, animated: false, scrollPosition: .none)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) { // change 2 to desired number of seconds
+                    self.performSegue(withIdentifier: "showRestDetail", sender: self.restTable.cellForRow(at: tapIndexPath))
+                }
+                
+            }
+        //print("pls say you got tapped")
+        
+        //Do further execution where you need idToMove
+        
+        }
+    }
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantTableViewCell",
                                                  for: indexPath) as! RestaurantTableViewCell
 
+        //cell.restCollectionView.
+        //_ = UITapGestureRecognizer (target: cell.restCollectionView, action: #selector(imgTap(tapGesture:)))
+        cell.restCollectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imgTap(tapGesture:))))
+
+        
+        cell.majorIndexPath = indexPath
         let rest = restaurants[indexPath.row]
 
-        cell.populate(restaurant: rest)
         
-        print("populating cell")
+        if(self.pointDict[rest.id] != nil){
+            cell.populate(restaurant: rest, points: self.pointDict[rest.id]!)
+            //print("they are open \(rest.open)")
+            if(rest.open == false){
+                cell.closedLabel.isHidden = false
+                cell.isUserInteractionEnabled = false
+
+            }
+        }else{
+            cell.populate(restaurant: rest, points: 0)
+            if(rest.open == false){
+                cell.isUserInteractionEnabled = false
+                cell.closedLabel.isHidden = false
+            }
+
+        }
+        
+        //print("populating cell")
         return cell
         
     }
@@ -104,7 +166,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
      
      
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("shit a bird out")
+        //print("shit a bird out")
     }
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -200,6 +262,39 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         restaurantDetailViewController.restaurant = selectedRest
         restaurantDetailViewController.username = self.username
         restaurantDetailViewController.userEmail = self.userEmail
+
+            let db = Firestore.firestore()
+            let meReference = db.collection("users").document(self.username)
+            
+            meReference.addSnapshotListener { (document, error) in
+                if let document = document, document.exists {
+                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                    //print("Document data: \(dataDescription)")
+                    
+                    if(document.data()![selectedRest.id] != nil){
+                        var obj: Dictionary<String, Any> = [:]
+                        //obj.append(document.data()!["tru0000001"] as! [String : Any])
+                        
+                        obj = document.data()![selectedRest.id] as! Dictionary<String, Any>
+                        //print(obj["points"])
+                        print(document.data()![selectedRest.id])
+                        var tString = obj["points"]!
+                        //if((tString as! Int) != nil){
+                            restaurantDetailViewController.userPoints = (tString as! Int)
+//                        }else{
+//                            restaurantDetailViewController.userPoints = 0
+//                        }
+                        //totalData = (jsonDict["totalfup"] as! NSString).doubleValue
+                        
+                    }
+                    
+                } else {
+                    //print("Document does not exist")
+                }
+            }
+            
+            
+        
 //        restaurantDetailViewController.catDict = catDict
 //        restaurantDetailViewController.items = items
 
@@ -210,6 +305,44 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         // Pass the selected object to the new view controller.
     }
 
+    @IBAction func facebookLogin(sender: UIButton) {
+        let fbLoginManager = FBSDKLoginManager()
+        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email"], from: self) { (result, error) in
+            if let error = error {
+                //print("Failed to login: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let accessToken = FBSDKAccessToken.current() else {
+               // print("Failed to get access token")
+                return
+            }
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
+            
+            // Perform login by calling Firebase APIs
+            Auth.auth().signIn(with: credential, completion: { (user, error) in
+                if let error = error {
+                    //print("Login error: \(error.localizedDescription)")
+                    let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(okayAction)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                    return
+                }
+                
+                // Present the main view
+                if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "MainView") {
+                    UIApplication.shared.keyWindow?.rootViewController = viewController
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            })
+            
+        }
+    }
+    
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         
@@ -218,6 +351,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             // Do NOT use this value to authenticate with your backend server,
             // if you have one. Use getTokenWithCompletion:completion: instead.
             self.userEmail = user.email!
+
+
         }
             usernameField.setBottomBorder()
             nameField.setBottomBorder()
@@ -227,22 +362,43 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             self.signupView.isHidden = false;
             self.oView.isHidden = false;
             self.doneSignup.isHidden = false;
-            
+            self.tos.isHidden = false
+        
             self.signupView.alpha = 0
             self.oView.alpha = 0
             self.doneSignup.alpha = 0
-            
+            self.tos.alpha = 0
+        
             self.view.bringSubview(toFront: self.oView)
             self.view.bringSubview(toFront: self.signupView)
             self.view.bringSubview(toFront: self.doneSignup)
+            self.view.bringSubview(toFront: self.tos)
+        
+        let title = "ACCEPT NOTIFICATION FOR REWARDS"
+        let message = "Please accept push notifications to receive  free points, new info and special discounts!"
+        
+        let popup = PopupDialog(title: title, message: message)//, image: image)
+        
+        let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+            //print("You canceled the car dialog.")
             
+            OneSignal.promptForPushNotifications(userResponse: { accepted in
+               // print("User accepted notifications: \(accepted)")
+            })
+        }
+        
+        popup.addButtons([buttonTwo])
+        self.present(popup, animated: true, completion: nil)
+        
+
+        
             UIView.animate(withDuration: 0.5, delay: 0,
                            options: [.curveEaseInOut],
                            animations: {
                             self.signupView.alpha = 1
                             self.oView.alpha = 0.75
                             self.doneSignup.alpha = 1
-                  
+                            self.tos.alpha = 1
             },
                            completion: nil
             )
@@ -254,6 +410,23 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             return;
         }
         
+        let whiteSpace = " "
+        if (usernameField.text?.contains(" ") == true) {
+            let alertController = UIAlertController(title: "Username Invalid", message: "Please choose a username without spaces.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+            {
+                (result : UIAlertAction) -> Void in
+                //print("You pressed OK")
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            //print ("has whitespace")
+            return;
+        } else {
+            //print("no whitespace")
+        }
+        
         let db = Firestore.firestore()
 
         // Create a reference to the cities collection
@@ -262,23 +435,46 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         // Create a query against the collection.
         let query = citiesRef.whereField("username", isEqualTo: self.usernameField.text).getDocuments(){ (querySnapshot, err) in
         if let err = err {
-            print("Error getting documents: \(err)")
+            //print("Error getting documents: \(err)")
         } else {
             //add user
             if(querySnapshot?.count == 0){
                 // handle user and error as necessary
-                print("this just happened")
+                //print("this just happened")
                 
                 let email = self.userEmail
                 let name = self.nameField.text
                 let username = self.usernameField.text
                 
+                self.username = username!
+                
+                OneSignal.setEmail(self.userEmail);
+                let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+                
+                let hasPrompted = status.permissionStatus.hasPrompted
+                //print("hasPrompted = \(hasPrompted)")
+                let userStatus = status.permissionStatus.status
+                //print("userStatus = \(userStatus)")
+                
+                let isSubscribed = status.subscriptionStatus.subscribed
+                //print("isSubscribed = \(isSubscribed)")
+                let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+                //print("userSubscriptionSetting = \(userSubscriptionSetting)")
+                let userID = status.subscriptionStatus.userId
+                //print("userID = \(userID)")
+                var pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
+                //print("pushToken = \(pushToken)")
+                
+                if(pushToken == nil){
+                    pushToken = " "
+                }
                 // Add a new document with a generated id.
                 db.collection("users").document(username!).setData([
                     "name": name,
                     "touched": ["Japan"],
                     "username": username,
-                    "email": email
+                    "email": email,
+                    "pushToken": pushToken
                     ])
                 
                 let defaults = UserDefaults.standard
@@ -292,6 +488,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                                 self.oView.alpha = 0
                                 self.signupView.alpha = 0
                                 self.doneSignup.alpha = 0
+                                self.tos.alpha = 0
                                 
                 },
                                completion: {finished in self.disappear()}
@@ -299,13 +496,13 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
 
             }else{
                 // username taken
-                print("username taken")
+                //print("username taken")
                 let alertController = UIAlertController(title: "Username Taken", message: "Great minds think alike. Sorry, that username is already taken 😔.", preferredStyle: UIAlertControllerStyle.alert)
                 
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
                 {
                     (result : UIAlertAction) -> Void in
-                    print("You pressed OK")
+                    //print("You pressed OK")
                 }
                 alertController.addAction(okAction)
                 self.present(alertController, animated: true, completion: nil)
@@ -321,47 +518,187 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         self.signupView.isHidden = true;
         self.oView.isHidden = true;
         self.doneSignup.isHidden = true;
+        self.tos.isHidden = true
+        
+        self.nameField.resignFirstResponder()
+        self.usernameField.resignFirstResponder()
+        
         
         self.view.sendSubview(toBack: self.oView)
         self.view.sendSubview(toBack: self.signupView)
         self.view.sendSubview(toBack: self.doneSignup)
+        self.view.sendSubview(toBack: self.tos)
     }
+    
+    
+    func loadThemRests(){
+        //self.restaurants = []
+        let db = Firestore.firestore()
+
+        db.collection("restaurants").addSnapshotListener { (querySnapshot, err) in
+            if let err = err {
+                //print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    //print("\(document.documentID) => \(document.data())")
+                    
+                    var pls = Restaurant(dictionary: document.data())
+                    if(pls != nil){
+//                        if objarray.contains(where: { name in name.id == 1 }) {
+//                            print("1 exists in the array")
+//                        } else {
+//                            print("1 does not exists in the array")
+//                        }
+                        //if(!(self.restIDs.contains((pls?.id)!))){
+                            
+                            //self.restaurants.remove(at: <#T##Int#>)
+                            self.restaurants = self.restaurants.filter {$0.id != pls?.id}
+                            self.restaurants.append(pls!)
+
+                            self.restIDs.append((pls?.id)!)
+                        //}
+                        DispatchQueue.main.async {
+                            self.restTable.reloadData()
+                        }
+
+                    }else{
+                        //print("aiyah Database")
+                    }
+                    ////print(pls!)
+                    //print("Current data: \(document.data())")
+                    
+                    //print(self.restaurants)
+                    
+                    //#warning - make sure the listener is being removed correctly here
+                    //print("got here")
+                }
+                
+            }
+        }
+    }
+    
+    
+    @IBAction func seeOrders(_ sender: Any) {
+        
+        
+    }
+    
+    @IBAction func contact(_ sender: Any) {
+        UIApplication.shared.openURL(NSURL(string: "http://www.getonmealplan.com/contact.html")! as URL)
+        
+    }
+    @IBAction func tos(_ sender: Any) {
+        
+        
+        UIApplication.shared.openURL(NSURL(string: "http://www.getonmealplan.com/about.html")! as URL)
+
+        //link to website here
+    }
+    
+    func loadThemPoints(){
+        let db = Firestore.firestore()
+        let meReference = db.collection("users").document(self.username)
+        
+        meReference.addSnapshotListener { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //print("Document data: \(dataDescription)")
+                
+                
+                for r in self.restaurants{
+                    if(document.data()![r.id] != nil){
+                        var obj: Dictionary<String, Any> = [:]
+                        //obj.append(document.data()!["tru0000001"] as! [String : Any])
+                        
+                        obj = document.data()![r.id] as! Dictionary<String, Any>
+                        //print(obj["points"])
+                        //print(document.data()![r.id])
+                        var tString = obj["points"]!
+                        self.pointDict[r.id] = (tString as! Int)
+                        //totalData = (jsonDict["totalfup"] as! NSString).doubleValue
+                        DispatchQueue.main.async(execute: {() -> Void in
+                            
+                            self.restTable.reloadData();
+                            
+                        })
+
+                    }
+                }
+                
+            } else {
+                //print("Document does not exist")
+            }
+        }
+        
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let db = Firestore.firestore()
         //try! Auth.auth().signOut()
+        ImageCache.default.maxCachePeriodInSecond = 60 * 60 * 24 * 3
+        ImageCache.default.maxDiskCacheSize = 1000 * 1024 * 1024
+        
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore  {
+            //print("Not first launch.")
+            
+            
+            self.restTable.dataSource = self;
+            self.restTable.delegate = self;
+            self.restTable.tableFooterView = UIView(frame: CGRect.zero)
+            
+            bigBang()
+            //print("git here")
+            
+        } else {
+            //print("First launch, setting UserDefault.")
+            try! Auth.auth().signOut()
+            let intro : OnBoardingPager = self.storyboard?.instantiateViewController(withIdentifier: "obp") as! OnBoardingPager
+            self.present(intro, animated: false, completion: nil)
+            
+            
+        }
 
-//        do {
-//            try Auth.auth().signOut()
-//        } catch let error {
-//            // handle error here
-//            print("Error trying to sign out of Firebase: \(error.localizedDescription)")
-//        }
+       // print(launchedBefore)
+
+    }
+    
+    func bigBang(){
+        let db = Firestore.firestore()
+        
+        //        do {
+        //            try Auth.auth().signOut()
+        //        } catch let error {
+        //            // handle error here
+        //            print("Error trying to sign out of Firebase: \(error.localizedDescription)")
+        //        }
         
         if Auth.auth().currentUser != nil {
             //user is signed in
-
+            
             self.userEmail = (Auth.auth().currentUser?.email)!
             let defaults = UserDefaults.standard
             let uName = defaults.string(forKey: "username")
-
+            
             self.username = uName!
             let docRef = db.collection("users").document(uName!)
             
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
                     let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    print("Document data: \(dataDescription)")
+                    //print("Document data: \(dataDescription)")
                     //self.username = document["username"] as! String
-                    print("user signed in \(self.username)")
-
+                    //print("user signed in \(self.username)")
+                    
                 } else {
-                    print("Document does not exist")
+                    //print("Document does not exist")
                 }
             }
-
+            
+            loadThemPoints()
+            
         } else {
             // No user is signed in.
             // ...
@@ -370,66 +707,35 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             authUI?.delegate = self as? FUIAuthDelegate
             let providers: [FUIAuthProvider] = [
                 FUIGoogleAuth(),
-                FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
-                FUIFacebookAuth(),
+                //FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()!),
+                //FUIFacebookAuth(),
                 
-                ]
+            ]
             authUI?.providers = providers
             
             //let authViewController = BizzyAuthViewController(authUI: authUI!)
-
+            
             let authViewController = authUI!.authViewController()
             
             self.present(authViewController, animated: true, completion: nil)
         }
-
-
-//        FacebookSignInManager.basicInfoWithCompletionHandler(self) { (dataDictionary:Dictionary<String, AnyObject>?, error:NSError?) -> Void in
-//
-//        }
+        
+        
+        //        FacebookSignInManager.basicInfoWithCompletionHandler(self) { (dataDictionary:Dictionary<String, AnyObject>?, error:NSError?) -> Void in
+        //
+        //        }
         
         //login for first time use
-            //eventually change this to first time somone tries to order
-//
-//        let loginButton = LoginButton(readPermissions: [ .publicProfile, .email ])
-//        loginButton.center = view.center
-//        view.addSubview(loginButton)
-
+        //eventually change this to first time somone tries to order
+        //
+        //        let loginButton = LoginButton(readPermissions: [ .publicProfile, .email ])
+        //        loginButton.center = view.center
+        //        view.addSubview(loginButton)
+        
         // Do any additional setup after loading the view, typically from a nib.
         
-        db.collection("restaurants").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    //print("\(document.documentID) => \(document.data())")
-                    
-                    var pls = Restaurant(dictionary: document.data())
-                    if(pls != nil){
-                        self.restaurants.append(pls!)
-                    }else{
-                        print("aiyah Database")
-                    }
-                    //print(pls!)
-                    //print("Current data: \(document.data())")
-  
-                    //print(self.restaurants)
-                    
-                    //#warning - make sure the listener is being removed correctly here
-                    print("got here")
-                }
-                self.restTable.reloadData()
-
-            }
-        }
-
-//        stackViewHeightConstraint.constant = 0
-//        activeFiltersStackView.isHidden = true
         
-
-        self.restTable.dataSource = self;
-        self.restTable.delegate = self;
-        self.restTable.tableFooterView = UIView(frame: CGRect.zero)
+        loadThemRests()
 
     }
 
@@ -461,6 +767,8 @@ class BizzyAuthViewController: FUIAuthPickerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+
         // Do any additional setup after loading the view.
         
         let width = UIScreen.main.bounds.size.width
@@ -473,5 +781,36 @@ class BizzyAuthViewController: FUIAuthPickerViewController {
         //imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
         
         view.insertSubview(imageViewBackground, at: 0)
-    }}
+    }
+    
+}
 
+extension FUIAuthBaseViewController{
+    open override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.leftBarButtonItem = nil
+    }
+}
+
+
+extension UIViewController {
+    class func displaySpinner(onView : UIView) -> UIView {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        return spinnerView
+    }
+    
+    class func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
+    }
+}

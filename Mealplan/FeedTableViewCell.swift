@@ -39,7 +39,7 @@ class FeedTableViewCell: UITableViewCell {
         self.post = postGiven
         caption.text = postGiven.caption
         gagCount.text = "\(postGiven.gags) gags"
-        lickCount.text = "\(postGiven.licks) gags"
+        lickCount.text = "\(postGiven.licks) licks"
         username.text = postGiven.user
         if(postGiven.friends != ""){
             atWithLabel.text = "@ \(postGiven.restaurant) w \(postGiven.friends)"
@@ -52,10 +52,14 @@ class FeedTableViewCell: UITableViewCell {
         let imgurl = URL(string: postGiven.image)
         imageMain.kf.setImage(with: imgurl)
         
+//        let url = URL(string: postGiven.image)
+//        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+//        imageMain.image = UIImage(data: data!)
+        
         if(postGiven.rating == "aight"){
             rating.image = UIImage(named:"500eh.png")
         }
-        if(postGiven.rating == "bad"){
+        else if(postGiven.rating == "bad"){
             rating.image = UIImage(named:"500sad.png")
         }else{
             rating.image = UIImage(named:"500heart.png")
@@ -65,3 +69,18 @@ class FeedTableViewCell: UITableViewCell {
     }
 
 }
+
+//extension UIImageView {
+//    public func imageFromUrl(urlString: String) {
+//        if let url = NSURL(string: urlString) {
+//            let request = NSURLRequest(url: url as URL)
+//            NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue.mainQueue) {
+//                (response: URLResponse?, data: NSData?, error: NSError?) -> Void in
+//                if let imageData = data as NSData? {
+//                    self.image = UIImage(data: imageData)
+//                }
+//            }
+//        }
+//    }
+//}
+

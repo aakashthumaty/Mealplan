@@ -17,6 +17,8 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     var selection: String = ""
     var price: Float = 0
     
+    var selectedRoww: IndexPath!
+    
     @IBOutlet weak var optionsTable: UITableView!
     
     
@@ -30,7 +32,7 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
 
         self.optionsArray = oA
         self.priceArray = pA
-        print("this is mprinting shit")
+        //print("this is mprinting shit")
         return optionsArray.count
     }
     
@@ -41,7 +43,7 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
 
         cell.optionLabel.text = optionsArray[indexPath.row]
         cell.optionPrice.text = "$\(priceArray[indexPath.row])"
-        print("we are here \(cell.optionPrice.text)")
+        //print("we are here \(cell.optionPrice.text)")
         if(self.selection == cell.optionLabel.text){
             cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
         }
@@ -58,16 +60,23 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             
             self.selection = ""
             self.price = 0.0
+            self.selectedRoww = nil
             return
         }else if(self.selection == ""){
-        
+            self.selectedRoww = indexPath
+
             cell.selectionIndicator.setImage(UIImage(named:"selectedBoxRed.png"), for: .normal)
 
             self.selection = cell.optionLabel.text!
             self.price = priceArray[indexPath.row]
-        }else{
+        }else{//if there is currently somethign selected and you click something else
+            if(self.selectedRoww != nil){
+                var oldcell = self.optionsTable.cellForRow(at: self.selectedRoww) as? optionTableViewCell
+                oldcell?.selectionIndicator.setImage(UIImage(named:"unselectedBox.png"), for: .normal)
+            }
             self.selection = cell.optionLabel.text!
             self.price = priceArray[indexPath.row]
+            self.selectedRoww = indexPath
             if let visibleIndexPaths = tableView.indexPathsForVisibleRows?.index(of: indexPath as IndexPath) {
                 if visibleIndexPaths != NSNotFound {
                     tableView.reloadRows(at: [indexPath], with: .fade)

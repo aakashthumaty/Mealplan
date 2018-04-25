@@ -23,24 +23,14 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lv-pG-KPG">
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Lv-pG-KPG">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <items>
-                        <navigationItem id="nOH-ha-ya5">
-                            <barButtonItem key="leftBarButtonItem" image="ic_close" id="nmp-tj-5PP">
-                                <color key="tintColor" red="0.25413199512661888" green="1" blue="0.18229170612547796" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </barButtonItem>
-                            <barButtonItem key="rightBarButtonItem" image="ic_check" id="And-XL-HXJ">
-                                <color key="tintColor" red="0.23585029045022698" green="0.39468247359655828" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </barButtonItem>
-                        </navigationItem>
-                    </items>
+                    <color key="barTintColor" red="0.40642387070937047" green="0.36560783886204851" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 </navigationBar>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="flF-Nt-f52">
-                    <rect key="frame" x="0.0" y="64" width="375" height="375"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="262.5"/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="flF-Nt-f52" secondAttribute="height" multiplier="1:1" id="q4u-yU-cPK"/>
+                        <constraint firstAttribute="width" secondItem="flF-Nt-f52" secondAttribute="height" multiplier="1:0.7" id="q4u-yU-cPK"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="6VW-bV-Y4U" appends="YES" id="gTv-Yu-Aif"/>
@@ -48,10 +38,10 @@
                     </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qvk-Cb-4uf">
-                    <rect key="frame" x="0.0" y="439" width="375" height="228"/>
+                    <rect key="frame" x="0.0" y="326.5" width="375" height="340.5"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="9m8-H1-yhg">
-                            <rect key="frame" x="0.0" y="68" width="375" height="160"/>
+                            <rect key="frame" x="0.0" y="180.5" width="375" height="160"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="160" id="VVM-1A-YyE"/>
@@ -75,20 +65,20 @@
                         <constraint firstAttribute="trailing" secondItem="9m8-H1-yhg" secondAttribute="trailing" id="XiO-V3-rNy"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cG1-fR-vpy">
-                    <rect key="frame" x="319" y="27" width="30" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button" image="blueCheck"/>
-                    <connections>
-                        <action selector="doneButtontapped" destination="-1" eventType="touchUpInside" id="mgm-iL-Zb2"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyS-jg-9Op">
-                    <rect key="frame" x="12" y="8" width="50" height="50"/>
+                    <rect key="frame" x="12" y="14" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Button" image="x"/>
                     <connections>
                         <action selector="closeButtonTapped" destination="-1" eventType="touchUpInside" id="KGs-Ue-HF5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1la-LT-4A7">
+                    <rect key="frame" x="319" y="19" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button" image="arrow"/>
+                    <connections>
+                        <action selector="doneButtontapped" destination="-1" eventType="touchUpInside" id="iSm-uq-xjF"/>
                     </connections>
                 </button>
             </subviews>
@@ -105,6 +95,7 @@
                 <constraint firstItem="Qvk-Cb-4uf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="y4R-Kh-s90"/>
                 <constraint firstItem="flF-Nt-f52" firstAttribute="top" secondItem="9Lv-pG-KPG" secondAttribute="bottom" id="yk2-uU-Fen"/>
             </constraints>
+            <nil key="simulatedTopBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="26.5" y="52.5"/>
         </view>
@@ -120,9 +111,7 @@
         </swipeGestureRecognizer>
     </objects>
     <resources>
-        <image name="blueCheck" width="1000" height="1000"/>
-        <image name="ic_check" width="48" height="48"/>
-        <image name="ic_close" width="48" height="48"/>
+        <image name="arrow" width="333" height="333"/>
         <image name="x" width="333" height="333"/>
     </resources>
 </document>

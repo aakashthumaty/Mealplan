@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ItemDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     var item: MenuItem!
     var addonList: Array<Addon> = []
@@ -22,6 +22,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     var selectionName: String = ""
     var basePrice: Float = 0.0
     var isFullItem: Bool = false
+    var discounted: Bool!
+    var specs: String!
+    var dis: Discount!
     
     @IBOutlet weak var commentsBox: UITextField!
     @IBOutlet weak var addonTableView: UITableView!
@@ -61,6 +64,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         self.selectionName = self.item.name
         self.basePrice = self.item.price
         //self.selectionPrice = self.item
+        self.specs = self.commentsBox.text
         self.isFullItem = true
         // add the "any extra notes text to the end of the selections array"
     }
@@ -78,8 +82,63 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return 30
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableCell(withIdentifier: "header")! as! HeaderCell
+        
+        
+        if(!item.hasaddons){
+            header.secName.text = "Addons"
+        }
+
+        if(self.addonListCategories.count != 0){
+ 
+            let key = self.addonListCategories[section]
+            var h = ""
+            if(key.required){
+                h += "required"
+            }
+            if(key.max > 0){
+                h += " (max \(key.max))"
+            }
+            header.secChara.text = h
+            header.secName.text = key.name
+        }else{
+            header.secName.text = "Addons"
+
+        }
+        header.secName.text?.capitalizeFirstLetter()
+        header.backgroundColor = UIColor.darkGray
+
+    return header.contentView
+
+    }
+    
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if(!item.hasaddons){
+//            return "Section"
+//        }
+//
+//        if(self.addonListCategories.count != 0){
+//            //print("addonlistcategories count \(addonListCategories) this is section value \(section)")
+//            let key = self.addonListCategories[section]
+//            //print(addonDict[key.name]?.count)
+//            var h = ""
+//            h = key.name
+//            if(key.required){
+//                h += " required"
+//            }
+//            if(key.max > 0){
+//                h += " maximum \(key.max) choice(s)"
+//            }
+//            return h
+//        }else{
+//            return "Section"
+//        }
+//        //return "Section"
+//    }
     
 //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
 //    {
@@ -154,6 +213,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         guard let cell = tableView.cellForRow(at: indexPath) as? addonTableViewCell else { return }
         
         let key = self.addonListCategories[indexPath.section].name
+        if(self.addonListCategories[indexPath.section].max == 1.0){
+            
+        }
         var addonChosen = addonDict[key]![indexPath.row]
 
         //tableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -250,20 +312,24 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func clearOptions(_ sender: Any) {
         
         //get the option selected here
+        
 
         if(self.optionsView.selection == ""){
             //if they dont choose anything remove the addon because the addon was added to the selections array
             selections.removeLast()
             nonOrderSelections.removeLast()
-            print(selections)
-            print("poopin0")
+            //print(selections)
+            //print("poopin0")
             self.addonTableView.reloadData()
         }else{
             selections[selections.count-1].append(":\(self.optionsView.selection)")
             selectionPrice.append(self.optionsView.price)
-            print(selections)
-            print("poopin1")
+            //print(selections)
+            //print("poopin1")
         }
+        var c = self.optionsView.optionsTable.cellForRow(at: self.optionsView.selectedRoww) as? optionTableViewCell
+        c?.selectionIndicator.setImage(UIImage(named:"unselectedBox.png"), for: .normal)
+            
         self.optionsView.selection = ""
         self.optionsView.optionsTable.reloadData()
         UIView.animate(withDuration: 0.5, delay: 0,
@@ -276,6 +342,9 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         },
                        completion: {finished in self.disappear()}
         )
+        
+        self.optionsView.selection = ""
+        self.optionsView.optionsTable.reloadData()
         
     }
     
@@ -302,8 +371,34 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y = 0
+            }
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true;
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+    
         self.addonTableView.dataSource = self;
         self.addonTableView.delegate = self;
         self.addonTableView.tableFooterView = self.footerView
@@ -422,3 +517,21 @@ class addonTableViewCell: UITableViewCell {
     }
 
 }
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).uppercased() + dropFirst()
+    }
+    
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
+}
+
+class HeaderCell: UITableViewCell {
+    
+    @IBOutlet weak var secName: UILabel!
+    @IBOutlet weak var secChara: UILabel!
+    
+}
+

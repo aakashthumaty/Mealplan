@@ -11,7 +11,7 @@ import Firebase
 import RSSelectionMenu
 
 
-class NewPostViewController: UIViewController {
+class NewPostViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var greatFood: UIImageView!
     @IBOutlet weak var aightFood: UIImageView!
@@ -57,34 +57,34 @@ class NewPostViewController: UIViewController {
         
         db.collection("restaurants").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                //print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    //print("\(document.documentID) => \(document.data())")
+                    ////print("\(document.documentID) => \(document.data())")
                     
                     var pls = Restaurant(dictionary: document.data())
                     if(pls != nil){
                         self.restaurants.append(pls!)
                         self.restaurantNames.append((pls?.title)!)
                     }else{
-                        print("aiyah Database")
+                        //print("aiyah Database")
                     }
 
-                    print("got here")
+                    //print("got here")
                 }
                 //self.restTable.reloadData()
                 
             }
         }
         
-        print("this the email though \(self.username)")
+        //print("this the email though \(self.username)")
         db.collection("users/\(self.username)/friends").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                //print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    print(" 1 \(document["name"])")
+                    //print("\(document.documentID) => \(document.data())")
+                    //print(" 1 \(document["name"])")
                     
                     var pls = Friend(dictionary: document.data())
 
@@ -92,10 +92,10 @@ class NewPostViewController: UIViewController {
                         self.friendArr.append(pls!)
                         self.friendNames.append((pls?.name)!)
                     }else{
-                        print("aiyah Database")
+                        //print("aiyah Database")
                     }
                 }
-                print(self.friendArr.count)
+                //print(self.friendArr.count)
                 
             }
         }
@@ -126,6 +126,14 @@ class NewPostViewController: UIViewController {
         
         
     }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true;
+    }
+    
+    
     @IBAction func poop(_ sender: Any) {
         
         let selectionMenu =  RSSelectionMenu(dataSource: self.restaurantNames) { (cell, object, indexPath) in
@@ -180,7 +188,7 @@ class NewPostViewController: UIViewController {
     @objc func imageTapped(gesture: UIGestureRecognizer) {
         // if the tapped view is a UIImageView then set it to imageview
 
-                print("aight")
+                //print("aight")
                 self.rating = "aight"
                 self.aightFood.image = UIImage(named:"selectedBoxRed.png")
                 self.greatFood.image = UIImage(named:"heartBig.png")
@@ -190,7 +198,7 @@ class NewPostViewController: UIViewController {
     
     @objc func imageTappedGreat(gesture: UIGestureRecognizer) {
         // if the tapped view is a UIImageView then set it to imageview
-                print("great")
+                //print("great")
                 self.rating = "great"
                 self.greatFood.image = UIImage(named:"selectedBoxRed.png")
                 self.aightFood.image = UIImage(named:"ehBig.png")
@@ -199,7 +207,7 @@ class NewPostViewController: UIViewController {
     
     @objc func imageTappedBad(gesture: UIGestureRecognizer) {
 
-                print("bad")
+                //print("bad")
                 self.rating = "bad"
                 self.badFood.image = UIImage(named:"selectedBoxRed.png")
                 self.aightFood.image = UIImage(named:"ehBig.png")

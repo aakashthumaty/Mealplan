@@ -18,12 +18,23 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
     
     @IBOutlet weak var restCollectionView: UICollectionView!
     
+    var majorIndexPath: IndexPath!
+    
+    @IBOutlet weak var closedLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
     @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var discountLabel: UILabel!
     
-    func populate(restaurant: Restaurant) {
+    func populate(restaurant: Restaurant, points: Int) {
+        closedLabel.isHidden = true
+        self.isUserInteractionEnabled = true
+
+        self.restCollectionView.delegate = self
+        self.restCollectionView.dataSource = self
+        
+        self.restCollectionView.allowsSelection = false
+        //self.restCollectionView.isUserInteractionEnabled = false;
         self.rest = restaurant
 //        let flowLayout = UICollectionViewFlowLayout()
 //        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
@@ -37,6 +48,7 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
         self.restCollectionView.reloadData()
         discountLabel.text = restaurant.discounts[0]
         discountLabel.textColor = UIColor(red: 0.18, green: 0.8, blue: 0.443, alpha:1.0)
+        giftCount.text = points.description
 
         //rgb(46, 204, 113) green
      
@@ -60,6 +72,18 @@ class RestaurantTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
     override func prepareForReuse() {
         super.prepareForReuse()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let parentCell: RestaurantTableViewCell? = self.restCollectionView.superview?.superview as! RestaurantTableViewCell?
+//        UITableViewCell *parentCell = collectionView.superview;
+//        [parentCell.delegate collectionViewDidSelectedAtCell:parentCell];
+
+        
+        //parentCell?.delegate.collectionViewDidSelectedAtCell(cell: parentCell!)
+    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        self.majorIndexPath =
+//    }
 }
 
 class restCollectionViewCell: UICollectionViewCell{

@@ -12,29 +12,50 @@ import FirebaseAuthUI
 import FacebookCore
 import FacebookLogin
 import FBSDKLoginKit
+import Braintree
+import BraintreeDropIn
 
 import OneSignal
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate{//}, OSSubscriptionObserver {
+//    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+//        <#code#>
+//    }
+    
 
     var window: UIWindow?
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        
+        if url.scheme?.localizedCaseInsensitiveCompare("com.aakashthumaty.Mealplan.payments") == .orderedSame {
+            return BTAppSwitch.handleOpen(url, options: options)
+        }
         
         let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String?
         if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
             return true
         }
         // other URL handling goes here.
+        
+        if let fbSDKAppId = FBSDKSettings.appID(), url.scheme!.hasPrefix("fb\(fbSDKAppId)"), url.host == "authorize" {
+            let shouldOpen: Bool = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+            return shouldOpen
+        }
+        
+        let handled = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+        return handled
+        
         return false
         
+
         // First, handle Facebook URL open request
-//        if let fbSDKAppId = FBSDKSettings.appID(), url.scheme!.hasPrefix("fb1886430911387893"), url.host == "authorize" {
-//            let shouldOpen: Bool = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-//
-//            return shouldOpen
-//        }
+        if let fbSDKAppId = FBSDKSettings.appID(), url.scheme!.hasPrefix("fb1886430911387893"), url.host == "authorize" {
+            let shouldOpen: Bool = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+
+            return shouldOpen
+        }
         
         // After it, handle any other response (e.g. deep links)
 //        return true
@@ -42,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
         
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         
@@ -54,6 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let attributes = [NSAttributedStringKey.font: UIFont(name: "AvenirNext-UltraLight", size: 30)!]
         UINavigationBar.appearance().titleTextAttributes = attributes
+        
+        BTAppSwitch.setReturnURLScheme("com.aakashthumaty.Mealplan.payments")
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 //        self.navigationController?.navigationBar.shadowImage = UIImage()
 //        self.navigationController?.navigationBar.isTranslucent = true
@@ -64,10 +88,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure();
         let db = Firestore.firestore()
         
-        
+//        let settings = db.settings
+//        settings.areTimestampsInSnapshotsEnabled = true
+//        db.settings = settings
+//        
+        //        // old:
+        //        let date: Date = documentSnapshot.get("created_at") as! Date
+        //        // new:
+        //        let timestamp: Timestamp = documentSnapshot.get("created_at") as! Timestamp
+        //        let date: Date = timestamp.dateValue()
         
         AppEventsLogger.activate(application)
 
+        
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
 ////////OneSignal
         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
@@ -82,13 +116,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Recommend moving the below line to prompt for push after informing the user about
         //   how your app will use them.
-        OneSignal.promptForPushNotifications(userResponse: { accepted in
-            print("User accepted notifications: \(accepted)")
-        })
+//        OneSignal.promptForPushNotifications(userResponse: { accepted in
+//            print("User accepted notifications: \(accepted)")
+//        })
+        
+        //OneSignal.add(self as OSSubscriptionObserver)
+
 
         return true
     }
 
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+//        let handled = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+//
+//        return handled
+//    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

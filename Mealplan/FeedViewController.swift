@@ -54,7 +54,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
     }
     
     func filterImageViewControllerImageDidFilter(image: UIImage) {
-        print("Img")
+        //print("Img")
         throwUpPost = true
         let storage = Storage.storage()
         let storageRef = storage.reference()
@@ -66,7 +66,9 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         let imageData: Data = UIImageJPEGRepresentation(image, 0.5)!
 
         // Create a reference to the file you want to upload
-        let riversRef = storageRef.child("feed/\(username)3")
+        let db = Firestore.firestore()
+
+        let riversRef = storageRef.child("feed/\(self.username!)\(FieldValue.serverTimestamp().description)")
         
         // Upload the file to the path "images/rivers.jpg"
         let uploadTask = riversRef.putData(imageData, metadata: nil) { (metadata, error) in
@@ -77,19 +79,19 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             // Metadata contains file metadata such as size, content-type, and download URL.
             let downloadURL = metadata.downloadURL
             self.imgURL = (metadata.downloadURL()?.absoluteString)!
-            print(self.imgURL)
+            //print(self.imgURL)
         }
         
 
     }
     
     func filterImageViewControllerDidCancel() {
-        print("Img")
+        //print("Img")
 
     }
     
     func fusumaImageSelected(_ image: UIImage, source: FusumaMode) {
-        print("Img")
+        //print("Img")
         self.image = image
         throwUpFilters = true
 
@@ -97,23 +99,23 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
     }
     
     func fusumaMultipleImageSelected(_ images: [UIImage], source: FusumaMode) {
-        print("multImg")
+        //print("multImg")
 
     }
     
     func fusumaVideoCompleted(withFileURL fileURL: URL) {
-        print("yuh")
+        //print("yuh")
 
     }
     
     func fusumaCameraRollUnauthorized() {
-        print("yuh")
+        //print("yuh")
 
     }
     
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         
-        print("gotback")
+        //print("gotback")
         
         let sourceViewController = sender.source as? NewPostViewController
         
@@ -163,7 +165,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         let fusuma = FusumaViewController()
         fusuma.delegate = self
         //fusuma.hasVideo = true //To allow for video capturing with .library and .camera available by default
-        fusuma.cropHeightRatio = 0.6 // Height-to-width ratio. The default value is 1, which means a squared-size photo.
+        fusuma.cropHeightRatio = 0.7 // Height-to-width ratio. The default value is 1, which means a squared-size photo.
         fusuma.allowMultipleSelection = false // You can select multiple photos from the camera roll. The default value is false.
         fusumaCameraRollTitle = "Camera Roll"
         fusumaCameraTitle = "Photo" // Camera Title
@@ -187,11 +189,11 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         
         db.collection("posts").order(by: "time").addSnapshotListener { querySnapshot, error in
                 guard let documents = querySnapshot?.documents else {
-                    print("Error fetching documents: \(error!)")
+                    //print("Error fetching documents: \(error!)")
                     return
                 }
 //                let cities = documents.map { $0["name"]! }
-//                print("Current cities in CA: \(cities)")
+//                //print("Current cities in CA: \(cities)")
             for document in querySnapshot!.documents {
                 //print("\(document.documentID) => \(document.data())")
                 
@@ -201,11 +203,11 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
                         self.posts.insert(pls!, at: 0)
                         self.postIDS.append(document.documentID)
                     }else{
-                        print("aiyah Database")
+                        //print("aiyah Database")
                     }
                 }
                 
-                print("got here")
+                //print("got here")
             }
             self.postsTable.reloadData()
         }
@@ -270,11 +272,11 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
                                                  for: indexPath) as! FeedTableViewCell
         
         let p = posts[indexPath.row]
-        print(p)
+        //print(p)
 
         cell.populate(postGiven: p)
-        print(cell.frame.height)
-        print("populating cell")
+        //print(cell.frame.height)
+        //print("populating cell")
         return cell
     }
 

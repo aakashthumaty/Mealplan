@@ -15,13 +15,14 @@ struct OrderItem {
     var price: [Float]
     var name: String
     var addons: [String]
-    
+    var discAmount: Discount
     
     var dictionary: [String: Any] {
         return [
             "price": price,
             "name": name,
-            "addons": addons            
+            "addons": addons,
+            "discAmount": discAmount
             
         ]
     }
@@ -49,19 +50,22 @@ struct Discount {
     
     var amount: Float
     var count: Float
-    var description: String
+    //var description: String
     var item: String
     var shortDescription: String
     var type: String
+    var cat: String
+
     
     var dictionary: [String: Any] {
         return [
             "amount": amount,
             "count": count,
-            "description": description,
+            //"description": description,
             "item": item,
             "shortDescription": shortDescription,
             "type": type,
+            "cat": cat
             
         ]
     }
@@ -74,10 +78,12 @@ extension Discount: DocumentSerializable {
     init?(dictionary: [String : Any]) {
         guard  let amount = dictionary["amount"] as? Float,
             let count = dictionary["count"] as? Float,
-            let description = dictionary["description"] as? String,
+            //let description = dictionary["description"] as? String,
             let item = dictionary["item"] as? String,
             let shortDescription = dictionary["shortDescription"] as? String,
-            let type = dictionary["type"] as? String
+            let type = dictionary["type"] as? String,
+            let cat = dictionary["cat"] as? String
+
             else{
                 return nil
         }
@@ -86,10 +92,11 @@ extension Discount: DocumentSerializable {
         self.init(
             amount: amount,
             count: count,
-            description: description,
+            //description: description,
             item: item,
             shortDescription: shortDescription,
-            type: type
+            type: type,
+            cat: cat
             
             
         )

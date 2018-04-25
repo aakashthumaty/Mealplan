@@ -13,6 +13,7 @@ struct OurUser {
     
     var name: String
     var username: String
+    var pushToken: String
     //var email: String
     //var required: Bool
     
@@ -20,7 +21,9 @@ struct OurUser {
     var dictionary: [String: Any] {
         return [
             "name": name,
-            "username": username            //"email": email
+            "username": username,
+            "pushToken": pushToken
+            //"email": email
             //"required": required,
             
             
@@ -35,7 +38,8 @@ extension OurUser: DocumentSerializable {
     
     init?(dictionary: [String : Any]) {
         guard  let name = dictionary["name"] as? String,
-            let username = dictionary["username"] as? String
+            let username = dictionary["username"] as? String,
+            let pushToken = dictionary["pushToken"] as? String
             //let email = dictionary["email"] as? String
             //let required = dictionary["required"] as? Bool
             else{
@@ -45,7 +49,8 @@ extension OurUser: DocumentSerializable {
         
         self.init(
             name: name,
-            username: username
+            username: username,
+            pushToken: pushToken
             //email: email
             //required: required
             
