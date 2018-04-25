@@ -11,6 +11,7 @@ import Firebase
 import RSSelectionMenu
 import MessageUI
 import OneSignal
+import PopupDialog
 
 class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate  {
     
@@ -176,13 +177,32 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func inviteFriend(_ sender: Any) {
         
-        if (MFMessageComposeViewController.canSendText()) {
-            let controller = MFMessageComposeViewController()
-            controller.body = "Hey, download this app so we can both get more free food! https://itunes.apple.com/us/app/mealplan-lets-eat/id1376003167?ls=1&mt=8"
-            //controller.recipients = [phoneNumber.text]
-            controller.messageComposeDelegate = self
-            self.present(controller, animated: true, completion: nil)
+        let title = "GET MORE FREE POINTS"
+        let message = "The more friends you invite to download the app the more free points you can get!"
+        
+        let popup = PopupDialog(title: title, message: message)//, image: image)
+        
+        let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+            //print("You canceled the car dialog.")
+            
+//            OneSignal.promptForPushNotifications(userResponse: { accepted in
+//                //print("User accepted notifications: \(accepted)")
+//                UserDefaults.standard.set(true, forKey: "firstsendfriend")
+//
+//            })
+            
+            if (MFMessageComposeViewController.canSendText()) {
+                let controller = MFMessageComposeViewController()
+                controller.body = "Hey, download this app, Mealplan, so we can both get more free food https://itunes.apple.com/us/app/mealplan-lets-eat/id1376003167?ls=1&mt=8"
+                //controller.recipients = [phoneNumber.text]
+                controller.messageComposeDelegate = self
+                self.present(controller, animated: true, completion: nil)
+            }
         }
+        
+        popup.addButtons([buttonTwo])
+        self.present(popup, animated: true, completion: nil)
+        
         
     }
     
