@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import BraintreeDropIn
 import Braintree
+import OneSignal
 //import Braintree/Venmo
 
 class CheckoutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -52,14 +53,34 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
     var username: String = ""
     var order: [OrderItem] = []
     var fullPrice:Float = 0.0
-
-    
+    var restPrice: Float = 0.0
+    var name: String = ""
+    var orderPlaced = false;
+    var exit = false;
+    var triedOrder = false;
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
         self.username = defaults.string(forKey: "username")!
 
+        var db = Firestore.firestore()
+        let meReference = db.collection("users").document(self.username)
+        
+        var tempMe: OurUser!
+        
+        meReference.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //print("Document data: \(dataDescription)")
+                tempMe = OurUser(dictionary: document.data()!)
+                self.name = tempMe.name
+                
+            } else {
+                //print("Document does not exist")
+            }
+        }
+        
         //print("this is the final order")
 
         self.checkoutTable.delegate = self
@@ -70,14 +91,15 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
         //print(order)
         for o in self.order{
             fullPrice += o.price.reduce(0, +) - (o.price.reduce(0, +)*o.discAmount.amount)
+            restPrice += o.price.reduce(0, +) - (o.price.reduce(0, +)*o.discAmount.amount)
         }
         //print("pretax = \(self.fullPrice)")
-        self.taxLabel.text = String(0.075*self.fullPrice)
+        self.taxLabel.text = String("$\(0.075*self.fullPrice)")
         
         self.fullPrice = self.fullPrice + 0.30 + (0.075*self.fullPrice)
         //print("post tax = \(self.fullPrice)")
 
-        self.totalLabel.text = String(self.fullPrice)
+        self.totalLabel.text = String("$\(self.fullPrice)")
 
         // Do any additional setup after loading the view.
     }
@@ -87,6 +109,11 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func xTap(_ sender: Any) {
+        self.exit = true
+        self.performSegue(withIdentifier: "please", sender: self)
+        
+    }
     func fetchClientToken(totCost: Float) {
         // TODO: Switch this URL to your own authenticated API
         
@@ -156,17 +183,359 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
         request.httpBody = "payment_method_nonce=\(paymentMethodNonce)".data(using: String.Encoding.utf8)
         request.httpMethod = "POST"
         
+        
         //"https://us-central1-mealplan-dd302.cloudfunctions.net/clientTokenwid?id=\(self.username)
+        
+//        var obj: [Dictionary<String, Any>] = [[:]]
+//        let db = Firestore.firestore()
+//        for ord in self.order{
+//            //
+//            var ele: Dictionary<String, Any> = [:]
+//            //print("hi hello pls \(ord.name)")
+//
+//            ele["name"] = ord.name
+//            ele["addons"] = ord.addons
+//            ele["price"] = ord.price
+//            ele["discount"] = ord.discAmount.amount
+//            //
+//            //print("hi hello pls \(ord.dictionary)")
+//
+//            obj.append(ele)
+//
+//        }
+//        obj.remove(at: 0)
+//        db.collection("orders").document().setData([
+//            "restaurant": self.rest?.id,
+//            "user": self.userEmail,
+//            "orderItems": obj,
+//            "username": self.username,
+//            "time": FieldValue.serverTimestamp(),
+//            "fullPrice": self.fullPrice,
+//            "restPrice": self.restPrice,
+//            "fullname": self.name
+//            ])
+//
+//        db.collection("users").document(self.username).collection("orders").document().setData([
+//            "restaurant": self.rest?.id,
+//            "user": self.userEmail,
+//            "orderItems": obj,
+//            "time": FieldValue.serverTimestamp(),
+//            "fullPrice": self.fullPrice,
+//            "restPrice": self.restPrice,
+//            "fullname": self.name
+//            ])
+//        //add the order to the user
+//        //get the current state of user's restaurant properties
+//        //let docRef = db.collection("users").document(username)
+//        var touchArray: [String] = []
+//        var pointForRest: Int = 0
+//        var restID = self.rest.id
+//
+//
+        
+        
+        
+//        let sfReference = db.collection("users").document(self.username)
+//
+//        db.runTransaction({ (transaction, errorPointer) -> Any? in
+//            let sfDocument: DocumentSnapshot
+//            do {
+//                try sfDocument = transaction.getDocument(sfReference)
+//            } catch let fetchError as NSError {
+//                errorPointer?.pointee = fetchError
+//                return nil
+//            }
+//
+//            //print("\(restID).points")
+//            var oldRestPoints = sfDocument.data()?["\(restID)"] as? Dictionary<String,Int>
+//
+//            guard var oldTouched = sfDocument.data()?["touched"] as? [String] else {
+//                let error = NSError(
+//                    domain: "AppErrorDomain",
+//                    code: -1,
+//                    userInfo: [
+//                        NSLocalizedDescriptionKey: "Unable to retrieve touched from snapshot \(sfDocument)"
+//                    ]
+//                )
+//                errorPointer?.pointee = error
+//                return nil
+//            }
+//            if(oldTouched.contains(restID)){
+//
+//            }else{
+//                oldTouched.append(restID)
+//            }
+//
+//            var pointsToAdd: Int = 0
+//            if(oldRestPoints == nil){
+//                pointsToAdd = 1
+//            }else{
+//                pointsToAdd = oldRestPoints!["points"]!+1
+//            }
+//            transaction.updateData([
+//                "\(restID).points": pointsToAdd,
+//                "touched": oldTouched
+//
+//                ], forDocument: sfReference)
+//            return nil
+//        }) { (object, error) in
+//            if let error = error {
+//                //print("Transaction failed: \(error)")
+//            } else {
+//                //print("Transaction to firestore successfully committed!")
+//            }
+//        }
         
         URLSession.shared.dataTask(with: request) { (data, response, error) -> Void in
             // TODO: Handle success or failure
+            
+            if(error != nil){
+                
+                let db = Firestore.firestore()
+                
+                //var friendAdding = self.addFriendField.text
+                let fReference = db.collection("users").document((self.username))
+                
+                var temp: OurUser!
+                fReference.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        //print("Document data: \(dataDescription)")
+                        temp = OurUser(dictionary: document.data()!)
+                        
+                        
+                        let message = "There was an error processing your payment method, your order was not placed. Please try a different card or make sure your information is accurate."
+                        let notificationContent = [
+                            //35805a71-5aae-43b3-ae04-ec928cadaf0b
+                            "app_id": "35805a71-5aae-43b3-ae04-ec928cadaf0b",
+                            // xue p id 9f2a50ac-5a7b-4af2-92ab-f57609aa058e
+                            "include_player_ids": [temp.pushToken],
+                            "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                            "headings": ["en": "Payment Error, Order NOT Placed"],
+                            //"subtitle": ["en": "An English Subtitle"],
+                            // If want to open a url with in-app browser
+                            //"url": "https://google.com",
+                            // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                            //"data": ["OpenURL": "https://imgur.com"],
+                            //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                            "ios_badgeType": "Increase",
+                            "ios_badgeCount": 1
+                            ] as [String : Any]
+                        
+                        OneSignal.postNotification(notificationContent)
+                    }else{
+                        
+                        
+                    }
+                    
+                }
+                
+                
+            }
+            else if(data != nil){
+            let re = String(data: data!, encoding: String.Encoding.utf8)
+            print(re!)
 
+            if(error != nil || (re?.contains(find: "Error: could not handle the request"))!){
+                print("error!!!!")
+
+                
+                let db = Firestore.firestore()
+                
+                //var friendAdding = self.addFriendField.text
+                let fReference = db.collection("users").document((self.username))
+                
+                var temp: OurUser!
+                fReference.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        //print("Document data: \(dataDescription)")
+                        temp = OurUser(dictionary: document.data()!)
+                        
+                        
+                        let message = "There was an error processing your payment method, your order was not placed. Please try a different card or make sure your information is accurate."
+                        let notificationContent = [
+                            //35805a71-5aae-43b3-ae04-ec928cadaf0b
+                            "app_id": "35805a71-5aae-43b3-ae04-ec928cadaf0b",
+                            // xue p id 9f2a50ac-5a7b-4af2-92ab-f57609aa058e
+                            "include_player_ids": [temp.pushToken],
+                            "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                            "headings": ["en": "Payment Error, Order NOT Placed"],
+                            //"subtitle": ["en": "An English Subtitle"],
+                            // If want to open a url with in-app browser
+                            //"url": "https://google.com",
+                            // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                            //"data": ["OpenURL": "https://imgur.com"],
+                            //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                            "ios_badgeType": "Increase",
+                            "ios_badgeCount": 1
+                            ] as [String : Any]
+                        
+                        OneSignal.postNotification(notificationContent)
+                    }else{
+                        
+                        
+                    }
+                    
+                }
+                // show an alert
+            }else{
+                print(re!)
+//                self.orderPlaced = true;
+
+                //print(response.statusCo)
+                var obj: [Dictionary<String, Any>] = [[:]]
+                let db = Firestore.firestore()
+                for ord in self.order{
+                    //
+                    var ele: Dictionary<String, Any> = [:]
+                    //print("hi hello pls \(ord.name)")
+                    
+                    ele["name"] = ord.name
+                    ele["addons"] = ord.addons
+                    ele["price"] = ord.price
+                    ele["discount"] = ord.discAmount.amount
+                    //
+                    //print("hi hello pls \(ord.dictionary)")
+                    
+                    obj.append(ele)
+                    
+                }
+                //idk why it was adding an empy object at beginning
+                obj.remove(at: 0)
+                db.collection("orders").document().setData([
+                    "restaurant": self.rest?.id,
+                    "user": self.userEmail,
+                    "orderItems": obj,
+                    "username": self.username,
+                    "time": FieldValue.serverTimestamp(),
+                    "fullPrice": self.fullPrice,
+                    "restPrice": self.restPrice,
+                    "fullname": self.name
+                    ])
+                
+                db.collection("users").document(self.username).collection("orders").document().setData([
+                    "restaurant": self.rest?.id,
+                    "user": self.userEmail,
+                    "orderItems": obj,
+                    "time": FieldValue.serverTimestamp(),
+                    "fullPrice": self.fullPrice,
+                    "restPrice": self.restPrice,
+                    "fullname": self.name
+                    ])
+                //add the order to the user
+                //get the current state of user's restaurant properties
+                //let docRef = db.collection("users").document(username)
+                var touchArray: [String] = []
+                var pointForRest: Int = 0
+                var restID = self.rest.id
+                
+                let sfReference = db.collection("users").document(self.username)
+                
+                db.runTransaction({ (transaction, errorPointer) -> Any? in
+                    let sfDocument: DocumentSnapshot
+                    do {
+                        try sfDocument = transaction.getDocument(sfReference)
+                    } catch let fetchError as NSError {
+                        errorPointer?.pointee = fetchError
+                        return nil
+                    }
+                    
+                    //print("\(restID).points")
+                    var oldRestPoints = sfDocument.data()?["\(restID)"] as? Dictionary<String,Int>
+                    
+                    guard var oldTouched = sfDocument.data()?["touched"] as? [String] else {
+                        let error = NSError(
+                            domain: "AppErrorDomain",
+                            code: -1,
+                            userInfo: [
+                                NSLocalizedDescriptionKey: "Unable to retrieve touched from snapshot \(sfDocument)"
+                            ]
+                        )
+                        errorPointer?.pointee = error
+                        return nil
+                    }
+                    if(oldTouched.contains(restID)){
+                        
+                    }else{
+                        oldTouched.append(restID)
+                    }
+                    
+                    var pointsToAdd: Int = 0
+                    if(oldRestPoints == nil){
+                        pointsToAdd = 1
+                    }else{
+                        pointsToAdd = oldRestPoints!["points"]!+1
+                    }
+                    transaction.updateData([
+                        "\(restID).points": pointsToAdd,
+                        "touched": oldTouched
+                        
+                        ], forDocument: sfReference)
+                    return nil
+                }) { (object, error) in
+                    if let error = error {
+                        //print("Transaction failed: \(error)")
+                    } else {
+                        //print("Transaction to firestore successfully committed!")
+                    }
+                }
+            }
             //print("order completed loodoo")
+            }else{
+                print("shit smae popup here")
+                let db = Firestore.firestore()
+                
+                //var friendAdding = self.addFriendField.text
+                let fReference = db.collection("users").document((self.username))
+                
+                var temp: OurUser!
+                fReference.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        //print("Document data: \(dataDescription)")
+                        temp = OurUser(dictionary: document.data()!)
+                        
+                        
+                        let message = "There was an error processing your payment method, your order was not placed. Please try a different card or make sure your information is accurate."
+                        let notificationContent = [
+                            //35805a71-5aae-43b3-ae04-ec928cadaf0b
+                            "app_id": "35805a71-5aae-43b3-ae04-ec928cadaf0b",
+                            // xue p id 9f2a50ac-5a7b-4af2-92ab-f57609aa058e
+                            "include_player_ids": [temp.pushToken],
+                            "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                            "headings": ["en": "Payment Error, Order NOT Placed"],
+                            //"subtitle": ["en": "An English Subtitle"],
+                            // If want to open a url with in-app browser
+                            //"url": "https://google.com",
+                            // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                            //"data": ["OpenURL": "https://imgur.com"],
+                            //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                            "ios_badgeType": "Increase",
+                            "ios_badgeCount": 1
+                            ] as [String : Any]
+                        
+                        OneSignal.postNotification(notificationContent)
+                        
+                    } else {
+                        //print("Document does not exist")
+                    }
+                }
+                
+            }
             
             }.resume()
         
-        
-        self.performSegue(withIdentifier: "please", sender: self)
+        self.orderPlaced = true;
+
+               let sv = UIViewController.displaySpinner(onView: self.view)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // change 2 to desired
+            UIViewController.removeSpinner(spinner: sv)
+
+            self.performSegue(withIdentifier: "please", sender: self)
+            
+        }
+
         
 //        self.navigationController?.popViewController(animated: true)
 //        self.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -181,105 +550,13 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func placeOrder(_ sender: Any) {
         //print("wat")
-        self.fetchClientToken(totCost: self.fullPrice)
-        
+        var btPrice = self.fullPrice.rounded(toPlaces: 2)
+        self.fetchClientToken(totCost: btPrice)
+        //self.orderPlaced = true
         //print("\(self.fullPrice) is the full price")
         
 //add the roder to the root order collection
-        var obj: [Dictionary<String, Any>] = [[:]]
-        let db = Firestore.firestore()
-        for ord in order{
-//
-            var ele: Dictionary<String, Any> = [:]
-            //print("hi hello pls \(ord.name)")
-
-            ele["name"] = ord.name
-            ele["addons"] = ord.addons
-            ele["price"] = ord.price
-            ele["discount"] = ord.discAmount.amount
-//
-            //print("hi hello pls \(ord.dictionary)")
-            
-            obj.append(ele)
-
-        }
-        obj.remove(at: 0)
-        db.collection("orders").document().setData([
-            "restaurant": rest?.id,
-            "user": userEmail,
-            "orderItems": obj,
-            "username": username,
-            "time": FieldValue.serverTimestamp(),
-            "fullPrice": fullPrice
-            ])
         
-        db.collection("users").document(self.username).collection("orders").document().setData([
-            "restaurant": rest?.id,
-            "user": userEmail,
-            "orderItems": obj,
-            "time": FieldValue.serverTimestamp(),
-            "fullPrice": fullPrice])
-//add the order to the user
-        //get the current state of user's restaurant properties
-        //let docRef = db.collection("users").document(username)
-        var touchArray: [String] = []
-        var pointForRest: Int = 0
-        var restID = self.rest.id
-
-        
-        
-        
-        
-        let sfReference = db.collection("users").document(self.username)
-        
-        db.runTransaction({ (transaction, errorPointer) -> Any? in
-            let sfDocument: DocumentSnapshot
-            do {
-                try sfDocument = transaction.getDocument(sfReference)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            
-            //print("\(restID).points")
-            var oldRestPoints = sfDocument.data()?["\(restID)"] as? Dictionary<String,Int>
-
-            guard var oldTouched = sfDocument.data()?["touched"] as? [String] else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve touched from snapshot \(sfDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            if(oldTouched.contains(restID)){
-                
-            }else{
-                oldTouched.append(restID)
-            }
-            
-            var pointsToAdd: Int = 0
-            if(oldRestPoints == nil){
-                pointsToAdd = 1
-            }else{
-                pointsToAdd = oldRestPoints!["points"]!+1
-            }
-            transaction.updateData([
-                "\(restID).points": pointsToAdd,
-                "touched": oldTouched
-                
-                ], forDocument: sfReference)
-            return nil
-        }) { (object, error) in
-            if let error = error {
-                //print("Transaction failed: \(error)")
-            } else {
-                //print("Transaction to firestore successfully committed!")
-            }
-        }
         
     }
     
@@ -293,4 +570,21 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     */
 
+}
+
+extension Float {
+    /// Rounds the double to decimal places value
+    func rounded(toPlaces places:Int) -> Float {
+        let divisor = pow(10.0, Float(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
+extension String {
+    func contains(find: String) -> Bool{
+        return self.range(of: find) != nil
+    }
+    func containsIgnoringCase(find: String) -> Bool{
+        return self.range(of: find, options: .caseInsensitive) != nil
+    }
 }

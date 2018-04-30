@@ -30,13 +30,16 @@ import FBSDKLoginKit
 import PopupDialog
 import Kingfisher
 
-class RestarauntsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, FUIAuthDelegate {
+class RestarauntsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, FUIAuthDelegate, UITabBarControllerDelegate {
     
     private var restaurants: [Restaurant] = []
     private var documents: [DocumentSnapshot] = []
     var userEmail: String!
     var username: String = ""
     var restIDs: [String] = []
+    var name: String = ""
+    
+    var architectView = UIView()
     
     @IBOutlet weak var restTable: UITableView!
     @IBOutlet weak var restHeaderView: UIView!
@@ -50,7 +53,17 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     
     var pointDict: Dictionary<String,Int> = [:]
     
+    @IBAction func signUp(_ sender: Any) {
+        bigBang()
+    }
+    @IBOutlet weak var signUpTapped: UIButton!
     override func viewWillAppear(_ animated: Bool) {
+        signUpTapped.isHidden = true
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        if(uName == nil){
+            signUpTapped.isHidden = false
+        }
         super.viewWillAppear(animated)
         
         if(self.username != nil && self.username != " " && self.username != ""){
@@ -97,6 +110,15 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         //print("got here pleae")
         //print(restaurants.count)
         return restaurants.count 
+    }
+    
+    @objc func tabTap(tapGesture: UITapGestureRecognizer) {
+        //        let imgView = tapGesture.view as! UIImageView
+        //        let idToMove = imgView.tag
+        let tapLocation = tapGesture.location(in: self.view)
+        print("this happened")
+        bigBang()
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -263,6 +285,9 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         restaurantDetailViewController.username = self.username
         restaurantDetailViewController.userEmail = self.userEmail
 
+        if(self.username != ""){
+            
+        
             let db = Firestore.firestore()
             let meReference = db.collection("users").document(self.username)
             
@@ -292,6 +317,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                     //print("Document does not exist")
                 }
             }
+            
+        }
             
             
         
@@ -519,15 +546,19 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         self.oView.isHidden = true;
         self.doneSignup.isHidden = true;
         self.tos.isHidden = true
+        self.signUpTapped.isHidden = true;
         
         self.nameField.resignFirstResponder()
         self.usernameField.resignFirstResponder()
         
-        
+        self.view.sendSubview(toBack: self.signUpTapped)
         self.view.sendSubview(toBack: self.oView)
         self.view.sendSubview(toBack: self.signupView)
         self.view.sendSubview(toBack: self.doneSignup)
         self.view.sendSubview(toBack: self.tos)
+        
+        UIApplication.shared.keyWindow!.sendSubview(toBack: self.architectView)
+        self.view.sendSubview(toBack: self.architectView)
     }
     
     
@@ -633,23 +664,59 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
+    //this is where i am doing the tab shit
+    
+//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//        let defaults = UserDefaults.standard
+//
+//        let uName = defaults.string(forKey: "username")
+//        if(uName == nil){
+//            return false
+//        }
+//        return true;
+//    }
+//
+//    // UITabBarControllerDelegate
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        print("Selected view controller")
+//    }
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.delegate = self
+        loadThemRests()
+
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        if(uName == nil){
+            
+            
+            self.architectView.frame = CGRect(x: 0, y: self.view.bounds.size.height - 49, width: self.view.frame.size.width, height: 49)
+            self.view.addSubview(self.architectView)
+            //architectView.backgroundColor = UIColor.cyan
+            UIApplication.shared.keyWindow!.addSubview(self.architectView)
+
+            UIApplication.shared.keyWindow!.bringSubview(toFront: self.architectView)
+            self.view.bringSubview(toFront: self.architectView)
+
+            architectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabTap(tapGesture:))))
+        }
         //try! Auth.auth().signOut()
         ImageCache.default.maxCachePeriodInSecond = 60 * 60 * 24 * 3
         ImageCache.default.maxDiskCacheSize = 1000 * 1024 * 1024
         
+        self.restTable.dataSource = self;
+        self.restTable.delegate = self;
+        self.restTable.tableFooterView = UIView(frame: CGRect.zero)
+        
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
             //print("Not first launch.")
+
+//            bigBang()
             
-            
-            self.restTable.dataSource = self;
-            self.restTable.delegate = self;
-            self.restTable.tableFooterView = UIView(frame: CGRect.zero)
-            
-            bigBang()
             //print("git here")
             
         } else {
@@ -658,6 +725,21 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             let intro : OnBoardingPager = self.storyboard?.instantiateViewController(withIdentifier: "obp") as! OnBoardingPager
             self.present(intro, animated: false, completion: nil)
             
+            
+        }
+        
+        
+        
+        if Auth.auth().currentUser != nil {
+            //user is signed in
+            
+            self.userEmail = (Auth.auth().currentUser?.email)!
+            let defaults = UserDefaults.standard
+            let uName = defaults.string(forKey: "username")
+            
+            self.username = uName!
+            
+            loadThemPoints()
             
         }
 
@@ -735,8 +817,6 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         // Do any additional setup after loading the view, typically from a nib.
         
         
-        loadThemRests()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -781,6 +861,8 @@ class BizzyAuthViewController: FUIAuthPickerViewController {
         //imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
         
         view.insertSubview(imageViewBackground, at: 0)
+        
+        
     }
     
 }

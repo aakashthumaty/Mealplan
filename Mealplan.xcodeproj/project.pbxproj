@@ -138,6 +138,9 @@
 		66D86850208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
 		66D86851208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
 		66D86852208FED4500CCF90C /* screen2-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D86843208FED4400CCF90C /* screen2-2.png */; };
+		66D86860209101E300CCF90C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D8685F209101E300CCF90C /* TabViewController.swift */; };
+		66D86861209101E300CCF90C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D8685F209101E300CCF90C /* TabViewController.swift */; };
+		66D86862209101E300CCF90C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D8685F209101E300CCF90C /* TabViewController.swift */; };
 		66F41BDC207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
 		66F41BDD207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
 		66F41BDE207B603400E476B9 /* selection and stars in Resources */ = {isa = PBXBuildFile; fileRef = 66F41BDB207B603400E476B9 /* selection and stars */; };
@@ -283,6 +286,7 @@
 		66D86841208FED4000CCF90C /* screen4-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen4-2.png"; sourceTree = "<group>"; };
 		66D86842208FED4200CCF90C /* screen1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen1.png; sourceTree = "<group>"; };
 		66D86843208FED4400CCF90C /* screen2-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen2-2.png"; sourceTree = "<group>"; };
+		66D8685F209101E300CCF90C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		66F41BDB207B603400E476B9 /* selection and stars */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "selection and stars"; sourceTree = "<group>"; };
 		66F41BDF207B604100E476B9 /* buttons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = buttons; sourceTree = "<group>"; };
 		66F87276207E042500C72CB8 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -383,6 +387,7 @@
 				66164D3A20673E30004EB92D /* GoogleService-Info.plist */,
 				66164CFE2066F174004EB92D /* AppDelegate.swift */,
 				66B2312220887D7900B89671 /* DiscountSectionTableViewController.swift */,
+				66D8685F209101E300CCF90C /* TabViewController.swift */,
 				66164D002066F174004EB92D /* RestarauntsViewController.swift */,
 				66AAD61D2068BB90004CBC9F /* RestaurantDetailViewController.swift */,
 				66851051206B745E00ABE5C9 /* ItemDetailViewController.swift */,
@@ -948,6 +953,7 @@
 				660FEC72208D403500823401 /* CheckoutTableViewCell.swift in Sources */,
 				66164D012066F174004EB92D /* RestarauntsViewController.swift in Sources */,
 				66B2312320887D7900B89671 /* DiscountSectionTableViewController.swift in Sources */,
+				66D86860209101E300CCF90C /* TabViewController.swift in Sources */,
 				66BF2AEF2070485200D16722 /* OrderItem.swift in Sources */,
 				667F7879207D9647005A497D /* NewPostViewController.swift in Sources */,
 				66D867F8208F850A00CCF90C /* StepOne.swift in Sources */,
@@ -991,6 +997,7 @@
 				66164D162066F175004EB92D /* MealplanTests.swift in Sources */,
 				6620EAF820761E4A00528350 /* CheckoutViewController.swift in Sources */,
 				667F7870207CCE47005A497D /* EditVideoUtility.swift in Sources */,
+				66D86861209101E300CCF90C /* TabViewController.swift in Sources */,
 				66225948207A08EF00256E12 /* User.swift in Sources */,
 				667F7873207CCE47005A497D /* FilterCollectionViewCell.swift in Sources */,
 				667F7852207CA478005A497D /* FeedViewController.swift in Sources */,
@@ -1028,6 +1035,7 @@
 				66164D212066F175004EB92D /* MealplanUITests.swift in Sources */,
 				6620EAF920761E4A00528350 /* CheckoutViewController.swift in Sources */,
 				667F7871207CCE47005A497D /* EditVideoUtility.swift in Sources */,
+				66D86862209101E300CCF90C /* TabViewController.swift in Sources */,
 				66225949207A08EF00256E12 /* User.swift in Sources */,
 				667F7874207CCE47005A497D /* FilterCollectionViewCell.swift in Sources */,
 				667F7853207CA478005A497D /* FeedViewController.swift in Sources */,

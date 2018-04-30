@@ -18,7 +18,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
     
     @IBOutlet weak var postsTable: UITableView!
     
-    var username: String!
+    var username: String = ""
     var throwUpFilters: Bool = false
     var throwUpPost: Bool = false
     var image = UIImage()
@@ -68,7 +68,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         // Create a reference to the file you want to upload
         let db = Firestore.firestore()
 
-        let riversRef = storageRef.child("feed/\(self.username!)\(FieldValue.serverTimestamp().description)")
+        let riversRef = storageRef.child("feed/\(self.username)\(FieldValue.serverTimestamp().description)")
         
         // Upload the file to the path "images/rivers.jpg"
         let uploadTask = riversRef.putData(imageData, metadata: nil) { (metadata, error) in
@@ -122,6 +122,9 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         let db = Firestore.firestore()
 
         // Create a reference to the cities collection
+        if(self.username != ""){
+            
+        
         let userPostsRef = db.collection("users").document(self.username).collection("posts")
         let postsRef = db.collection("posts")
 
@@ -154,10 +157,10 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             
             
             ])
-        let defaults = UserDefaults.standard
-        defaults.set(username, forKey: "username")
+//        let defaults = UserDefaults.standard
+//        defaults.set(username, forKey: "username")
 
-
+        }
     }
     
 
@@ -238,9 +241,12 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
 //    self.navigationController?.setNavigationBarHidden(false, animated: false)
         
         let defaults = UserDefaults.standard
-        self.username = defaults.string(forKey: "username")!
-
-        self.postsTable.reloadData()
+        if(defaults.string(forKey: "username") != nil){
+            
+        
+            self.username = defaults.string(forKey: "username")!
+            self.postsTable.reloadData()
+        }
         // Do any additional setup after loading the view.
     }
     

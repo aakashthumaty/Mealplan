@@ -13,7 +13,7 @@ import MessageUI
 import OneSignal
 import PopupDialog
 
-class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate  {
+class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate{
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         //print("hello text sent")
@@ -384,7 +384,8 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
                     }
                     
  
-                    
+                    //let meReference = db.collection("users").document(self.username)
+
                     var tempMe: OurUser!
                     
                     meReference.getDocument { (document, error) in

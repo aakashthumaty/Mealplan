@@ -507,8 +507,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.disc = nil
-        self.discMode = false
+        //self.disc = nil
+        //self.discMode = false
         
         
         let header = self.headerView
@@ -521,6 +521,11 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         
         self.restaurantName.text = self.restaurant.title
         self.restaurantDescription.text = self.restaurant.description
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        if(uName == nil){
+            self.discountsCollectionView.isUserInteractionEnabled = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -560,6 +565,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         ///restaurants/tmt0000002/menu
         let db = Firestore.firestore()
         
+        if(self.username != ""){
+            
+        
         let meReference = db.collection("users").document(self.username)
         
         meReference.addSnapshotListener { (document, error) in
@@ -573,6 +581,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                 
             }
         }
+    }
         
         
         db.collection("/restaurants/\(restaurant.id)/rewards").getDocuments() { (querySnapshot, err) in
@@ -788,8 +797,39 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         return cell
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        
+        if (uName == nil){
+            //if ident == "YourIdentifier" {
+
+                return false
+            //}
+        }
+        return true
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 1
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        if(uName == nil){
+            
+            let title = "PLEASE LOGIN"
+            let message = "Please sign up and login to order food!"
+            let popup = PopupDialog(title: title, message: message)//, image: image)
+            let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+
+                self.navigationController?.popToRootViewController(animated: true)
+
+            }
+            
+            popup.addButtons([buttonTwo])
+            self.present(popup, animated: true, completion: nil)
+            //self.performSegue(withIdentifier: "plslogin", sender: self)
+            return
+        }
         
         guard let cell = tableView.cellForRow(at: indexPath) as? ItemTableViewCell else { return }
         
@@ -905,7 +945,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                      type: "none",
                      cat: "none"
                     )
-                     temp = OrderItem(price: fullListPrices, name: sourceViewController.selectionName, addons: sourceViewController.selections, discAmount: t)
+                    temp = OrderItem(price: fullListPrices, name: sourceViewController.selectionName, addons: sourceViewController.selections, discAmount: t)
                 }
 
                 self.discMode = false
@@ -955,12 +995,22 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             self.present(popup, animated: true, completion: nil)
             }
             
-        } else{
+        } else if let sourceViewController = sender.source as? CheckoutViewController{
             //this means it came from place order
             //print("teehee hahahaha looool")
-            presFriend = true
-            self.order = []
-            self.proceedToCheckout.isHidden = true;
+            if(sourceViewController.orderPlaced){
+                presFriend = true
+                self.order = []
+                self.proceedToCheckout.isHidden = true;
+            }else if (sourceViewController.exit){
+                print("nothing happened :( ")
+
+            
+            }else{
+                print("nothing happened :( ")
+                self.order = []
+                self.proceedToCheckout.isHidden = true;
+            }
 
         }
             

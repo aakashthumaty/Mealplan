@@ -23,7 +23,6 @@ struct OrderItem {
             "name": name,
             "addons": addons,
             "discAmount": discAmount
-            
         ]
     }
     
