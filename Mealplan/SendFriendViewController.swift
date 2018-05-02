@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import OneSignal
 import PopupDialog
+import RSSelectionMenu
 
 class SendFriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
@@ -17,6 +18,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
     var userEmail: String!
     var username: String!
     var friendArr: [Friend] = []
+    var userNames: [String] = []
     
     @IBOutlet weak var giftTitle: UILabel!
     
@@ -48,6 +50,190 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
     self.navigationController?.setNavigationBarHidden(true, animated: false)
         sendToUserInput.setBottomBorder()
 
+    }
+    
+    @IBAction func sendToUser(_ sender: Any) {
+        
+        
+        let db = Firestore.firestore()
+        
+        db.collection("users").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                //print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    //print("\(document.documentID) => \(document.data())")
+                    //print(" 1 \(document["name"])")
+                    //if(document.data()){
+                    
+                    var pls = OurUser(dictionary: document.data())
+                    if(pls != nil){
+                        //self.friendArr.append(pls!)
+                        
+                        self.userNames.append((pls?.username)!)
+                    }else{
+                        //print("aiyah Database")
+                    }
+                    
+                }
+                //print(self.friendArr.count)
+                //self.collView.reloadData()
+                
+                
+                let selectionMenu =  RSSelectionMenu(dataSource: self.userNames) { (cell, object, indexPath) in
+                    cell.textLabel?.text = object
+                    
+                }
+                selectionMenu.showSearchBar { (searchtext) -> ([String]) in
+                    
+                    // return filtered array based on any condition
+                    // here let's return array where name starts with specified search text
+                    
+                    return self.userNames.filter({ $0.lowercased().hasPrefix(searchtext.lowercased()) })
+                }
+                
+                var simpleSelectedArray: [String] = []
+                
+                selectionMenu.setSelectedItems(items: simpleSelectedArray) { (text, isSelected, selectedItems) in
+                    
+                    // update your existing array with updated selected items, so when menu presents second time updated items will be default selected.
+                    self.sendToUserInput.text = selectedItems.joined(separator: ", ")
+                    //self.addFriendField = selectedItems
+                    
+                }
+                
+                // show as PresentationStyle = Push
+                selectionMenu.show(style: .Present, from: self)
+                
+                //this is where i put the completion shit
+                
+                
+            }
+        }
+        
+        
+        
+    }
+    
+    
+    
+    
+    @IBAction func sendToUsername(_ sender: Any) {
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let pushToken = status.subscriptionStatus.pushToken
+        let userId = status.subscriptionStatus.userId
+        //print(pushToken)
+        
+        //if pushToken != nil {
+        
+        //}
+        // 1
+        
+        var db = Firestore.firestore()
+        
+
+        let sfReference = db.collection("users").document(self.sendToUserInput.text!)
+        
+        var restID = rest.id
+        
+        
+        //adds a point to the friends restaurant point count
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            //print("\(restID).points")
+            var oldRestPoints = sfDocument.data()?["\(restID)"] as? Dictionary<String,Int>
+            
+            guard var oldTouched = sfDocument.data()?["touched"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve touched from snapshot \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            if(oldTouched.contains(restID)){
+                
+            }else{
+                oldTouched.append(restID)
+            }
+            
+            var pointsToAdd: Int = 0
+            if(oldRestPoints == nil){
+                pointsToAdd = 1
+            }else{
+                pointsToAdd = oldRestPoints!["points"]!+1
+            }
+            transaction.updateData([
+                "\(restID).points": pointsToAdd,
+                //"touched": oldTouched
+                
+                ], forDocument: sfReference)
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                //print("Transaction failed: \(error)")
+            } else {
+                //print("Transaction successfully committed!")
+                
+                let db = Firestore.firestore()
+                
+                // Create a reference to the cities collection
+                let giftsRef = db.collection("gifts")
+                let postsRef = db.collection("posts")
+                
+                // Add a new document with a generated id.
+                giftsRef.document().setData([
+                    "sender": self.username,
+                    "receiver": self.sendToUserInput.text,
+                    "restaurant": self.rest.title,
+                    "time": FieldValue.serverTimestamp()
+                    ])
+            }
+        }
+        
+        
+        
+        var temp: OurUser!
+        sfReference.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //print("Document data: \(dataDescription)")
+                temp = OurUser(dictionary: document.data()!)
+                
+                
+                let message = "\(self.username!) sent you a 🎁 from \(self.rest.title)"
+                let notificationContent = [
+                    "include_player_ids": [temp.pushToken],
+                    "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                    "headings": ["en": "You got a free point!"],
+                    //"subtitle": ["en": "An English Subtitle"],
+                    // If want to open a url with in-app browser
+                    //"url": "https://google.com",
+                    // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                    //"data": ["OpenURL": "https://imgur.com"],
+                    //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                    "ios_badgeType": "Increase",
+                    "ios_badgeCount": 1
+                    ] as [String : Any]
+                
+                OneSignal.postNotification(notificationContent)
+                
+            } else {
+                //print("Document does not exist")
+            }
+        }
+        
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -185,7 +371,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
             }
             transaction.updateData([
                 "\(restID).points": pointsToAdd,
-                "touched": oldTouched
+                //"touched": oldTouched
                 
                 ], forDocument: sfReference)
             return nil

@@ -116,7 +116,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         
         //print("gotback")
-        
+        let ts = FieldValue.serverTimestamp()
         let sourceViewController = sender.source as? NewPostViewController
         
         let db = Firestore.firestore()
@@ -191,27 +191,75 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         let db = Firestore.firestore()
         
         db.collection("posts").order(by: "time").addSnapshotListener { querySnapshot, error in
-                guard let documents = querySnapshot?.documents else {
+                guard let documents = querySnapshot else {
                     //print("Error fetching documents: \(error!)")
                     return
                 }
+            print("there was a change")
 //                let cities = documents.map { $0["name"]! }
 //                //print("Current cities in CA: \(cities)")
-            for document in querySnapshot!.documents {
-                //print("\(document.documentID) => \(document.data())")
-                
-                var pls = Post(dictionary: document.data())
-                if(!self.postIDS.contains(document.documentID)){
-                    if(pls != nil ){
-                        self.posts.insert(pls!, at: 0)
-                        self.postIDS.append(document.documentID)
-                    }else{
-                        //print("aiyah Database")
+//            for document in querySnapshot!.documents {
+//                //print("\(document.documentID) => \(document.data())")
+//                
+//                var pls = Post(dictionary: document.data())
+//                if(!self.postIDS.contains(document.documentID)){
+//                    if(pls != nil ){
+//                        pls?.id = document.documentID
+//                        self.posts.insert(pls!, at: 0)
+//                        self.postIDS.append(document.documentID)
+//                    }else{
+//                        //print("aiyah Database")
+//                    }
+//                }
+//                
+//                //print("got here")
+//            }
+            
+            documents.documentChanges.forEach { diff in
+                if (diff.type == .added) {
+                    print("New city: \(diff.document.data())")
+                    var pls = Post(dictionary: diff.document.data())
+                    pls?.id = diff.document.documentID
+                    if(pls != nil){
+                    self.posts.insert(pls!, at: 0)
                     }
+
                 }
-                
-                //print("got here")
+                if (diff.type == .modified) {
+                    print("Modified city: \(diff.document.data())")
+                    
+                    var pls = Post(dictionary: diff.document.data())
+                    pls?.id = diff.document.documentID
+                    
+                    
+                    if self.posts.contains(where: { p in p.id == diff.document.documentID }) {
+                        print("1 exists in the array")
+                    } else {
+                        print("1 does not exists in the array")
+                        if(pls != nil){
+                            self.posts.insert(pls!, at: 0)
+                        }
+                    }
+                    
+                    
+                    for p in self.posts{
+                        if(p.id == diff.document.documentID){
+                            var ind = self.posts.index(where: { (pos) -> Bool in
+                                pos.id == diff.document.documentID
+                            })
+                            self.posts[ind!] = pls!
+                        }
+                    }
+                    self.postsTable.reloadData()
+
+                }
+                if (diff.type == .removed) {
+                    print("Removed city: \(diff.document.data())")
+                    self.postsTable.reloadData()
+
+                }
             }
+            
             self.postsTable.reloadData()
         }
 

@@ -11,6 +11,7 @@ import Foundation
 
 struct Post {
     
+    var id: String
     var user: String
     var caption: String // Could become an enum
     var rating: String // from 1 -5
@@ -65,7 +66,8 @@ extension Post: DocumentSerializable {
         }
         
         
-        self.init(user: user,
+        self.init(id: "",
+                  user: user,
                   caption: caption,
                   rating: rating,
                   image: image,

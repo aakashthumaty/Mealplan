@@ -156,11 +156,51 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                     let buttonTwo = DefaultButton(title: "Activate", dismissOnTap: true) {
                         //print("What a beauty!")
                         
-                        self.discMode = true
-                        self.disc = cell.disc
-                        
-                        self.discModeSections = self.restaurant.categories
-                        self.discModeSectionCount = self.restaurant.categories.count
+                        if(cell.disc.type == "category"){
+                            
+                            //if the discount is a category based discount do all of this //we also reload the entire tableview based on a new list of categories
+                            self.discMode = true
+                            self.disc = cell.disc
+                            var arrayofDiscItems = cell.disc.item.components(separatedBy: ",")
+                            self.discModeSections = arrayofDiscItems
+                            self.discModeSectionCount = arrayofDiscItems.count
+                            
+                            var iSet: [Int] = []
+                            self.itemTableView.beginUpdates()
+                            
+                            for thing in 0...self.restaurant.categories.count-1{
+                                
+                                if(!(arrayofDiscItems.contains(self.restaurant.categories[thing]))){
+                                    iSet.insert(thing, at: 0)
+                                    //self.itemTableView.deleteSections(NSIndexSet(index: thing) as IndexSet, with: .automatic)
+                                }
+                                
+                            }
+                            //itemTableView.sectionforsectionindexT
+                            let s: IndexSet = IndexSet(iSet)
+                            self.itemTableView.deleteSections(s, with: .automatic)
+                            
+                            
+                            self.itemTableView.endUpdates()
+                            //self.itemTableView.reloadData()
+                            
+//                            popup.dismiss(animated: true, completion: nil)
+//
+//                            let ip = IndexPath(item: 0, section: 0)
+//
+//                            self.discountsCollectionView.cellForItem(at: ip)?.contentView.layer.borderColor = UIColor.green.cgColor
+//                            self.discountsCollectionView.cellForItem(at: ip)?.contentView.layer.borderWidth = 5
+//                            self.discountsCollectionView.isUserInteractionEnabled = false
+                            
+                        }else{
+                            //if overall discount
+                            self.discMode = true
+                            self.disc = cell.disc
+                            
+                            self.discModeSections = self.restaurant.categories
+                            self.discModeSectionCount = self.restaurant.categories.count
+                            
+                        }
                         
                         self.discountsCollectionView.cellForItem(at: indexPath)?.contentView.layer.borderColor = UIColor.green.cgColor
                         self.discountsCollectionView.cellForItem(at: indexPath)?.contentView.layer.borderWidth = 5

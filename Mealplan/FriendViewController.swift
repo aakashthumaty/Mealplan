@@ -254,30 +254,61 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
     }
     @IBAction func friendBeganAdding(_ sender: Any) {
         
-        let selectionMenu =  RSSelectionMenu(dataSource: self.friendNames) { (cell, object, indexPath) in
-            cell.textLabel?.text = object
-            
-        }
-        selectionMenu.showSearchBar { (searchtext) -> ([String]) in
-            
-            // return filtered array based on any condition
-            // here let's return array where name starts with specified search text
-            
-            return self.friendNames.filter({ $0.lowercased().hasPrefix(searchtext.lowercased()) })
-        }
+        let db = Firestore.firestore()
         
-        var simpleSelectedArray: [String] = []
-        
-        selectionMenu.setSelectedItems(items: simpleSelectedArray) { (text, isSelected, selectedItems) in
-            
-            // update your existing array with updated selected items, so when menu presents second time updated items will be default selected.
-            self.addFriendField.text = selectedItems.joined(separator: ", ")
-            //self.addFriendField = selectedItems
-            
+        db.collection("users").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                //print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    //print("\(document.documentID) => \(document.data())")
+                    //print(" 1 \(document["name"])")
+                    //if(document.data()){
+                    
+                    var pls = OurUser(dictionary: document.data())
+                    if(pls != nil){
+                        //self.friendArr.append(pls!)
+                        
+                        self.friendNames.append((pls?.username)!)
+                    }else{
+                        //print("aiyah Database")
+                    }
+                    
+                }
+                //print(self.friendArr.count)
+                //self.collView.reloadData()
+                
+                
+                let selectionMenu =  RSSelectionMenu(dataSource: self.friendNames) { (cell, object, indexPath) in
+                    cell.textLabel?.text = object
+                    
+                }
+                selectionMenu.showSearchBar { (searchtext) -> ([String]) in
+                    
+                    // return filtered array based on any condition
+                    // here let's return array where name starts with specified search text
+                    
+                    return self.friendNames.filter({ $0.lowercased().hasPrefix(searchtext.lowercased()) })
+                }
+                
+                var simpleSelectedArray: [String] = []
+                
+                selectionMenu.setSelectedItems(items: simpleSelectedArray) { (text, isSelected, selectedItems) in
+                    
+                    // update your existing array with updated selected items, so when menu presents second time updated items will be default selected.
+                    self.addFriendField.text = selectedItems.joined(separator: ", ")
+                    //self.addFriendField = selectedItems
+                    
+                }
+                
+                // show as PresentationStyle = Push
+                selectionMenu.show(style: .Present, from: self)
+                
+                //this is where i put the completion shit
+                
+                
+            }
         }
-        
-        // show as PresentationStyle = Push
-        selectionMenu.show(style: .Present, from: self)
         
         
     }

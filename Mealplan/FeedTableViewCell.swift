@@ -8,6 +8,8 @@
 
 import UIKit
 import Kingfisher
+import Firebase
+import OneSignal
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -16,6 +18,11 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lickIcon: UIImageView!
     @IBOutlet weak var rating: UIImageView!
+    
+    
+    
+    @IBOutlet weak var gagButt: UIButton!
+    @IBOutlet weak var lickButt: UIButton!
     
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var gagCount: UILabel!
@@ -35,7 +42,149 @@ class FeedTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    
+    
+    
+    @IBAction func lick(_ sender: Any) {
+        self.lickButt.setImage(UIImage(named:"300coneColor.png"), for: .normal)
+        self.lickButt.imageView?.image = UIImage(named:"500sad.png")
+        var oldPopulation = 0
+        let db = Firestore.firestore()
+        let sfReference = db.collection("posts").document(self.post.id)
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            oldPopulation = (sfDocument.data()?["licks"] as? Int)!
+            
+            transaction.updateData(["licks": oldPopulation + 1], forDocument: sfReference)
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+                //self.lickCount.text = ("\(oldPopulation + 1) licks")
+                if((oldPopulation%15) == 0){
+                    
+                    let fReference = db.collection("users").document(self.post.user)
+                    
+                    var temp: OurUser!
+                    fReference.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                            //print("Document data: \(dataDescription)")
+                            temp = OurUser(dictionary: document.data()!)
+                            
+                            
+                            let message = "Your post in the food feed has \(oldPopulation + 1) licks!"
+                            let notificationContent = [
+                                "include_player_ids": [temp.pushToken],
+                                "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                                "headings": ["en": "Your Post Got Licked"],
+                                //"subtitle": ["en": "An English Subtitle"],
+                                // If want to open a url with in-app browser
+                                //"url": "https://google.com",
+                                // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                                //"data": ["OpenURL": "https://imgur.com"],
+                                //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                                "ios_badgeType": "Increase",
+                                "ios_badgeCount": 1
+                                ] as [String : Any]
+                            
+                            OneSignal.postNotification(notificationContent)
+                            
+                        } else {
+                            //print("Document does not exist")
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    
+    @IBAction func gag(_ sender: Any) {
+        
+        self.gagButt.setImage(UIImage(named:"300broccoliColor.png"), for: .normal)
+        var oldPopulation = 0
+        let db = Firestore.firestore()
+        let sfReference = db.collection("posts").document(self.post.id)
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            oldPopulation = (sfDocument.data()?["gags"] as? Int)!
+            
+            transaction.updateData(["gags": oldPopulation + 1], forDocument: sfReference)
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+                //self.lickCount.text = ("\(oldPopulation + 1) gags")
+                
+                if((oldPopulation%15) == 0){
+                    
+                    let fReference = db.collection("users").document(self.post.user)
+                    
+                    var temp: OurUser!
+                    fReference.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                            //print("Document data: \(dataDescription)")
+                            temp = OurUser(dictionary: document.data()!)
+                            
+                            
+                            let message = "Your post in the food feed has \(oldPopulation + 1) gags!"
+                            let notificationContent = [
+                                "include_player_ids": [temp.pushToken],
+                                "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                                "headings": ["en": "Your post Got Gagged"],
+                                //"subtitle": ["en": "An English Subtitle"],
+                                // If want to open a url with in-app browser
+                                //"url": "https://google.com",
+                                // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                                //"data": ["OpenURL": "https://imgur.com"],
+                                //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
+                                "ios_badgeType": "Increase",
+                                "ios_badgeCount": 1
+                                ] as [String : Any]
+                            
+                            OneSignal.postNotification(notificationContent)
+                            
+                        } else {
+                            //print("Document does not exist")
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+    }
+    
+    
     func populate(postGiven: Post) {
+        self.lickButt.setImage(UIImage(named:"300coneBlue.png"), for: .normal)
+        self.gagButt.setImage(UIImage(named:"300broccoliBlue.png"), for: .normal)
+
         self.post = postGiven
         caption.text = postGiven.caption
         gagCount.text = "\(postGiven.gags) gags"
