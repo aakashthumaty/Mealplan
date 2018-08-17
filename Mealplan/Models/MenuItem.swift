@@ -37,7 +37,6 @@ extension MenuItem: DocumentSerializable {
     
     init?(dictionary: [String : Any]) {
       guard  let name = dictionary["name"] as? String,
-        let price = dictionary["price"] as? Float,
         let description = dictionary["description"] as? String,
         let addons = dictionary["addons"] as? Dictionary<String, Array<Any>>,
         let cat = dictionary["cat"] as? String,
@@ -45,7 +44,7 @@ extension MenuItem: DocumentSerializable {
         else{
             return nil
         }
-        
+        let price = (dictionary["price"] as! NSNumber).floatValue
         
         self.init(
                   name: name,

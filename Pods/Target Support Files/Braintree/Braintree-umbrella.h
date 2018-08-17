@@ -68,6 +68,7 @@
 #import "BTIdealResult.h"
 #import "BTPaymentFlowDriver+Ideal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
+#import "BTThreeDSecurePostalAddress.h"
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureResult.h"
 #import "BraintreeUI.h"

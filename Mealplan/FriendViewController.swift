@@ -12,6 +12,7 @@ import RSSelectionMenu
 import MessageUI
 import OneSignal
 import PopupDialog
+import FirebaseFirestore
 
 class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate{
     
@@ -193,7 +194,7 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
             
             if (MFMessageComposeViewController.canSendText()) {
                 let controller = MFMessageComposeViewController()
-                controller.body = "Hey, download this app, Mealplan, so we can both get more free food https://itunes.apple.com/us/app/mealplan-lets-eat/id1376003167?ls=1&mt=8"
+                controller.body = "Hey, download this app, so we can both get some free food https://itunes.apple.com/us/app/mealplan-lets-eat/id1376003167?ls=1&mt=8"
                 //controller.recipients = [phoneNumber.text]
                 controller.messageComposeDelegate = self
                 self.present(controller, animated: true, completion: nil)

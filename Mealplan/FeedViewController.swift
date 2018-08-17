@@ -9,6 +9,8 @@
 import UIKit
 import Fusuma
 import Firebase
+import FirebaseFirestore
+import FirebaseStorage
 //import Sharaku
 
 
@@ -62,6 +64,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
         // Data in memory
         //let imageData: NSData = UIImagePNGRepresentation(myImage)
         self.image = image
+        
         let data: Data = UIImagePNGRepresentation(image)!
         let imageData: Data = UIImageJPEGRepresentation(image, 0.5)!
 
@@ -80,18 +83,22 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             
 //            let downloadURL = metadata.downloadURL
 //            self.imgURL = (metadata.downloadURL()?.absoluteString)!
-//            storageRef.downloadURL { (url, error) in
-//                guard let downloadURL = url?.absoluteString else {
-//                    // Uh-oh, an error occurred!
-//                    return
-//                }
-//            }
-            storageRef.downloadURL(completion: { (url, error) in
-                self.imgURL = (url?.absoluteString)!
-            })
+            
+            riversRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                self.imgURL = downloadURL.absoluteString
+                
+            }
+//            storageRef.downloadURL(completion: { (url, error) in
+//                self.imgURL = (url?.absoluteString)!
+//            })
             //print(self.imgURL)
         }
         
+
 
     }
     
@@ -161,8 +168,8 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             "rating": rating,
             "image": finalImage,
             "licks": 0,
-            "lickers": "",
-            "gagers": "",
+            "lickers": [""],
+            "gagers": [""],
             "gags": 0,
             "time": FieldValue.serverTimestamp()
 

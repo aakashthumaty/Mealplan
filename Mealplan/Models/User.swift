@@ -84,7 +84,6 @@ struct Friend {
     
 }
 
-
 extension Friend: DocumentSerializable {
     
     
@@ -109,6 +108,38 @@ extension Friend: DocumentSerializable {
             
         )
     }
-    
-    
 }
+    
+    
+    struct fsuObject {
+        
+        var titles: [String]
+
+        var dictionary: [String: Any] {
+            return [
+                "titles": titles
+            ]
+        }
+        
+    }
+    
+    
+    extension fsuObject: DocumentSerializable {
+        
+        
+        init?(dictionary: [String : Any]) {
+            guard  let titles = dictionary["titles"] as? [String]
+                
+                else{
+                    return nil
+            }
+            
+            
+            self.init(
+                titles: titles
+                
+            )
+        }
+}
+
+

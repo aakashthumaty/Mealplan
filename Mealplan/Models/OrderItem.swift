@@ -75,8 +75,7 @@ extension Discount: DocumentSerializable {
     
     
     init?(dictionary: [String : Any]) {
-        guard  let amount = dictionary["amount"] as? Float,
-            let count = dictionary["count"] as? Float,
+        guard
             //let description = dictionary["description"] as? String,
             let item = dictionary["item"] as? String,
             let shortDescription = dictionary["shortDescription"] as? String,
@@ -86,7 +85,8 @@ extension Discount: DocumentSerializable {
             else{
                 return nil
         }
-        
+        let amount = (dictionary["amount"] as! NSNumber).floatValue
+        let count = (dictionary["count"] as! NSNumber).floatValue
         
         self.init(
             amount: amount,
@@ -111,17 +111,19 @@ struct Order {
     
     var restaurant: String
     var restPrice: Float
-    //var description: String
-    var time: Timestamp
-    
+    var time: Date
+    var fullPrice: Float
+    var orderItems: [Dictionary<String, Any>]
+
     
     
     var dictionary: [String: Any] {
         return [
             "restaurant": restaurant,
             "restPrice": restPrice,
-            //"description": description,
-            "time": time
+            "time": time,
+            "fullPrice": fullPrice,
+            "orderItems": orderItems
         ]
     }
     
@@ -132,20 +134,26 @@ extension Order: DocumentSerializable {
     
     init?(dictionary: [String : Any]) {
         guard  let restaurant = dictionary["restaurant"] as? String,
-            let restPrice = dictionary["restPrice"] as? Float,
-            //let description = dictionary["description"] as? String,
-            let time = dictionary["time"] as? Timestamp
-            
+//            let restPrice = dictionary["restPrice"] as? Float,
+            let time = dictionary["time"] as? Date,
+//            let fullPrice = dictionary["fullPrice"] as? Float,
+            let orderItems = dictionary["orderItems"] as? [Dictionary<String, Any>]
+
             else{
                 return nil
         }
         
+        let restPrice = (dictionary["restPrice"] as! NSNumber).floatValue
+        let fullPrice = (dictionary["fullPrice"] as! NSNumber).floatValue
+
         
         self.init(
             restaurant: restaurant,
             restPrice: restPrice,
-            //description: description,
-            time: time
+            time: time,
+            fullPrice: fullPrice,
+            orderItems: orderItems
+
             
             
         )

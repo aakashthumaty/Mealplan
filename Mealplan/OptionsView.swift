@@ -27,7 +27,7 @@ class OptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         let oA = self.addon.options.components(separatedBy: ", ")
         var pA: Array<Float> = []
         for option in oA{
-            pA.append(self.addon.price[option]!)
+            pA.append(self.addon.price[option]!.floatValue)
         }
 
         self.optionsArray = oA

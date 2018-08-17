@@ -16,7 +16,7 @@ struct Restaurant {
     var address: String // Could become an enum
     var hours: Array<Any>
     var price: Int // from 1-3
-    var rating: Float // from 1 -5
+    //var rating: Float // from 1 -5
     //replace with average rating or API rating
     var icon: String
     var images: Array<Any>
@@ -33,7 +33,7 @@ struct Restaurant {
             "hours": hours,
             "address": address,
             "title": title,
-            "rating": rating,
+            //"rating": rating,
             "images": images,
             "price": price,
             "id": id,
@@ -61,7 +61,7 @@ extension Restaurant: DocumentSerializable {
             let address = dictionary["address"] as? String,
             let hours = dictionary["hours"] as? Array<Any>,
             let price = dictionary["price"] as? Int,
-            let rating = dictionary["rating"] as? Float,
+            //let rating = dictionary["rating"] as? Float,
             let icon = dictionary["icon"] as? String,
             let images = dictionary["images"] as? Array<Any>,
             let id = dictionary["id"] as? String,
@@ -78,7 +78,7 @@ extension Restaurant: DocumentSerializable {
                   address: address,
                   hours: hours,
                   price: price,
-                  rating: rating,
+                //rating: rating,
                   icon: icon,
                   images: images,
                   id: id,

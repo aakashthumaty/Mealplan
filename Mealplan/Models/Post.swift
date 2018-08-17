@@ -65,14 +65,17 @@ extension Post: DocumentSerializable {
             let image = dictionary["image"] as? String,
             let gags = dictionary["gags"] as? Int,
             let licks = dictionary["licks"] as? Int,
-            let lickers = dictionary["lickers"] as? Array<String>,
-            let gaggers = dictionary["gaggers"] as? Array<String>,
             let time = dictionary["time"] as? Date
             else{
                 return nil
         }
         
+        let lickers = dictionary["lickers"] as? Array<String>
+        let gaggers = dictionary["gaggers"] as? Array<String>
         
+        let defaultLickers: Array<String> = lickers ?? ["No Licker Array"]
+        let defaultGaggers: Array<String> = gaggers ?? ["No Gagger Array"]
+
         self.init(id: "",
                   user: user,
                   caption: caption,
@@ -82,8 +85,8 @@ extension Post: DocumentSerializable {
                   restaurant: restaurant,
                   licks: licks,
                   gags: gags,
-                  lickers: lickers,
-                  gaggers: gaggers,
+                  lickers: defaultLickers,
+                  gaggers: defaultGaggers,
                   time:time
         )
     }

@@ -8,9 +8,12 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import BraintreeDropIn
 import Braintree
 import OneSignal
+import PopupDialog
+
 //import Braintree/Venmo
 
 class CheckoutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -58,6 +61,22 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
     var orderPlaced = false;
     var exit = false;
     var triedOrder = false;
+    
+    var dito = ""
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
+    @IBAction func tidoSelected(_ sender: Any) {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
+            dito = "TAKE OUT"
+        case 1:
+            dito = "DINE IN"
+        default:
+            break
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -391,7 +410,7 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
                     var ele: Dictionary<String, Any> = [:]
                     //print("hi hello pls \(ord.name)")
                     
-                    ele["name"] = ord.name
+                    ele["name"] = "\(ord.name) - \(self.dito)"
                     ele["addons"] = ord.addons
                     ele["price"] = ord.price
                     ele["discount"] = ord.discAmount.amount
@@ -550,8 +569,26 @@ class CheckoutViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func placeOrder(_ sender: Any) {
         //print("wat")
-        var btPrice = self.fullPrice.rounded(toPlaces: 2)
-        self.fetchClientToken(totCost: btPrice)
+        if(self.dito != ""){
+            var btPrice = self.fullPrice.rounded(toPlaces: 2)
+            self.fetchClientToken(totCost: btPrice)
+        }else{
+            let title = "Please Choose To-Go or Dine In"
+            let message = "At the top of the screen please select whether you'd like to take your order to-go or eat in."
+            
+            let popup = PopupDialog(title: title, message: message)//, image: image)
+            
+            let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                //print("You canceled the car dialog.")
+                
+                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                    // print("User accepted notifications: \(accepted)")
+                })
+            }
+            
+            popup.addButtons([buttonTwo])
+            self.present(popup, animated: true, completion: nil)
+        }
         //self.orderPlaced = true
         //print("\(self.fullPrice) is the full price")
         

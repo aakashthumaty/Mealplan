@@ -9,6 +9,7 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 import OneSignal
 
 class FeedTableViewCell: UITableViewCell {
@@ -46,6 +47,17 @@ class FeedTableViewCell: UITableViewCell {
     
     
     @IBAction func lick(_ sender: Any) {
+        let defaults = UserDefaults.standard
+        var thisUser = ""
+        if(defaults.string(forKey: "username") != nil){
+            
+            
+            thisUser = defaults.string(forKey: "username")!
+            //self.postsTable.reloadData()
+        }
+        if(self.post.lickers.contains(thisUser)){
+            return;
+        }
         self.lickButt.setImage(UIImage(named:"300coneColor.png"), for: .normal)
         self.lickButt.imageView?.image = UIImage(named:"500sad.png")
         var oldPopulation = 0
@@ -61,22 +73,22 @@ class FeedTableViewCell: UITableViewCell {
                 return nil
             }
             
-            let defaults = UserDefaults.standard
-            var thisUser = ""
-            if(defaults.string(forKey: "username") != nil){
-                
-                
-                thisUser = defaults.string(forKey: "username")!
-                //self.postsTable.reloadData()
-            }
             
             oldPopulation = (sfDocument.data()?["licks"] as? Int)!
-            var oldLickers = [""]
-            oldLickers = (sfDocument.data()?["lickers"] as? Array)!
+            var oldLickers: Array<String>
             
+            if(sfDocument.data()?["lickers"] != nil){
+                oldLickers = (sfDocument.data()?["lickers"] as? Array<String>)!
+                oldLickers.append(thisUser)
+                transaction.updateData(["lickers": oldLickers], forDocument: sfReference)
+            }else{
+                oldLickers = []
+                oldLickers.append(thisUser)
+                transaction.updateData(["lickers": oldLickers], forDocument: sfReference)
+            }
             
             transaction.updateData(["licks": oldPopulation + 1], forDocument: sfReference)
-            transaction.updateData(["lickers": oldLickers.append(thisUser)], forDocument: sfReference)
+
             return nil
         }) { (object, error) in
             if let error = error {
@@ -126,6 +138,18 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBAction func gag(_ sender: Any) {
         
+        let defaults = UserDefaults.standard
+        var thisUser = ""
+        if(defaults.string(forKey: "username") != nil){
+            
+            
+            thisUser = defaults.string(forKey: "username")!
+            //self.postsTable.reloadData()
+        }
+        if(self.post.gaggers.contains(thisUser)){
+            return;
+        }
+        
         self.gagButt.setImage(UIImage(named:"300broccoliColor.png"), for: .normal)
         var oldPopulation = 0
         let db = Firestore.firestore()
@@ -139,10 +163,22 @@ class FeedTableViewCell: UITableViewCell {
                 errorPointer?.pointee = fetchError
                 return nil
             }
-            
+
             oldPopulation = (sfDocument.data()?["gags"] as? Int)!
+            var oldGaggers: Array<String>
+            
+            if(sfDocument.data()?["gaggers"] != nil){
+                oldGaggers = (sfDocument.data()?["gaggers"] as? Array<String>)!
+                oldGaggers.append(thisUser)
+                transaction.updateData(["gaggers": oldGaggers], forDocument: sfReference)
+            }else{
+                oldGaggers = []
+                oldGaggers.append(thisUser)
+                transaction.updateData(["gaggers": oldGaggers], forDocument: sfReference)
+            }
             
             transaction.updateData(["gags": oldPopulation + 1], forDocument: sfReference)
+
             return nil
         }) { (object, error) in
             if let error = error {
@@ -193,10 +229,28 @@ class FeedTableViewCell: UITableViewCell {
     
     
     func populate(postGiven: Post) {
-        self.lickButt.setImage(UIImage(named:"300coneBlue.png"), for: .normal)
-        self.gagButt.setImage(UIImage(named:"300broccoliBlue.png"), for: .normal)
-
         self.post = postGiven
+
+        let defaults = UserDefaults.standard
+        var thisUser = ""
+        if(defaults.string(forKey: "username") != nil){
+            thisUser = defaults.string(forKey: "username")!
+            //self.postsTable.reloadData()
+        }
+        
+        if(self.post.lickers.contains(thisUser)){
+            self.lickButt.setImage(UIImage(named:"300coneColor.png"), for: .normal)
+
+        }else{
+            self.lickButt.setImage(UIImage(named:"300coneBlue.png"), for: .normal)
+        }
+        if(self.post.gaggers.contains(thisUser)){
+            self.gagButt.setImage(UIImage(named:"300broccoliColor.png"), for: .normal)
+
+        }else{
+            self.gagButt.setImage(UIImage(named:"300broccoliBlue.png"), for: .normal)
+        }
+
         caption.text = postGiven.caption
         gagCount.text = "\(postGiven.gags) gags"
         lickCount.text = "\(postGiven.licks) licks"

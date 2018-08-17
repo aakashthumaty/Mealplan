@@ -3,12 +3,8 @@
 An elegant selection list or dropdown menu for iOS with single or multiple selections.
 
 
-![Alt text](/Images/image1.png?raw=true "Home")
-![Alt text](/Images/image2.png?raw=true "Simple push")
-![Alt text](/Images/image3.png?raw=true "Formsheet")
-![Alt text](/Images/image4.png?raw=true "Popover")
-![Alt text](/Images/image5.png?raw=true "Multiple selection")
-![Alt text](/Images/image6.png?raw=true "Custom cells")
+![Alt text](https://raw.githubusercontent.com/rushisangani/RSSelectionMenu/master/Images/01.gif "Single Selection")
+![Alt text](https://raw.githubusercontent.com/rushisangani/RSSelectionMenu/master/Images/03.gif "Custom")
 ## Features
 
 - Show selection menu as List, Popover or FormSheet with single or multiple selection.
@@ -31,7 +27,7 @@ An elegant selection list or dropdown menu for iOS with single or multiple selec
 ```ruby
 pod 'RSSelectionMenu'
 or
-pod 'RSSelectionMenu', '~> 3.3'
+pod 'RSSelectionMenu', '~> 5.0.2'
 ```
 <!--### Swift 4 project with RSSelectionMenu-->
 <!--RSSelectionMenu is developed in swift 3.2. So if you're using Swift 4.0 then put following script in your end of pod file.-->
@@ -87,10 +83,22 @@ selectionMenu.show(style: .Push, from: self)
 ```
 ### Multiple Selection List
 - Set SelectionType to .Multiple
+- Set Maximum selection limit
 
 ```swift
 let selectionMenu = RSSelectionMenu(selectionType: .Multiple, dataSource: dataArray, cellType: .Basic) { (cell, object, indexPath) in
     cell.textLabel?.text = object
+}
+selectionMenu.setSelectedItems(items: selectedDataArray, maxSelected: 3) { (text, selected, selectedItems) in
+}
+```
+### On Dismiss Handler
+- Perform any operation when menu is dismissed
+```swift
+selectionMenu.onDismiss = { selectedItems in
+    self.selectedDataArray = selectedItems
+    
+    // perform any operation once you get selected items
 }
 ```
 
@@ -204,7 +212,7 @@ let selectionMenu =  RSSelectionMenu(selectionType: .Multiple, dataSource: custo
 
 ### Custom Models or Dictionary
 - RSSelectionMenu can also works with Custom Models.
-- Inherit your models from NSObject.
+- Inherit your models from NSObject or use Codable class/struct.
 - Implement UniqueProperty protocol and define your unique property in the model.
 
 ### Custom Models with Custom Cells

@@ -21,10 +21,10 @@
 
 import UIKit
 import Firebase
-import FirebaseAuthUI
-import FirebaseFacebookAuthUI
-import FirebaseGoogleAuthUI
-import FirebasePhoneAuthUI
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseUI
+//import FirebaseFacebookAuthUI
 import OneSignal
 import FBSDKLoginKit
 import PopupDialog
@@ -40,6 +40,9 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     var name: String = ""
     
     var architectView = UIView()
+    
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var FSUButton: UIView!
     
     @IBOutlet weak var restTable: UITableView!
     @IBOutlet weak var restHeaderView: UIView!
@@ -75,7 +78,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
         self.title = "Restaurants"
         
-        restTable.tableHeaderView = restHeaderView
+        restTable.tableHeaderView = headerView
         // Hide the navigation bar on the this view controller
         //self.view.sendSubview(toBack: self.restHeaderView)
         
@@ -95,6 +98,12 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Show the navigation bar on other view controllers
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? OrdersViewController{
+            return;
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -267,55 +276,68 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         
         super.prepare(for: segue, sender: sender)
         
-        
-        guard let selectdRestCell = sender as? RestaurantTableViewCell else {
-            fatalError("Unexpected sender: \(sender)")
-        }
-        
-        guard let indexPath = restTable.indexPath(for: selectdRestCell) else {
-            fatalError("The selected cell is not being displayed by the table")
-        }
-
-        let selectedRest = restaurants[indexPath.row]
-
-        guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
-        }
-        restaurantDetailViewController.restaurant = selectedRest
-        restaurantDetailViewController.username = self.username
-        restaurantDetailViewController.userEmail = self.userEmail
-
-        if(self.username != ""){
+        switch segue.identifier {
             
-        
-            let db = Firestore.firestore()
-            let meReference = db.collection("users").document(self.username)
+        case "ordersSegue"?:
+            if(self.username != ""){
+                
+                print("should go to orders")
+            }
             
-            meReference.addSnapshotListener { (document, error) in
-                if let document = document, document.exists {
-                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    //print("Document data: \(dataDescription)")
-                    
-                    if(document.data()![selectedRest.id] != nil){
-                        var obj: Dictionary<String, Any> = [:]
-                        //obj.append(document.data()!["tru0000001"] as! [String : Any])
+        default:
+            
+            guard let selectdRestCell = sender as? RestaurantTableViewCell else {
+                //guard let restVC = sender as? self else {
+                    fatalError("Unexpected sender: \(sender)")
+                //}
+            }
+            
+            guard let indexPath = restTable.indexPath(for: selectdRestCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+
+            let selectedRest = restaurants[indexPath.row]
+
+            guard let restaurantDetailViewController = segue.destination as? RestaurantDetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            restaurantDetailViewController.restaurant = selectedRest
+            restaurantDetailViewController.username = self.username
+            restaurantDetailViewController.userEmail = self.userEmail
+
+            if(self.username != ""){
+                
+            
+                let db = Firestore.firestore()
+                let meReference = db.collection("users").document(self.username)
+                
+                meReference.addSnapshotListener { (document, error) in
+                    if let document = document, document.exists {
+                        let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        //print("Document data: \(dataDescription)")
                         
-                        obj = document.data()![selectedRest.id] as! Dictionary<String, Any>
-                        //print(obj["points"])
-                        print(document.data()![selectedRest.id])
-                        var tString = obj["points"]!
-                        //if((tString as! Int) != nil){
-                            restaurantDetailViewController.userPoints = (tString as! Int)
-//                        }else{
-//                            restaurantDetailViewController.userPoints = 0
-//                        }
-                        //totalData = (jsonDict["totalfup"] as! NSString).doubleValue
+                        if(document.data()![selectedRest.id] != nil){
+                            var obj: Dictionary<String, Any> = [:]
+                            //obj.append(document.data()!["tru0000001"] as! [String : Any])
+                            
+                            obj = document.data()![selectedRest.id] as! Dictionary<String, Any>
+                            //print(obj["points"])
+                            print(document.data()![selectedRest.id])
+                            var tString = obj["points"]!
+                            //if((tString as! Int) != nil){
+                                restaurantDetailViewController.userPoints = (tString as! Int)
+    //                        }else{
+    //                            restaurantDetailViewController.userPoints = 0
+    //                        }
+                            //totalData = (jsonDict["totalfup"] as! NSString).doubleValue
+                            
+                        }
                         
+                    } else {
+                        //print("Document does not exist")
                     }
-                    
-                } else {
-                    //print("Document does not exist")
                 }
+                
             }
             
         }
@@ -372,7 +394,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-        
+        /////this is where I check if the email exists and if so dont do the username flow
         if let user = user {
             // The user's ID, unique to the Firebase project.
             // Do NOT use this value to authenticate with your backend server,
@@ -381,25 +403,254 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
 
 
         }
-            usernameField.setBottomBorder()
-            nameField.setBottomBorder()
         
-            self.signupView.clipsToBounds = true
-            self.signupView.layer.cornerRadius = 30
-            self.signupView.isHidden = false;
-            self.oView.isHidden = false;
-            self.doneSignup.isHidden = false;
-            self.tos.isHidden = false
+        let db = Firestore.firestore()
         
-            self.signupView.alpha = 0
-            self.oView.alpha = 0
-            self.doneSignup.alpha = 0
-            self.tos.alpha = 0
+        // Create a reference to the cities collection
+        let citiesRef = db.collection("users")
         
-            self.view.bringSubview(toFront: self.oView)
-            self.view.bringSubview(toFront: self.signupView)
-            self.view.bringSubview(toFront: self.doneSignup)
-            self.view.bringSubview(toFront: self.tos)
+        // Create a query against the collection.
+        let query = citiesRef.whereField("email", isEqualTo: self.userEmail).getDocuments(){ (querySnapshot, err) in
+            if let err = err {
+                //print("Error getting documents: \(err)")
+            } else {
+                //add user
+                if((querySnapshot?.count)! == 1){
+                    
+                    //this is a user who deleted app and is relogging in
+                    
+                    for document in querySnapshot!.documents {
+                        
+                        print(document.data())
+                        var pls = OurUser(dictionary: document.data())
+                        
+                        if(pls != nil){
+                            
+                            //ask for notif stuff
+                            
+                            let defaults = UserDefaults.standard
+                            defaults.set(pls?.username, forKey: "username")
+                            //                defaults.set(true, forKey: "UseTouchID")
+                            //                defaults.set(CGFloat.pi, forKey: "Pi")
+                            
+                            let title = "ACCEPT NOTIFICATION FOR REWARDS"
+                            let message = "Please accept push notifications to receive  free points, new info and special discounts!"
+                            
+                            let popup = PopupDialog(title: title, message: message)//, image: image)
+                            
+                            let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                                //print("You canceled the car dialog.")
+                                
+                                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                                    // print("User accepted notifications: \(accepted)")
+                                    
+                                    let name = pls?.name
+                                    let username = pls?.username //username
+                                    
+                                    self.username = username!
+                                    
+                                    OneSignal.setEmail(self.userEmail);
+                                    let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+                                    
+                                    let hasPrompted = status.permissionStatus.hasPrompted
+                                    //print("hasPrompted = \(hasPrompted)")
+                                    let userStatus = status.permissionStatus.status
+                                    //print("userStatus = \(userStatus)")
+                                    
+                                    let isSubscribed = status.subscriptionStatus.subscribed
+                                    //print("isSubscribed = \(isSubscribed)")
+                                    let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+                                    //print("userSubscriptionSetting = \(userSubscriptionSetting)")
+                                    let userID = status.subscriptionStatus.userId
+                                    //print("userID = \(userID)")
+                                    var pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
+                                    //print("pushToken = \(pushToken)")
+                                    
+                                    
+                                    if(pushToken == nil){
+                                        pushToken = " "
+                                    }
+                                    
+                                    db.collection("users").document(self.username).updateData([
+                                        "pushToken": pushToken
+                                        ])
+                                    
+                                })
+                            }
+                            popup.addButtons([buttonTwo])
+                            self.present(popup, animated: true, completion: nil)
+                            //ask for notif stuff
+         
+                            UIView.animate(withDuration: 0.5, delay: 0,
+                                           options: [.curveEaseInOut],
+                                           animations: {
+                                            self.oView.alpha = 0
+                                            self.signupView.alpha = 0
+                                            self.doneSignup.alpha = 0
+                                            self.tos.alpha = 0
+                                            
+                            },
+                                           completion: {finished in self.disappear()}
+                            )
+
+                        }
+                    }
+                }else if((querySnapshot?.count)! == 3){
+                    
+                    var listOfUNames: Array<String> = []
+                    
+                    for document in querySnapshot!.documents {
+                        
+                        print(document.data())
+                        var pls = OurUser(dictionary: document.data())
+                        
+                        if(pls != nil){
+                            listOfUNames.append((pls?.username)!)
+                        }
+                    }
+                            //ask for notif stuff
+
+                    //default popup view setup
+                    let title = "You Have Multiple Accounts"
+                    let message = "Please choose the username of the account you'd like to sign in with. Please choose a username with only alphabetic characters. I'm sorry :( If you do not see the correct username in this list please contact us from the help button in the main tab."
+                    
+                    let popup = PopupDialog(title: title, message: message)//, image: image)
+                    
+                    let buttonFirstUsername = DefaultButton(title: listOfUNames[0], dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        let defaults = UserDefaults.standard
+                        defaults.set(listOfUNames[0], forKey: "username")
+                        self.username = listOfUNames[0]
+                        self.signinUserWithExistingUsername()
+                    }
+                    
+                    let buttonSecondUsername = DefaultButton(title: listOfUNames[1], dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        let defaults = UserDefaults.standard
+                        defaults.set(listOfUNames[1], forKey: "username")
+                        self.username = listOfUNames[1]
+                        self.signinUserWithExistingUsername()
+                    }
+                    
+                    let buttonThirdUsername = DefaultButton(title: listOfUNames[2], dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        let defaults = UserDefaults.standard
+                        defaults.set(listOfUNames[2], forKey: "username")
+                        self.username = listOfUNames[2]
+                        self.signinUserWithExistingUsername()
+                    }
+                    
+                    popup.addButtons([buttonFirstUsername, buttonSecondUsername, buttonThirdUsername])
+                    self.present(popup, animated: true, completion: nil)
+                    
+
+                    
+                    
+                }else if((querySnapshot?.count)! == 2){
+                    
+                    var listOfUNames: Array<String> = []
+                    
+                    for document in querySnapshot!.documents {
+                        
+                        print(document.data())
+                        var pls = OurUser(dictionary: document.data())
+                        
+                        if(pls != nil){
+                            listOfUNames.append((pls?.username)!)
+                        }
+                    }
+                    //ask for notif stuff
+                    
+                    //default popup view setup
+                    let title = "You Have Multiple Accounts"
+                    let message = "Please choose the username of the account you'd like to sign in with. Please choose a username with only alphabetic characters. I'm sorry :( If you do not see the correct username in this list please contact us from the help button in the main tab."
+                    
+                    let popup = PopupDialog(title: title, message: message)//, image: image)
+                    
+                    let buttonFirstUsername = DefaultButton(title: listOfUNames[0], dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        let defaults = UserDefaults.standard
+                        defaults.set(listOfUNames[0], forKey: "username")
+                        self.username = listOfUNames[0]
+                        self.signinUserWithExistingUsername()
+                    }
+                    
+                    let buttonSecondUsername = DefaultButton(title: listOfUNames[1], dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        let defaults = UserDefaults.standard
+                        defaults.set(listOfUNames[1], forKey: "username")
+                        self.username = listOfUNames[1]
+                        self.signinUserWithExistingUsername()
+                    }
+
+                    
+                    popup.addButtons([buttonFirstUsername, buttonSecondUsername])
+                    self.present(popup, animated: true, completion: nil)
+                    
+                    
+                    
+                    
+                }else{
+                    //if no user with this email = this is a brand new user making an account
+                    
+                    self.usernameField.setBottomBorder()
+                    self.nameField.setBottomBorder()
+                    
+                    self.signupView.clipsToBounds = true
+                    self.signupView.layer.cornerRadius = 30
+                    self.signupView.isHidden = false;
+                    self.oView.isHidden = false;
+                    self.doneSignup.isHidden = false;
+                    self.tos.isHidden = false
+                    
+                    self.signupView.alpha = 0
+                    self.oView.alpha = 0
+                    self.doneSignup.alpha = 0
+                    self.tos.alpha = 0
+                    
+                    self.view.bringSubview(toFront: self.oView)
+                    self.view.bringSubview(toFront: self.signupView)
+                    self.view.bringSubview(toFront: self.doneSignup)
+                    self.view.bringSubview(toFront: self.tos)
+                    
+                    let title = "ACCEPT NOTIFICATION FOR REWARDS"
+                    let message = "Please accept push notifications to receive  free points, new info and special discounts!"
+                    
+                    let popup = PopupDialog(title: title, message: message)//, image: image)
+                    
+                    let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                        //print("You canceled the car dialog.")
+                        
+                        OneSignal.promptForPushNotifications(userResponse: { accepted in
+                            // print("User accepted notifications: \(accepted)")
+                        })
+                    }
+                    
+                    popup.addButtons([buttonTwo])
+                    self.present(popup, animated: true, completion: nil)
+                    
+                    
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0,
+                                   options: [.curveEaseInOut],
+                                   animations: {
+                                    self.signupView.alpha = 1
+                                    self.oView.alpha = 0.75
+                                    self.doneSignup.alpha = 1
+                                    self.tos.alpha = 1
+                    },
+                                   completion: nil
+                    )
+                }
+            }
+        }
+            
+        
+    }
+    
+    func signinUserWithExistingUsername(){
+        
+        let db = Firestore.firestore()
         
         let title = "ACCEPT NOTIFICATION FOR REWARDS"
         let message = "Please accept push notifications to receive  free points, new info and special discounts!"
@@ -410,25 +661,55 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             //print("You canceled the car dialog.")
             
             OneSignal.promptForPushNotifications(userResponse: { accepted in
-               // print("User accepted notifications: \(accepted)")
+                // print("User accepted notifications: \(accepted)")
+                
+                //let name = pls?.name
+                let username = self.username //username
+                
+                //self.username = username!
+                
+                OneSignal.setEmail(self.userEmail);
+                let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+                
+                let hasPrompted = status.permissionStatus.hasPrompted
+                //print("hasPrompted = \(hasPrompted)")
+                let userStatus = status.permissionStatus.status
+                //print("userStatus = \(userStatus)")
+                
+                let isSubscribed = status.subscriptionStatus.subscribed
+                //print("isSubscribed = \(isSubscribed)")
+                let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+                //print("userSubscriptionSetting = \(userSubscriptionSetting)")
+                let userID = status.subscriptionStatus.userId
+                //print("userID = \(userID)")
+                var pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
+                //print("pushToken = \(pushToken)")
+                
+                
+                if(pushToken == nil){
+                    pushToken = " "
+                }
+                
+                db.collection("users").document(self.username).updateData([
+                    "pushToken": pushToken
+                    ])
+                
+                UIView.animate(withDuration: 0.5, delay: 0,
+                               options: [.curveEaseInOut],
+                               animations: {
+                                self.oView.alpha = 0
+                                self.signupView.alpha = 0
+                                self.doneSignup.alpha = 0
+                                self.tos.alpha = 0
+                                
+                },
+                               completion: {finished in self.disappear()}
+                )
+                
             })
         }
-        
         popup.addButtons([buttonTwo])
         self.present(popup, animated: true, completion: nil)
-        
-
-        
-            UIView.animate(withDuration: 0.5, delay: 0,
-                           options: [.curveEaseInOut],
-                           animations: {
-                            self.signupView.alpha = 1
-                            self.oView.alpha = 0.75
-                            self.doneSignup.alpha = 1
-                            self.tos.alpha = 1
-            },
-                           completion: nil
-            )
     }
     
     @IBAction func signUP(_ sender: Any) {
@@ -436,9 +717,34 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         if(usernameField.text == "" || nameField.text == ""){
             return;
         }
+        //let usernameEntered = usernameField.text!
+        var usernameEntered = usernameField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        
+        let characterset = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        if usernameEntered.rangeOfCharacter(from: characterset.inverted) != nil {
+            print("string contains special characters")
+            let alertController = UIAlertController(title: "Username Invalid", message: "Please choose a username with only alphabetic characters. I'm sorry :(", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+            {
+                (result : UIAlertAction) -> Void in
+                //print("You pressed OK")
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            //print ("has whitespace")
+            return;
+        }
+        
+//        if usernameEntered.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) != nil {
+//
+//            print("string contains special characters")
+//
+//        }
+//
         let whiteSpace = " "
-        if (usernameField.text?.contains(" ") == true) {
+        if (usernameEntered.contains(" ") == true) {
             let alertController = UIAlertController(title: "Username Invalid", message: "Please choose a username without spaces.", preferredStyle: UIAlertControllerStyle.alert)
             
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
@@ -471,9 +777,9 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 let email = self.userEmail
                 let name = self.nameField.text
-                let username = self.usernameField.text
+                let username = usernameEntered //username
                 
-                self.username = username!
+                self.username = username
                 
                 OneSignal.setEmail(self.userEmail);
                 let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
@@ -496,7 +802,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                     pushToken = " "
                 }
                 // Add a new document with a generated id.
-                db.collection("users").document(username!).setData([
+                db.collection("users").document(username).setData([
                     "name": name,
                     "touched": ["Japan"],
                     "username": username,
@@ -572,7 +878,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             } else {
                 for document in querySnapshot!.documents {
                     //print("\(document.documentID) => \(document.data())")
-                    
+                    print(document.data())
                     var pls = Restaurant(dictionary: document.data())
                     if(pls != nil){
 //                        if objarray.contains(where: { name in name.id == 1 }) {
@@ -585,7 +891,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                             //self.restaurants.remove(at: <#T##Int#>)
                             self.restaurants = self.restaurants.filter {$0.id != pls?.id}
                             self.restaurants.append(pls!)
-
+                            print(pls!)
                             self.restIDs.append((pls?.id)!)
                         //}
                         DispatchQueue.main.async {
@@ -737,14 +1043,39 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             let defaults = UserDefaults.standard
             let uName = defaults.string(forKey: "username")
             
-            self.username = uName!
+            let betterTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+            self.FSUButton.addGestureRecognizer(betterTap)
+
+            if(uName != nil){
+                self.username = uName!
+                loadThemPoints()
+                //let tap = UITapGestureRecognizer(target: self, action: Selector("FSU"))
+                
+            }else{
+                // nothing happens and signup button is still visible BUT user is authenticated
+
+            }
             
-            loadThemPoints()
             
         }
 
        // print(launchedBefore)
 
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
+        let defaults = UserDefaults.standard
+        let uName = defaults.string(forKey: "username")
+        
+        if(uName != nil){
+
+            print("bigButtonTapped")
+            let fsuView : FSUViewController = self.storyboard?.instantiateViewController(withIdentifier: "fsuVC") as! FSUViewController
+            fsuView.navigationController?.setNavigationBarHidden(true, animated: false)
+
+            
+            self.present(fsuView, animated: true, completion: nil)
+        }
     }
     
     func bigBang(){
@@ -764,22 +1095,74 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             let defaults = UserDefaults.standard
             let uName = defaults.string(forKey: "username")
             
-            self.username = uName!
-            let docRef = db.collection("users").document(uName!)
-            
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    //print("Document data: \(dataDescription)")
-                    //self.username = document["username"] as! String
-                    //print("user signed in \(self.username)")
-                    
-                } else {
-                    //print("Document does not exist")
+            if(uName != nil){
+                self.username = uName!
+                let docRef = db.collection("users").document(uName!)
+                
+                docRef.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        //print("Document data: \(dataDescription)")
+                        //self.username = document["username"] as! String
+                        //print("user signed in \(self.username)")
+                        
+                    } else {
+                        //print("Document does not exist")
+                    }
                 }
-            }
+                
+                loadThemPoints()
+            }else{
+                usernameField.setBottomBorder()
+                nameField.setBottomBorder()
+                
+                self.signupView.clipsToBounds = true
+                self.signupView.layer.cornerRadius = 30
+                self.signupView.isHidden = false;
+                self.oView.isHidden = false;
+                self.doneSignup.isHidden = false;
+                self.tos.isHidden = false
+                
+                self.signupView.alpha = 0
+                self.oView.alpha = 0
+                self.doneSignup.alpha = 0
+                self.tos.alpha = 0
+                
+                self.view.bringSubview(toFront: self.oView)
+                self.view.bringSubview(toFront: self.signupView)
+                self.view.bringSubview(toFront: self.doneSignup)
+                self.view.bringSubview(toFront: self.tos)
+                
+                let title = "ACCEPT NOTIFICATION FOR REWARDS"
+                let message = "Please accept push notifications to receive  free points, new info and special discounts!"
+                
+                let popup = PopupDialog(title: title, message: message)//, image: image)
+                
+                let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                    //print("You canceled the car dialog.")
+                    
+                    OneSignal.promptForPushNotifications(userResponse: { accepted in
+                        // print("User accepted notifications: \(accepted)")
+                    })
+                }
+                
+                popup.addButtons([buttonTwo])
+                self.present(popup, animated: true, completion: nil)
+                
+                
+                
+                UIView.animate(withDuration: 0.5, delay: 0,
+                               options: [.curveEaseInOut],
+                               animations: {
+                                self.signupView.alpha = 1
+                                self.oView.alpha = 0.75
+                                self.doneSignup.alpha = 1
+                                self.tos.alpha = 1
+                },
+                               completion: nil
+                )
             
-            loadThemPoints()
+            }
             
         } else {
             // No user is signed in.

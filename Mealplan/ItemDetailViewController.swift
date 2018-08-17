@@ -247,7 +247,7 @@ class ItemDetailViewController: UIViewController, UITableViewDataSource, UITable
         }else{
             selections.append(addonChosen.name)
             nonOrderSelections.append(addonChosen.name)
-            selectionPrice.append(addonChosen.price[addonChosen.options]!)
+            selectionPrice.append(addonChosen.price[addonChosen.options]!.floatValue)
             
             if let visibleIndexPaths = tableView.indexPathsForVisibleRows?.index(of: indexPath as IndexPath) {
                 if visibleIndexPaths != NSNotFound {

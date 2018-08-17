@@ -13,7 +13,7 @@ struct Addon {
     var multOptions: Bool
     var name: String
     var options: String
-    var price: Dictionary<String, Float>
+    var price: Dictionary<String, NSNumber>
     
     
     var dictionary: [String: Any] {
@@ -37,11 +37,11 @@ extension Addon: DocumentSerializable {
         guard  let multOptions = dictionary["multOptions"] as? Bool,
             let name = dictionary["name"] as? String,
             let options = dictionary["options"] as? String,
-            let price = dictionary["price"] as? Dictionary<String, Float>
+            let price = dictionary["price"] as? Dictionary<String, NSNumber>
             else{
                 return nil
         }
-        
+        //let price = dictionary["price"] as? Dictionary<String, NSNumber>
         
         self.init(
             multOptions: multOptions,
@@ -80,13 +80,14 @@ extension AddonListCategory: DocumentSerializable {
     
     
     init?(dictionary: [String : Any]) {
-        guard  let max = dictionary["max"] as? Float,
+        guard  //let max = dictionary["max"] as? Float,
             let name = dictionary["name"] as? String,
             let required = dictionary["required"] as? Bool
             else{
                 return nil
         }
-        
+        let max = (dictionary["max"] as! NSNumber).floatValue
+
         
         self.init(
             max: max,

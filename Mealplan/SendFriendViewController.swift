@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import OneSignal
 import PopupDialog
 import RSSelectionMenu
@@ -100,6 +101,22 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                     self.sendToUserInput.text = selectedItems.joined(separator: ", ")
                     //self.addFriendField = selectedItems
                     
+                    if(self.username! == self.sendToUserInput.text!){
+                        let title = "Oops, Sorry :("
+                        let message = "Sorry bud, you can't send gifts to yourself. BUT send them to a friend and they'll probably send one back! ;)"
+                        
+                        let popup = PopupDialog(title: title, message: message)//, image: image)
+                        
+                        let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                            return;
+                            
+                        }
+                        
+                        popup.addButtons([buttonTwo])
+                        self.present(popup, animated: true, completion: nil)
+                        
+                    }
+                    
                 }
                 
                 // show as PresentationStyle = Push
@@ -128,9 +145,34 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
         
         //}
         // 1
+        if(self.username! == self.sendToUserInput.text!){
+            let title = "Oops, Sorry :("
+            let message = "Sorry bud, you can't send gifts to yourself. BUT send them to a friend and they'll probably send one back! ;)"
+            
+            let popup = PopupDialog(title: title, message: message)//, image: image)
+            
+            let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                return;
+
+            }
+        
+            popup.addButtons([buttonTwo])
+            self.present(popup, animated: true, completion: nil)
+            
+        }else{
         
         var db = Firestore.firestore()
         
+//        let giftsRef = db.collection("gifts")
+//        let postsRef = db.collection("posts")
+//
+//        // Add a new document with a generated id.
+//        giftsRef.document().setData([
+//            "sender": self.username,
+//            "receiver": self.sendToUserInput.text!,
+//            "restaurant": self.rest.title,
+//            "time": FieldValue.serverTimestamp()
+//            ])
 
         let sfReference = db.collection("users").document(self.sendToUserInput.text!)
         
@@ -199,6 +241,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                     "time": FieldValue.serverTimestamp()
                     ])
             }
+            
         }
         
         
@@ -232,7 +275,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
                 //print("Document does not exist")
             }
         }
-        
+        }
         
     }
     
@@ -323,6 +366,23 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
 
         //}
         // 1
+        
+        if(self.username! == friendArr[indexPath.row].username){
+            let title = "Oops, Sorry :("
+            let message = "Sorry bud, you can't send gifts to yourself. To be honest, I don't even know why you friended yourself. Make a new friend, send a gift to them, and they'll probably send one back! ;)"
+            
+            let popup = PopupDialog(title: title, message: message)//, image: image)
+            
+            let buttonTwo = DefaultButton(title: "OK", dismissOnTap: true) {
+                return;
+                
+            }
+            
+            popup.addButtons([buttonTwo])
+            self.present(popup, animated: true, completion: nil)
+            
+        }else{
+        
         
         var db = Firestore.firestore()
         
@@ -501,7 +561,7 @@ class SendFriendViewController: UIViewController, UITableViewDataSource, UITable
         }
         
  
-        
+        }
         
         
         

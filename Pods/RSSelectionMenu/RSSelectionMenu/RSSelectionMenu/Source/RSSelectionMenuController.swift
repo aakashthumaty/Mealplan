@@ -39,6 +39,16 @@ open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationController
     public var leftBarButtonTitle: String?
     public var rightBarButtonTitle: String?
     
+    /// maximum selection limit
+    public var maxSelectionLimit: UInt? = nil {
+        didSet {
+            self.tableView?.selectionDelegate?.maxSelectedLimit = maxSelectionLimit
+        }
+    }
+    
+    /// Selection menu dismissal handler
+    public var onDismiss:((_ selectedItems: DataSource<T>) -> ())?
+    
     /// Searchbar cancel button
     public var searchBarCancelButtonAttributes: SearchBarCancelButtonAttributes? = nil {
         didSet {
@@ -136,17 +146,21 @@ open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationController
     /// tableView frame
     fileprivate func setTableViewFrame() {
         
-        //let window =  UIApplication.shared.delegate?.window
-        let window = UIScreen.main.applicationFrame // .bounds.size//bounds.size
-
+        let window =  UIApplication.shared.delegate?.window
+        
         // change border style for formsheet
         if case .Formsheet = menuPresentationStyle {
             
-            tableView?.layer.cornerRadius = 9
-            self.backgroundView.frame = (window)
+            tableView?.layer.cornerRadius = 8
+            self.backgroundView.frame = (window??.frame)!
             
             if UIDevice.current.userInterfaceIdiom == .phone {
-                self.tableView?.frame.size = CGSize(width: backgroundView.frame.size.width - 80, height: backgroundView.frame.size.height - 260)
+            
+                if UIDevice.current.orientation == .portrait {
+                    self.tableView?.frame.size = CGSize(width: backgroundView.frame.size.width - 80, height: backgroundView.frame.size.height - 260)
+                }else {
+                    self.tableView?.frame.size = CGSize(width: backgroundView.frame.size.width - 200, height: backgroundView.frame.size.height - 100)
+                }
             }else {
                 self.tableView?.frame.size = CGSize(width: backgroundView.frame.size.width - 300, height: backgroundView.frame.size.height - 400)
             }
@@ -171,7 +185,7 @@ open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationController
     }
     
     /// Done button
-    func setDoneButton() {
+    fileprivate func setDoneButton() {
         let doneTitle = (self.rightBarButtonTitle != nil) ? self.rightBarButtonTitle! : doneButtonTitle
         let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: self, action: #selector(doneButtonTapped))
         navigationItem.rightBarButtonItem = doneButton
@@ -209,8 +223,8 @@ open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationController
 extension RSSelectionMenu {
     
     /// Set selected items and selection event
-    public func setSelectedItems(items: DataSource<T>, onDidSelectRow delegate: @escaping UITableViewCellSelection<T>) {
-        self.tableView?.setSelectedItems(items: items, onDidSelectRow: delegate)
+    public func setSelectedItems(items: DataSource<T>, maxSelected: UInt? = nil, onDidSelectRow delegate: @escaping UITableViewCellSelection<T>) {
+        self.tableView?.setSelectedItems(items: items, maxSelected: maxSelected, onDidSelectRow: delegate)
     }
     
     /// First row type and selection
@@ -244,18 +258,23 @@ extension RSSelectionMenu {
     /// dismiss
     public func dismiss(animated: Bool? = true) {
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             
             // dismiss search
-            if let searchBar = self.tableView?.searchControllerDelegate?.searchBar {
+            if let searchBar = self?.tableView?.searchControllerDelegate?.searchBar {
                 if searchBar.isFirstResponder { searchBar.resignFirstResponder() }
             }
             
-            if case .Push = self.menuPresentationStyle {
-                 self.navigationController?.popViewController(animated: animated!)
+            // on menu dismiss
+            if let dismissHandler = self?.onDismiss {
+                dismissHandler(self?.tableView?.selectionDelegate?.selectedObjects ?? [])
+            }
+            
+            if case .Push? = self?.menuPresentationStyle {
+                 self?.navigationController?.popViewController(animated: animated!)
             }
             else {
-               self.dismiss(animated: animated!, completion: nil)
+               self?.dismiss(animated: animated!, completion: nil)
             }
         }
     }
