@@ -103,3 +103,51 @@ extension Discount: DocumentSerializable {
     
     
 }
+
+
+
+
+struct Order {
+    
+    var restaurant: String
+    var restPrice: Float
+    //var description: String
+    var time: Timestamp
+    
+    
+    
+    var dictionary: [String: Any] {
+        return [
+            "restaurant": restaurant,
+            "restPrice": restPrice,
+            //"description": description,
+            "time": time
+        ]
+    }
+    
+}
+
+extension Order: DocumentSerializable {
+    
+    
+    init?(dictionary: [String : Any]) {
+        guard  let restaurant = dictionary["restaurant"] as? String,
+            let restPrice = dictionary["restPrice"] as? Float,
+            //let description = dictionary["description"] as? String,
+            let time = dictionary["time"] as? Timestamp
+            
+            else{
+                return nil
+        }
+        
+        
+        self.init(
+            restaurant: restaurant,
+            restPrice: restPrice,
+            //description: description,
+            time: time
+            
+            
+        )
+    }
+}

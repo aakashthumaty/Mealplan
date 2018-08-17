@@ -77,8 +77,18 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
                 return
             }
             // Metadata contains file metadata such as size, content-type, and download URL.
-            let downloadURL = metadata.downloadURL
-            self.imgURL = (metadata.downloadURL()?.absoluteString)!
+            
+//            let downloadURL = metadata.downloadURL
+//            self.imgURL = (metadata.downloadURL()?.absoluteString)!
+//            storageRef.downloadURL { (url, error) in
+//                guard let downloadURL = url?.absoluteString else {
+//                    // Uh-oh, an error occurred!
+//                    return
+//                }
+//            }
+            storageRef.downloadURL(completion: { (url, error) in
+                self.imgURL = (url?.absoluteString)!
+            })
             //print(self.imgURL)
         }
         
@@ -151,6 +161,8 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             "rating": rating,
             "image": finalImage,
             "licks": 0,
+            "lickers": "",
+            "gagers": "",
             "gags": 0,
             "time": FieldValue.serverTimestamp()
 
@@ -195,7 +207,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
                     //print("Error fetching documents: \(error!)")
                     return
                 }
-            print("there was a change")
+            //print("there was a change")
 //                let cities = documents.map { $0["name"]! }
 //                //print("Current cities in CA: \(cities)")
 //            for document in querySnapshot!.documents {
@@ -217,7 +229,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
             
             documents.documentChanges.forEach { diff in
                 if (diff.type == .added) {
-                    print("New city: \(diff.document.data())")
+                    //print("New city: \(diff.document.data())")
                     var pls = Post(dictionary: diff.document.data())
                     pls?.id = diff.document.documentID
                     if(pls != nil){
@@ -226,7 +238,7 @@ class FeedViewController: UIViewController, FusumaDelegate, FilterImageViewContr
 
                 }
                 if (diff.type == .modified) {
-                    print("Modified city: \(diff.document.data())")
+                    //print("Modified city: \(diff.document.data())")
                     
                     var pls = Post(dictionary: diff.document.data())
                     pls?.id = diff.document.documentID

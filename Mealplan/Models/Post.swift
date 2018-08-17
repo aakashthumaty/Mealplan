@@ -21,6 +21,8 @@ struct Post {
     var restaurant: String
     var licks: Int
     var gags: Int
+    var lickers: Array<String>
+    var gaggers: Array<String>
     var time: Date
 
     
@@ -35,6 +37,8 @@ struct Post {
             "image": image,
             "licks": licks,
             "gags": gags,
+            "lickers": lickers,
+            "gaggers": gaggers,
             "time": time
             
         ]
@@ -52,7 +56,8 @@ extension Post: DocumentSerializable {
     }
     
     init?(dictionary: [String : Any]) {
-        guard let user = dictionary["user"] as? String,
+        guard
+            let user = dictionary["user"] as? String,
             let caption = dictionary["caption"] as? String,
             let restaurant = dictionary["restaurant"] as? String,
             let friends = dictionary["friends"] as? String,
@@ -60,6 +65,8 @@ extension Post: DocumentSerializable {
             let image = dictionary["image"] as? String,
             let gags = dictionary["gags"] as? Int,
             let licks = dictionary["licks"] as? Int,
+            let lickers = dictionary["lickers"] as? Array<String>,
+            let gaggers = dictionary["gaggers"] as? Array<String>,
             let time = dictionary["time"] as? Date
             else{
                 return nil
@@ -75,6 +82,8 @@ extension Post: DocumentSerializable {
                   restaurant: restaurant,
                   licks: licks,
                   gags: gags,
+                  lickers: lickers,
+                  gaggers: gaggers,
                   time:time
         )
     }

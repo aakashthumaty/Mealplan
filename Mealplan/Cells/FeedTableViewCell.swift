@@ -61,9 +61,22 @@ class FeedTableViewCell: UITableViewCell {
                 return nil
             }
             
+            let defaults = UserDefaults.standard
+            var thisUser = ""
+            if(defaults.string(forKey: "username") != nil){
+                
+                
+                thisUser = defaults.string(forKey: "username")!
+                //self.postsTable.reloadData()
+            }
+            
             oldPopulation = (sfDocument.data()?["licks"] as? Int)!
+            var oldLickers = [""]
+            oldLickers = (sfDocument.data()?["lickers"] as? Array)!
+            
             
             transaction.updateData(["licks": oldPopulation + 1], forDocument: sfReference)
+            transaction.updateData(["lickers": oldLickers.append(thisUser)], forDocument: sfReference)
             return nil
         }) { (object, error) in
             if let error = error {
@@ -107,8 +120,6 @@ class FeedTableViewCell: UITableViewCell {
                 }
             }
         }
-        
-        
         
     }
     
