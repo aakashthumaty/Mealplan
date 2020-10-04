@@ -104,6 +104,10 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         if let sourceViewController = sender.source as? OrdersViewController{
             return;
         }
+        
+        if let sourceViewController = sender.source as? FSUViewController{
+            return;
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -467,12 +471,12 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                                     //print("pushToken = \(pushToken)")
                                     
                                     
-                                    if(pushToken == nil){
+                                    if(OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId == nil){
                                         pushToken = " "
                                     }
                                     
                                     db.collection("users").document(self.username).updateData([
-                                        "pushToken": pushToken
+                                        "pushToken": OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
                                         ])
                                     
                                 })
@@ -670,24 +674,15 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 OneSignal.setEmail(self.userEmail);
                 let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-                
-                let hasPrompted = status.permissionStatus.hasPrompted
-                //print("hasPrompted = \(hasPrompted)")
-                let userStatus = status.permissionStatus.status
-                //print("userStatus = \(userStatus)")
-                
-                let isSubscribed = status.subscriptionStatus.subscribed
-                //print("isSubscribed = \(isSubscribed)")
-                let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
-                //print("userSubscriptionSetting = \(userSubscriptionSetting)")
-                let userID = status.subscriptionStatus.userId
-                //print("userID = \(userID)")
+  
                 var pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
                 //print("pushToken = \(pushToken)")
                 
                 
-                if(pushToken == nil){
+                if(OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId == nil){
                     pushToken = " "
+                }else{
+                    pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
                 }
                 
                 db.collection("users").document(self.username).updateData([
@@ -798,7 +793,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
                 var pushToken = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId
                 //print("pushToken = \(pushToken)")
                 
-                if(pushToken == nil){
+                if(OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId == nil){
                     pushToken = " "
                 }
                 // Add a new document with a generated id.
@@ -992,6 +987,10 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
+        
+        let betterTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        self.FSUButton.addGestureRecognizer(betterTap)
+        
         loadThemRests()
 
         let defaults = UserDefaults.standard
@@ -1043,8 +1042,8 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
             let defaults = UserDefaults.standard
             let uName = defaults.string(forKey: "username")
             
-            let betterTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-            self.FSUButton.addGestureRecognizer(betterTap)
+//            let betterTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+//            self.FSUButton.addGestureRecognizer(betterTap)
 
             if(uName != nil){
                 self.username = uName!
@@ -1067,7 +1066,7 @@ class RestarauntsViewController: UIViewController, UITableViewDataSource, UITabl
         let defaults = UserDefaults.standard
         let uName = defaults.string(forKey: "username")
         
-        if(uName != nil){
+        if(self.username != nil && self.username != ""){
 
             print("bigButtonTapped")
             let fsuView : FSUViewController = self.storyboard?.instantiateViewController(withIdentifier: "fsuVC") as! FSUViewController

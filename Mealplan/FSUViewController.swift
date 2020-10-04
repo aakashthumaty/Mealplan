@@ -11,8 +11,15 @@ import Firebase
 import FirebaseFirestore
 import RSSelectionMenu
 import OneSignal
+import MessageUI
 
-class FSUViewController: UIViewController {
+class FSUViewController: UIViewController, MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
+    
 
     var username: String!
     var friendArr: [Friend] = []
@@ -56,6 +63,26 @@ class FSUViewController: UIViewController {
         }
     }
     
+    @IBAction func textUs(_ sender: Any) {
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController()
+            controller.body = ""
+            controller.recipients = ["9195900536"]
+            controller.messageComposeDelegate = self
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func inviteAFriend(_ sender: Any) {
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController()
+            controller.body = ""
+//            controller.recipients = ["4086216172", "9195900536"]
+            controller.messageComposeDelegate = self
+            self.present(controller, animated: true, completion: nil)
+        }
+        
+    }
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -79,15 +106,21 @@ class FSUViewController: UIViewController {
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
         
+        var db = Firestore.firestore()
+
             
             print("lets go tapped")
         if(self.activityField.text != "" && self.friendField.text != "" && self.locationField.text != ""){
             
             for friend in self.selFriends{
-                var db = Firestore.firestore()
             
                 let recipientRef = db.collection("users").document(friend)
                 var temp: OurUser!
+                
+                var dataDesc: String = ""
+                var mes: String = ""
+                var tit: String = ""
+
                 
                 recipientRef.getDocument { (document, error) in
                     if let document = document, document.exists {
@@ -96,7 +129,7 @@ class FSUViewController: UIViewController {
                         temp = OurUser(dictionary: document.data()!)
                         
                         
-                        let message = "\(self.username!) wants to  \(self.activityField.text) at \(self.locationField.text)"
+                        let message = "\(self.username!) wants you to come \(self.activityField.text!) at \(self.locationField.text!)"
                         let notificationContent = [
                             "include_player_ids": [temp.pushToken],
                             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -106,15 +139,33 @@ class FSUViewController: UIViewController {
                             "ios_badgeCount": 1
                             ] as [String : Any]
                         
+                        mes = message
                         OneSignal.postNotification(notificationContent)
+                        
+                        db.collection("users").document(temp.username).collection("notifications").document().setData([
+                            "type": "fsuInvite",
+                            "body": mes,
+                            "title": "You Bored?",
+                            "time": FieldValue.serverTimestamp()
+                            ])
+
                         
                     } else {
                         //print("Document does not exist")
                     }
                 }
             }
+//            db.collection("users").document(self.username!).collection("notifications").document().setData([
+//                "type": "fsuInvite",
+//                "body": message,
+//                "title": "You Bored?",
+//                "time": FieldValue.serverTimestamp()
+//                ])
             self.selFriends = []
-            
+            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true) {
+                return true
+            }
             // send the notif and add to firebase
         }else{
             let alertController = UIAlertController(title: "Darn", message: "Please choose an activity, friend, and location!", preferredStyle: UIAlertControllerStyle.alert)
@@ -244,6 +295,29 @@ class FSUViewController: UIViewController {
                     //do i need deispatch queue for anything?
                 })
                 
+            }
+        }
+        
+        db.collection("users").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                //print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    //print("\(document.documentID) => \(document.data())")
+                    //print(" 1 \(document["name"])")
+                    //if(document.data()){
+                    
+                    var pls = OurUser(dictionary: document.data())
+                    if(pls != nil){
+                        //self.friendArr.append(pls!)
+                        //self.friendNames = self.friendNames.filter {$0 != pls?.username}
+
+                        self.friendNames.append((pls?.username)!)
+                    }else{
+                        //print("aiyah Database")
+                    }
+                    
+                }
             }
         }
         

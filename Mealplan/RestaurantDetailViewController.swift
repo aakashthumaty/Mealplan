@@ -143,7 +143,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
             let cell = collectionView.cellForItem(at: indexPath) as! discountCollectionViewCell
             if(cell.disc.cat == "firsttime"){
             
-                if (oldTouched != nil && !((oldTouched?.contains(self.restaurant.id))!)){
+                if (oldTouched != nil && !((oldTouched?.contains(self.restaurant.id))!) && self.discCounter == 0){
                     //print(!((oldTouched?.contains(self.restaurant.id))!))
                     let title = "ACTIVATE DISCOUNT"
                     let message = "Are you sure you're ready to activate this discount?"
@@ -156,9 +156,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                     
                     let buttonTwo = DefaultButton(title: "Activate", dismissOnTap: true) {
                         //print("What a beauty!")
-                        
+                        self.discCounter = 1
+
                         if(cell.disc.type == "category"){
-                            
                             //if the discount is a category based discount do all of this //we also reload the entire tableview based on a new list of categories
                             self.discMode = true
                             self.disc = cell.disc
@@ -241,7 +241,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
                 
                 let buttonTwo = DefaultButton(title: "Activate", dismissOnTap: true) {
                     //print("What a beauty!")
-                    
+                    self.discCounter = 1
+
                     self.discMode = true
                     self.disc = cell.disc
                     
@@ -525,6 +526,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     var discMode: Bool = false;
     var discModeSectionCount: Int = 0;
     var discModeSections: [String] = []
+    var discCounter: Int = 0
     
     @IBOutlet weak var itemTableView: UITableView!
     @IBOutlet weak var restaurantName: UILabel!
@@ -594,6 +596,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
 
         let sv = UIViewController.displaySpinner(onView: self.view)
 
+        self.discCounter = 0
         self.proceedToCheckout.isHidden = true;
         self.order = [];
         

@@ -9,9 +9,15 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import MessageUI
 
-class OrdersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OrdersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
     
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     var orders: [Order] = []
     var username = ""
     var orderIDs: [String] = []
@@ -94,6 +100,16 @@ class OrdersViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     */
 
+    @IBAction func textUs(_ sender: Any) {
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController()
+            controller.body = ""
+            controller.recipients = ["9195900536"]
+            controller.messageComposeDelegate = self
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
 }
 
 class OrdersTableViewCell: UITableViewCell {
